@@ -9,7 +9,9 @@ public class SpawnGrounds : MonoBehaviour
     [Header("Ground Info")]
     public GameObject ground;
     private int maxGrounds = 3;
-    static private float groundXSize;
+    public static float groundXSize = 5.0f;
+    public GameObject[] groundArray = new GameObject[3];
+    private int groundIterator = 0;
 
     [Header("Position")]
     private Vector3 localPostion;
@@ -17,25 +19,30 @@ public class SpawnGrounds : MonoBehaviour
 
     void Start()
     {
-        localPostion = new Vector3(0, 0, 0);
-        groundXSize = ground.transform.localScale.x * 10;
-        spawnPosition = localPostion + new Vector3(3 * groundXSize, 0, 0);
-        InvokeRepeating("SpawnGround", 0.0f, 3.0f);
+        localPostion = new Vector3(0,0,0);
+        spawnPosition = localPostion + new Vector3(-50, 0, 0);
+        InitGround();
     }
     void Update()
     {
         
     }
 
+    //in Loading
+    private void InitGround()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            groundArray[i] = Instantiate(ground, spawnPosition, new Quaternion(0, 0, 0, 0));
+            groundArray[i].SetActive(true);
+            spawnPosition += new Vector3(groundXSize*10, 0, 0);
+        }
+    }
+
     public void SpawnGround()
     {
-        Instantiate(ground, spawnPosition, new Quaternion(0, 0, 0, 0));
-        spawnPosition += new Vector3(groundXSize, 0, 0);
+        groundArray[groundIterator].transform.position += new Vector3(groundXSize *3* 10, 0, 0);
+        groundIterator++;
+        groundIterator %= 3;
     }
-
-    public void DeleteGround()
-    {
-
-    }
-
 }
