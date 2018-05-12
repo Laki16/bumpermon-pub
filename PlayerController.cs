@@ -6,12 +6,14 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Control")]
 	GameObject groundController;
+    GameObject blockController;
 	private Vector2 initialPos;
 	private int lane;
     public float swipeSpeed = 10.0f;
+    private bool isKeyPressed = false;
 
     [Header("Status")]
-    [Range(1,100)]
+    [Range(1,300)]
     public float speed;
     private float groundCount;
 
@@ -21,25 +23,60 @@ public class PlayerController : MonoBehaviour {
 
         speed = 25.0f;
         groundController = GameObject.FindGameObjectWithTag("GroundController");
+        blockController = GameObject.FindGameObjectWithTag("BlockController");
         groundCount = 0.0f;
 	}
 
 	void Update ()
     {
         transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
+        //spawnGround
         if(transform.position.x - groundCount >= 0)
         {
             groundCount += SpawnGrounds.groundXSize * 10;
             groundController.GetComponent<SpawnGrounds>().SpawnGround();
 		}
-		if (Input.GetMouseButtonDown(0))
-		{
-			initialPos = Input.mousePosition;
-		}
+        //spawnBlock
+
+        //--------------- mouse control ---------------
+        if (Input.GetMouseButtonDown(0))
+        {
+            initialPos = Input.mousePosition;
+        }
         if (Input.GetMouseButtonUp(0))
         {
             Calculate(Input.mousePosition);
         }
+        //---------------------------------------------
+        //--------------- keyboard control ------------
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
+        {
+            isKeyPressed = true;
+            if (transform.position.z < 1)
+            {
+                Debug.Log("Left");
+                lane++;
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.LeftArrow) && isKeyPressed)
+        {
+            isKeyPressed = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow) && !isKeyPressed)
+        {
+            isKeyPressed = true;
+            if (transform.position.z > -1)
+            {
+                Debug.Log("Right");
+                lane--;
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.RightArrow) && isKeyPressed)
+        {
+            isKeyPressed = false;
+        }
+        //---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position,new Vector3(transform.position.x, transform.position.y, lane) , Time.deltaTime * swipeSpeed);
     }
 
