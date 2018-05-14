@@ -19,18 +19,21 @@ public class SpawnBlocks : MonoBehaviour
     public static float blockXSize = 1.0f;
     private static int maxBlocks = 150;
     private GameObject[] lane = new GameObject[maxBlocks];
-    private float genSpeed;
 
     [Header("Difficulty")]
     public int space = 3;
     private int difficulty;
     private int beforeDifficulty;
 
-    private void Start()
+    private void Awake()
     {
-        genSpeed = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().speed;
         InitBlock();
         endSpawn = true;
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < 10; i++) SpawnBlock();
     }
 
     private void FixedUpdate()

@@ -20,8 +20,7 @@ public class PlayerController : MonoBehaviour {
 	void Start()
 	{
 		lane = 0;
-
-        speed = 25.0f;
+        
         groundController = GameObject.FindGameObjectWithTag("GroundController");
         blockController = GameObject.FindGameObjectWithTag("BlockController");
         groundCount = 0.0f;
