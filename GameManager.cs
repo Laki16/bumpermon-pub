@@ -11,14 +11,16 @@ public class GameManager : MonoBehaviour {
 
     [Header("System")]
     public GameObject player;
+    float meterBetBlock;
     int timeLeft = 3;
 
 	// Use this for initialization
 	void Start () {
+        meterBetBlock = player.transform.position.x;
 	}
 	
 	void Update () {
-        meterText.text = ((int)player.transform.position.x + 9 + "m");
+        meterText.text = ((int)player.transform.position.x - meterBetBlock + "m");
 	}
     
 }

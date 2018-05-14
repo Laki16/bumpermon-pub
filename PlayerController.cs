@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour {
             isKeyPressed = true;
             if (transform.position.z < 1)
             {
-                Debug.Log("Left");
+                //Debug.Log("Left");
                 lane++;
             }
         }
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour {
             isKeyPressed = true;
             if (transform.position.z > -1)
             {
-                Debug.Log("Right");
+                //Debug.Log("Right");
                 lane--;
             }
         }
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour {
 				{
                     if (transform.position.z < 1)
                     {
-                        Debug.Log("Left");
+                        //Debug.Log("Left");
                         lane++;
                     }
 				}
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 				{
                     if (transform.position.z > -1)
                     {
-                        Debug.Log("Right");
+                        //Debug.Log("Right");
                         lane--;
                     }
 				}
