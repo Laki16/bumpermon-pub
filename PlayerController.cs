@@ -42,6 +42,10 @@ public class PlayerController : MonoBehaviour
     [Header("Nitro System")]
     public float nitro = 0;
     public bool isNitro = false;
+    public bool useNitro = false;
+    float preSpeed;
+    int preGear;
+    public float nitroTime = 0.0f;
 
     [Header("System")]
     private bool isMouseDown = false;
@@ -56,6 +60,7 @@ public class PlayerController : MonoBehaviour
         blockController = GameObject.FindGameObjectWithTag("BlockController");
         groundCount = 0.0f;
         speed = minSpeed;
+        nitro = 90;
     }
 
     void Update()
@@ -69,12 +74,12 @@ public class PlayerController : MonoBehaviour
         }
         //--------------------------------------------
         //---------Increase & Decrease Speed----------
-        if(isMouseDown)
+        if(isMouseDown && !useNitro)
         {
             unGear = 10.0f;
             if (nitro < 100)
             {
-                nitro += speed/maxSpeed * Time.deltaTime;
+                nitro += 10*speed/maxSpeed * Time.deltaTime;
             }
             else
             {
@@ -120,6 +125,20 @@ public class PlayerController : MonoBehaviour
         //---------------------------------------------
 
         //-----------------nitro-----------------------
+        if (useNitro)
+        {
+            speed = preSpeed + currentGear * 30;
+            nitroTime -= Time.deltaTime;
+            if(nitroTime < 0)
+            {
+                useNitro = false;
+                isNitro = false;
+                nitro = 0;
+                speed = preSpeed;
+                currentGear = preGear;
+                nitroTime = 5.0f;
+            }
+        }
         //---------------------------------------------
 
         //--------------- mouse control ---------------
@@ -212,15 +231,22 @@ public class PlayerController : MonoBehaviour
                 {
                     //위로 드래그
                     //Debug.Log("Up");
+                    //if(isNitro)
+                    //{
+                    //    //UseNitro();
+                    //}
                 }
             }
         }
     }
-    
+
     public void UseNitro()
     {
-        float preSpeed = speed;
-        int preGear = currentGear;
-        speed += currentGear;
+        if (isNitro)
+        {
+            preSpeed = speed;
+            preGear = currentGear;
+            useNitro = true;
+        }
     }
 }
