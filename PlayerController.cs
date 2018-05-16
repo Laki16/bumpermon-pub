@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -45,6 +46,9 @@ public class PlayerController : MonoBehaviour
     [Header("System")]
     private bool isMouseDown = false;
 
+    [Header("UI")]
+    public Button nitroBtn;
+    public Text speedText;
     void Start()
     {
         lane = 0;
@@ -114,8 +118,10 @@ public class PlayerController : MonoBehaviour
             upgradeGear = 0.0f;
         }
         //---------------------------------------------
+
         //-----------------nitro-----------------------
         //---------------------------------------------
+
         //--------------- mouse control ---------------
         if (Input.GetMouseButtonDown(0))
         {
@@ -158,6 +164,16 @@ public class PlayerController : MonoBehaviour
         }
         //---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
+
+        //---------------------UI----------------------
+        if(isNitro){
+            nitroBtn.interactable = true;
+        }else{
+            nitroBtn.interactable = false;
+        }
+        speedText.text = ((int)speed+"km");
+        //---------------------------------------------
+
     }
 
     void Calculate(Vector3 finalPos)
