@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour {
             groundCount += SpawnGrounds.groundXSize * 10;
             groundController.GetComponent<SpawnGrounds>().SpawnGround();
 		}
-        //spawnBlock
 
         //--------------- mouse control ---------------
         if (Input.GetMouseButtonDown(0))
@@ -117,4 +116,12 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 	}
+
+    // 기어시스템 & 속도증가
+
+    
+    void IncreaseSpeed(int gear)
+    {
+
+    }
 }
