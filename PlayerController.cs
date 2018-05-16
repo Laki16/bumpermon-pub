@@ -74,40 +74,47 @@ public class PlayerController : MonoBehaviour
         }
         //--------------------------------------------
         //---------Increase & Decrease Speed----------
-        if(isMouseDown && !useNitro)
+        if (!useNitro)
         {
-            unGear = 10.0f;
-            if (nitro < 100)
+            if (isMouseDown)
             {
-                nitro += 10*speed/maxSpeed * Time.deltaTime;
+                unGear = 10.0f;
+                if (nitro < 100)
+                {
+                    nitro += 10 * speed / maxSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    isNitro = true;
+                }
+                if (speed <= maxGearSpeed * currentGear)
+                {
+                    speed += increaseWeight * currentGear * Time.deltaTime;
+                }
             }
             else
             {
-                isNitro = true;
-            }
-            if (speed <= maxGearSpeed * currentGear)
-            {
-                speed += increaseWeight * currentGear * Time.deltaTime;
-            }
-        }
-        else
-        {
-            if (speed >= minSpeed)
-            {
-                speed -= decreaseWeight * currentGear * Time.deltaTime;
-            }
-            if (unGear > 0)
-            {
-                unGear -= currentGear * Time.deltaTime;
-                if (unGear < 1)
+                if (speed >= minSpeed)
                 {
-                    currentGear--;
+                    speed -= decreaseWeight * currentGear * Time.deltaTime;
+                }
+                if (unGear > 0 && currentGear > 1)
+                {
+                    unGear -= currentGear * Time.deltaTime;
+                    if (unGear <= 0)
+                    {
+                        if (currentGear > 0)
+                        {
+                            currentGear--;
+                        }
+                        unGear = 10.0f;
+                    }
                 }
             }
         }
         //---------------------------------------------
         //------------------기어업---------------------
-        if (speed >= currentGear * maxGearSpeed)
+        if (speed >= currentGear * maxGearSpeed && isMouseDown && !useNitro)
         {
             upgradeGear += Time.deltaTime;
             if (upgradeGear > 2.0f)
