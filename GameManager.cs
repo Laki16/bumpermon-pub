@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
 
     [Header("Text")]
     public Text countdownText;
-    public Text meterText;
+    //public Text meterText;
 
     [Header("System")]
     public GameObject player;
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
 	}
 	
 	void Update () {
-        meterText.text = ((int)player.transform.position.x - meterBetBlock + "m");
+        //meterText.text = ((int)player.transform.position.x - meterBetBlock + "m");
 	}
     
 }
