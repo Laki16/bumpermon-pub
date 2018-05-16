@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     [Header("Control")]
     GameObject groundController;
     GameObject blockController;
@@ -19,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private float groundCount;
     //최소 자동전진 속도
     public float minSpeed;
+    //최고속도
+    public float maxSpeed = 240.0f;
 
     [Header("Gear System")]
     [Tooltip("현재 기어")]
@@ -30,12 +31,16 @@ public class PlayerController : MonoBehaviour
     [Tooltip("max 속도일때 이 시간만큼 유지하면 기어업")]
     public float upgradeGear;
     [Tooltip("최대 기어")]
-    [Range(1,5)]
+    [Range(1,6)]
     public int maxGear;
     [Tooltip("속도 증가 가중치")]
     public float increaseWeight;
     [Tooltip("속도 감소 가중치")]
     public float decreaseWeight;
+
+    [Header("Nitro System")]
+    public float nitro = 0;
+    public bool isNitro = false;
 
     [Header("System")]
     private bool isMouseDown = false;
@@ -63,6 +68,14 @@ public class PlayerController : MonoBehaviour
         if(isMouseDown)
         {
             unGear = 10.0f;
+            if (nitro < 100)
+            {
+                nitro += speed/maxSpeed * Time.deltaTime;
+            }
+            else
+            {
+                isNitro = true;
+            }
             if (speed <= maxGearSpeed * currentGear)
             {
                 speed += increaseWeight * currentGear * Time.deltaTime;
@@ -100,6 +113,8 @@ public class PlayerController : MonoBehaviour
         {
             upgradeGear = 0.0f;
         }
+        //---------------------------------------------
+        //-----------------nitro-----------------------
         //---------------------------------------------
         //--------------- mouse control ---------------
         if (Input.GetMouseButtonDown(0))
