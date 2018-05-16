@@ -200,5 +200,11 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
+    
+    public void UseNitro()
+    {
+        float preSpeed = speed;
+        int preGear = currentGear;
+        speed += currentGear;
+    }
 }
