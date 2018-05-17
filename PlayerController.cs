@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private int lane;
     public float swipeSpeed = 10.0f;
     private bool isKeyPressed = false;
+    private bool isBlockLeft = false;
+    private bool isBLockRIght = false;
 
     [Header("Status")]
     [Range(1, 300)]
@@ -49,6 +51,16 @@ public class PlayerController : MonoBehaviour
 
     [Header("System")]
     private bool isMouseDown = false;
+
+    [Header("Collision")]
+    //앞에 블럭
+    public GameObject forwardBlock;
+    //앞에 블럭이 있는지
+    public bool isBlockForward = true;
+    //블럭이 바뀌었는지 확인용 변수
+    public bool isBlockChange = true;
+    //경직 시간
+    public float stunTime = 0.8f;
 
     [Header("UI")]
     public Scrollbar nitroBar;
@@ -90,8 +102,8 @@ public class PlayerController : MonoBehaviour
             //거리측정
             if (Vector3.Distance(transform.position, forwardBlock.transform.position) < 2.0f)
             {
-                //벗어나면
-                if (!isBlockForward)
+                //벗어나면 && 충돌하고 회피할때 부스트 방지를 위해 최소 스피드이상일때만(스턴시간 수정시 따라서 적절히 수정필요)
+                if (!isBlockForward && speed > minSpeed)
                 {
                     //부스트
                     isBlockChange = true;
@@ -258,15 +270,7 @@ public class PlayerController : MonoBehaviour
         //---------------------------------------------
     }
 
-    //ray
-    //전 블럭과의 거리
-    public float blockDiff;
-    //앞에 블럭
-    public GameObject forwardBlock;
-    //앞에 블럭이 있는지
-    public bool isBlockForward = true;
-    //블럭이 바뀌었는지 확인용 변수(초기값 true) -> 
-    public bool isBlockChange = true;
+
     void Raycast()
     {
         Ray ray = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.right);
@@ -299,8 +303,8 @@ public class PlayerController : MonoBehaviour
                     if (transform.position.z < 1)
                     {
                         //Debug.Log("Left");
-                        if(!isBlockLeft)
-                        lane++;
+                        if (!isBlockLeft)
+                            lane++;
                     }
                 }
                 else
@@ -308,8 +312,8 @@ public class PlayerController : MonoBehaviour
                     if (transform.position.z > -1)
                     {
                         //Debug.Log("Right");
-                        if(!isBLockRIght)
-                        lane--;
+                        if (!isBLockRIght)
+                            lane--;
                     }
                 }
             }
@@ -319,6 +323,7 @@ public class PlayerController : MonoBehaviour
                 {
                     // 밑으로 드래그
                     //Debug.Log("Down");
+                    UseNitro();
                 }
                 else
                 {
@@ -360,25 +365,27 @@ public class PlayerController : MonoBehaviour
 
         isCoroutineRunning = false;
     }
-
+    //----------------충돌------------------------
     private void OnTriggerEnter(Collider other)
     {
-        if (currentGear > 1)
+        if (!useNitro)
         {
-            currentGear--;
+            if (currentGear > 1)
+            {
+                currentGear--;
+            }
+            speed = -8.0f;
+            StartCoroutine(SpeedRecovery());
         }
-        speed = -8.0f;
-        StartCoroutine(SpeedRecovery());
     }
-
+    //---------------------------------------------
     IEnumerator SpeedRecovery()
     {
-        yield return new WaitForSeconds(1.3f);
+        //경직 시간만큼 기다림
+        yield return new WaitForSeconds(stunTime);
         speed += minSpeed;
     }
 
-    private bool isBlockLeft = false;
-    private bool isBLockRIght = false;
     void SideRayCast()
     {
         Ray rayLeft = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
@@ -386,7 +393,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit hitLeft;
         RaycastHit hitRight;
 
-        if(Physics.Raycast(rayLeft, out hitLeft, 1.0f))
+        if (Physics.Raycast(rayLeft, out hitLeft, 1.0f))
         {
             isBlockLeft = true;
         }
@@ -394,7 +401,7 @@ public class PlayerController : MonoBehaviour
         {
             isBlockLeft = false;
         }
-        if(Physics.Raycast(rayRight, out hitRight, 1.0f))
+        if (Physics.Raycast(rayRight, out hitRight, 1.0f))
         {
             isBLockRIght = true;
         }
