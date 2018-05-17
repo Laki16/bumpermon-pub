@@ -73,6 +73,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
+        //-----------------Ray-----------------------
+        SideRayCast();
+        //-------------------------------------------
         //-----------------spawnGround---------------
         if (transform.position.x - groundCount >= 0)
         {
@@ -178,8 +181,11 @@ public class PlayerController : MonoBehaviour
             isKeyPressed = true;
             if (transform.position.z < 1)
             {
-                //Debug.Log("Left");
-                lane++;
+                if (!isBlockLeft)
+                {
+                    //Debug.Log("Left");
+                    lane++;
+                }
             }
         }
         if (Input.GetKeyUp(KeyCode.LeftArrow) && isKeyPressed)
@@ -192,8 +198,11 @@ public class PlayerController : MonoBehaviour
             isKeyPressed = true;
             if (transform.position.z > -1)
             {
-                //Debug.Log("Right");
-                lane--;
+                if (!isBLockRIght)
+                {
+                    //Debug.Log("Right");
+                    lane--;
+                }
             }
         }
         if (Input.GetKeyUp(KeyCode.RightArrow) && isKeyPressed)
@@ -294,6 +303,7 @@ public class PlayerController : MonoBehaviour
                     if (transform.position.z < 1)
                     {
                         //Debug.Log("Left");
+                        if(!isBlockLeft)
                         lane++;
                     }
                 }
@@ -302,6 +312,7 @@ public class PlayerController : MonoBehaviour
                     if (transform.position.z > -1)
                     {
                         //Debug.Log("Right");
+                        if(!isBLockRIght)
                         lane--;
                     }
                 }
@@ -354,4 +365,46 @@ public class PlayerController : MonoBehaviour
         isCoroutineRunning = false;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (currentGear > 1)
+        {
+            currentGear--;
+        }
+        speed = -8.0f;
+        StartCoroutine(SpeedRecovery());
+    }
+
+    IEnumerator SpeedRecovery()
+    {
+        yield return new WaitForSeconds(1.3f);
+        speed += minSpeed;
+    }
+
+    private bool isBlockLeft = false;
+    private bool isBLockRIght = false;
+    void SideRayCast()
+    {
+        Ray rayLeft = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
+        Ray rayRight = new Ray(transform.position + new Vector3(0, 0.3f, 0), -transform.forward);
+        RaycastHit hitLeft;
+        RaycastHit hitRight;
+
+        if(Physics.Raycast(rayLeft, out hitLeft, 1.0f))
+        {
+            isBlockLeft = true;
+        }
+        else
+        {
+            isBlockLeft = false;
+        }
+        if(Physics.Raycast(rayRight, out hitRight, 1.0f))
+        {
+            isBLockRIght = true;
+        }
+        else
+        {
+            isBLockRIght = false;
+        }
+    }
 }
