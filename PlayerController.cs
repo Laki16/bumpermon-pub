@@ -75,6 +75,9 @@ public class PlayerController : MonoBehaviour
     bool isChangeColor;
     bool isCoroutineRunning = false;
 
+    [Header("Animation")]
+    Animator myAnimator;
+
     void Start()
     {
         lane = 0;
@@ -84,6 +87,8 @@ public class PlayerController : MonoBehaviour
         speed = minSpeed;
 
         isChangeColor = false;
+
+        myAnimator = GetComponent<Animator>();
     }
 
     void Update()
@@ -145,6 +150,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isMouseDown)
             {
+                myAnimator.SetBool("Sprint", true);
                 unGear = 10.0f;
                 if (nitro < 100)
                 {
@@ -161,6 +167,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                myAnimator.SetBool("Sprint", false);
                 if (speed >= minSpeed)
                 {
                     speed -= decreaseWeight * currentGear * Time.deltaTime;
