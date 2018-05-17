@@ -83,47 +83,6 @@ public class PlayerController : MonoBehaviour
             groundController.GetComponent<SpawnGrounds>().SpawnGround();
         }
         //--------------------------------------------
-        //-------------------Ray-----------------------
-        Raycast();
-        if (!isBlockChange)
-        {
-            //거리측정
-            if (Vector3.Distance(transform.position, forwardBlock.transform.position) < 2.0f)
-            {
-                //벗어나면
-                if (!isBlockForward)
-                {
-                    //부스트
-                    isBlockChange = true;
-                    if (speed + 15.0f > maxGearSpeed * currentGear - 1)
-                    {
-                        speed = maxGearSpeed * currentGear - 1;
-                    }
-                    else
-                    {
-                        speed += 15.0f;
-                    }
-                    if (nitro + 10.0f > 100)
-                    {
-                        nitro = 100.0f;
-                    }
-                    else
-                    {
-                        nitro += 15.0f;
-                    }
-                }
-            }
-            else
-            {
-                //벗어나면
-                if (!isBlockForward)
-                {
-                    //no부스트
-                    isBlockChange = true;
-                }
-            }
-        }
-        //---------------------------------------------
         //---------Increase & Decrease Speed----------
         if (!useNitro)
         {
@@ -186,6 +145,7 @@ public class PlayerController : MonoBehaviour
             upgradeGear = 0.0f;
         }
         //---------------------------------------------
+
         //-----------------nitro-----------------------
         if (useNitro)
         {
@@ -202,6 +162,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         //---------------------------------------------
+
         //--------------- mouse control ---------------
         if (Input.GetMouseButtonDown(0))
         {
@@ -250,11 +211,54 @@ public class PlayerController : MonoBehaviour
         }
         //---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
+
         //---------------------UI----------------------
         nitroBar.size = nitro / 100.0f;
         speedBar.size = speed / maxSpeed;
         gearBar.value = (currentGear - 1) / 4.0f;
         speedText.text = ((int)speed + "km");
+        //---------------------------------------------
+
+        //-------------------Ray-----------------------
+        Raycast();
+        if (!isBlockChange)
+        {
+            //거리측정
+            if (Vector3.Distance(transform.position, forwardBlock.transform.position) < 2.0f)
+            {
+                //벗어나면
+                if (!isBlockForward)
+                {
+                    //부스트
+                    isBlockChange = true;
+                    if (speed + 15.0f > maxGearSpeed * currentGear - 1)
+                    {
+                        speed = maxGearSpeed * currentGear - 1;
+                    }
+                    else
+                    {
+                        speed += 15.0f;
+                    }
+                    if (nitro + 10.0f > 100)
+                    {
+                        nitro = 100.0f;
+                    }
+                    else
+                    {
+                        nitro += 15.0f;
+                    }
+                }
+            }
+            else
+            {
+                //벗어나면
+                if (!isBlockForward)
+                {
+                    //no부스트
+                    isBlockChange = true;
+                }
+            }
+        }
         //---------------------------------------------
     }
 
