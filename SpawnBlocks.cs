@@ -6,13 +6,10 @@ public class SpawnBlocks : MonoBehaviour
 {
     [Header("System")]
     public GameObject player;
-
     private int beforeLane = 0;
     private int nowLane = 0;
     private int iterator = 0;
     private bool endSpawn = true;
-    //private int deleteIterator = 0;
-    //int passedCount = 0;
 
     [Header("Block")]
     public GameObject block;
@@ -21,8 +18,10 @@ public class SpawnBlocks : MonoBehaviour
     private GameObject[] lane = new GameObject[maxBlocks];
 
     [Header("Difficulty")]
-    public int space = 3;
+    static public int space = 3;
     private int difficulty;
+    static public int maxDifficulty = 15;
+    static public int minDifficulty = 5;
     private int beforeDifficulty;
 
     private void Awake()
@@ -55,7 +54,6 @@ public class SpawnBlocks : MonoBehaviour
 
         for (int i = 0; i < difficulty; i++)
         {
-            //passedCount++;
             lane[iterator].transform.position = new Vector3(beforeDifficulty, 0, 0);
             lane[iterator].transform.position += new Vector3(blockXSize * i, 0, nowLane);
             lane[iterator].SetActive(true);
@@ -111,25 +109,4 @@ public class SpawnBlocks : MonoBehaviour
             lane[i] = Instantiate(block, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
         }
     }
-    
-    //void DeleteBlock()
-    //{
-    //    while (true)
-    //    {
-    //        //Debug.Log(endSpawn);
-    //        if (endSpawn)
-    //        {
-    //            endSpawn = false;
-    //            SpawnBlock();
-    //            //Debug.Log("Spawn");
-    //        }
-    //        if (passedCount > 100)
-    //        {
-    //            passedCount--;
-    //            lane[deleteIterator].SetActive(false);
-    //            deleteIterator++;
-    //            deleteIterator %= maxBlocks;
-    //        }
-    //    }
-    //}
 }

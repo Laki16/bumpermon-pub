@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     [Tooltip("max 속도일때 이 시간만큼 유지하면 기어업")]
     public float upgradeGear;
     [Tooltip("최대 기어")]
-    [Range(1,6)]
+    [Range(1, 6)]
     public int maxGear;
     [Tooltip("속도 증가 가중치")]
     public float increaseWeight;
@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour
         {
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
-            if(nitroTime < 0)
+            if (nitroTime < 0)
             {
                 useNitro = false;
                 isNitro = false;
@@ -192,14 +192,72 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
 
         //---------------------UI----------------------
-        if(isNitro){
+        if (isNitro)
+        {
             nitroBtn.interactable = true;
-        }else{
+        }
+        else
+        {
             nitroBtn.interactable = false;
         }
-        speedText.text = ((int)speed+"km");
+        speedText.text = ((int)speed + "km");
         //---------------------------------------------
 
+        //-------------------Ray-----------------------
+        Raycast();
+        if (!isBlockChange)
+        {
+            //거리측정
+            if (Vector3.Distance(transform.position, forwardBlock.transform.position) < 2.0f)
+            {
+                //벗어나면
+                if (!isBlockForward)
+                {
+                    //부스트
+                    isBlockChange = true;
+                    speed += 5.0f;
+                    nitro += 5.0f;
+                }
+            }
+            else
+            {
+                //벗어나면
+                if (!isBlockForward)
+                {
+                    //no부스트
+                    isBlockChange = true;
+                }
+            }
+        }
+        //---------------------------------------------
+    }
+
+    //ray
+    //전 블럭과의 거리
+    public float blockDiff;
+    //앞에 블럭
+    public GameObject forwardBlock;
+    //앞에 블럭이 있는지
+    public bool isBlockForward = true;
+    //블럭이 바뀌었는지 확인용 변수(초기값 true) -> 
+    public bool isBlockChange = true;
+    void Raycast()
+    {
+        Ray ray = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.right);
+        //Debug.DrawRay(ray.origin, ray.direction * 3, Color.red, 0.01f);
+        RaycastHit hit;
+        //space 의 2/3 지점 이내일때 피하면 부스트 따라서, ray는 space만큼 쏘면 피했을때 다른 블럭이 잡히지않음
+        //Ray 거리는 최소노드길이(difficulty + space)보다 짧아야함****************
+        if (Physics.Raycast(ray, out hit, SpawnBlocks.minDifficulty + SpawnBlocks.space))
+        {
+            isBlockForward = true;
+            forwardBlock = hit.collider.gameObject;
+            isBlockChange = false;
+        }
+        else
+        {
+            isBlockForward = false;
+        }
     }
 
     void Calculate(Vector3 finalPos)
