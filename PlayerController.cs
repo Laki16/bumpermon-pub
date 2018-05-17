@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     public float minSpeed;
     //최고속도
     public float maxSpeed = 240.0f;
+    //맵의 끝 지점(가정)
+    public long endDistance;
 
     [Header("Gear System")]
     [Tooltip("현재 기어")]
@@ -54,7 +56,9 @@ public class PlayerController : MonoBehaviour
     public Scrollbar nitroBar;
     public Scrollbar speedBar;
     public Scrollbar gearBar;
+    public Scrollbar playerBar;
     public Text speedText;
+    public Text distanceText;
     public GameObject speedHandle;
     bool isChangeColor;
     bool isCoroutineRunning = false;
@@ -254,7 +258,9 @@ public class PlayerController : MonoBehaviour
         nitroBar.size = nitro / 100.0f;
         speedBar.size = speed / maxSpeed;
         gearBar.value = (currentGear - 1) / 4.0f;
+        playerBar.value = (transform.position.x / endDistance);
         speedText.text = ((int)speed + "km");
+        distanceText.text = (((int)transform.position.x+20) + "");
         //---------------------------------------------
     }
 
