@@ -130,7 +130,8 @@ public class PlayerController : MonoBehaviour
                 currentGear++;
                 speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
             }
-            if(!isCoroutineRunning){
+            if (!isCoroutineRunning)
+            {
                 StartCoroutine(BlingSpeedColor());
             }
         }
@@ -206,7 +207,7 @@ public class PlayerController : MonoBehaviour
         nitroBar.size = nitro / 100.0f;
         speedBar.size = speed / maxSpeed;
         gearBar.value = (currentGear - 1) / 4.0f;
-        speedText.text = ((int)speed+"km");
+        speedText.text = ((int)speed + "km");
         //---------------------------------------------
 
         //-------------------Ray-----------------------
@@ -221,8 +222,22 @@ public class PlayerController : MonoBehaviour
                 {
                     //부스트
                     isBlockChange = true;
-                    speed += 5.0f;
-                    nitro += 5.0f;
+                    if (speed + 15.0f > maxGearSpeed * currentGear - 1)
+                    {
+                        speed = maxGearSpeed * currentGear - 1;
+                    }
+                    else
+                    {
+                        speed += 15.0f;
+                    }
+                    if (nitro + 10.0f > 100)
+                    {
+                        nitro = 100.0f;
+                    }
+                    else
+                    {
+                        nitro += 15.0f;
+                    }
                 }
             }
             else
@@ -321,13 +336,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator BlingSpeedColor(){
+    IEnumerator BlingSpeedColor()
+    {
         isCoroutineRunning = true;
-        if(isChangeColor){
-            speedHandle.GetComponent<Image>().color = new Color(220.0f/255.0f, 60.0f/255.0f, 10.0f/255.0f, 150.0f/255.0f);
+        if (isChangeColor)
+        {
+            speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 150.0f / 255.0f);
             isChangeColor = false;
-        }else{
-            speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f/255.0f);
+        }
+        else
+        {
+            speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
             isChangeColor = true;
         }
         yield return new WaitForSeconds(0.1f);
