@@ -51,8 +51,14 @@ public class PlayerController : MonoBehaviour
     private bool isMouseDown = false;
 
     [Header("UI")]
-    public Button nitroBtn;
+    public Scrollbar nitroBar;
+    public Scrollbar speedBar;
+    public Scrollbar gearBar;
     public Text speedText;
+    public GameObject speedHandle;
+    bool isChangeColor;
+    bool isCoroutineRunning = false;
+
     void Start()
     {
         lane = 0;
@@ -60,7 +66,8 @@ public class PlayerController : MonoBehaviour
         blockController = GameObject.FindGameObjectWithTag("BlockController");
         groundCount = 0.0f;
         speed = minSpeed;
-        nitro = 90;
+
+        isChangeColor = false;
     }
 
     void Update()
@@ -113,20 +120,24 @@ public class PlayerController : MonoBehaviour
             }
         }
         //---------------------------------------------
-        //------------------기어업---------------------
-        if (speed >= currentGear * maxGearSpeed && isMouseDown && !useNitro)
+        //------------------기어업-----------------------
+
+        if (speed >= currentGear * maxGearSpeed && isMouseDown && !useNitro && currentGear < maxGear)
         {
             upgradeGear += Time.deltaTime;
             if (upgradeGear > 2.0f)
             {
-                if (currentGear < maxGear)
-                {
-                    currentGear++;
-                }
+                currentGear++;
+                speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
+            }
+            if(!isCoroutineRunning){
+                StartCoroutine(BlingSpeedColor());
             }
         }
         else
         {
+            StopCoroutine(BlingSpeedColor());
+            speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
             upgradeGear = 0.0f;
         }
         //---------------------------------------------
@@ -192,11 +203,9 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
 
         //---------------------UI----------------------
-        if(isNitro){
-            nitroBtn.interactable = true;
-        }else{
-            nitroBtn.interactable = false;
-        }
+        nitroBar.size = nitro / 100.0f;
+        speedBar.size = speed / maxSpeed;
+        gearBar.value = (currentGear - 1) / 4.0f;
         speedText.text = ((int)speed+"km");
         //---------------------------------------------
 
@@ -256,4 +265,19 @@ public class PlayerController : MonoBehaviour
             useNitro = true;
         }
     }
+
+    IEnumerator BlingSpeedColor(){
+        isCoroutineRunning = true;
+        if(isChangeColor){
+            speedHandle.GetComponent<Image>().color = new Color(220.0f/255.0f, 60.0f/255.0f, 10.0f/255.0f, 150.0f/255.0f);
+            isChangeColor = false;
+        }else{
+            speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f/255.0f);
+            isChangeColor = true;
+        }
+        yield return new WaitForSeconds(0.1f);
+
+        isCoroutineRunning = false;
+    }
+
 }
