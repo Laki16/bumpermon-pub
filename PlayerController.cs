@@ -213,10 +213,12 @@ public class PlayerController : MonoBehaviour
         //-----------------nitro-----------------------
         if (useNitro)
         {
+            myAnimator.SetBool("Roll", true);
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
             if (nitroTime < 0)
             {
+                myAnimator.SetBool("Roll", false);
                 useNitro = false;
                 isNitro = false;
                 nitro = 0;
