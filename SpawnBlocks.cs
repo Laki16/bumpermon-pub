@@ -81,7 +81,7 @@ public class SpawnBlocks : MonoBehaviour
         }
         else if (beforeLane == 0)
         {
-            if (nowLane == -1)
+            if (nowLane == 0)
             {
                 nowLane = -1;
             }
@@ -92,7 +92,7 @@ public class SpawnBlocks : MonoBehaviour
         }
         else
         {
-            if (nowLane == 1)
+            if (nowLane == 0)
             {
                 nowLane = -1;
             }
