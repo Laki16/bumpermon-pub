@@ -57,6 +57,8 @@ public class SpawnBlocks : MonoBehaviour
             lane[iterator].transform.position = new Vector3(beforeDifficulty, 0, 0);
             lane[iterator].transform.position += new Vector3(blockXSize * i, 0, nowLane);
             lane[iterator].SetActive(true);
+            lane[iterator].GetComponent<Renderer>().enabled = true;
+            lane[iterator].GetComponent<Collider>().enabled = true;
             iterator++;
             iterator %= maxBlocks;
         }
