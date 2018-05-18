@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
     float preSpeed;
     int preGear;
     public float nitroTime = 0.0f;
+    bool isBoost = false;
 
     [Header("System")]
     private bool isMouseDown = false;
@@ -78,6 +79,13 @@ public class PlayerController : MonoBehaviour
     [Header("Animation")]
     public float sprintMultiplier;
     Animator myAnimator;
+
+    [Header("Camera")]
+    public GameObject camera;
+    public Vector3 offset;
+    public float boostOffset;
+    Vector3 boostLocation;
+    float boostTime = .5f;
 
     void Start()
     {
@@ -123,6 +131,8 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
+                        isBoost = true;
+                        boostLocation = camera.transform.position + new Vector3(boostOffset, 0, 0);
                         speed += 15.0f;
                     }
                     if (nitro + 10.0f > 100)
@@ -282,12 +292,26 @@ public class PlayerController : MonoBehaviour
         gearBar.value = (currentGear - 1) / 4.0f;
         playerBar.value = (transform.position.x / endDistance);
         speedText.text = ((int)speed + "km");
-        distanceText.text = (((int)transform.position.x+20) + "");
+        distanceText.text = (((int)transform.position.x + 20) + "");
         //---------------------------------------------
 
         //-----------------Animations------------------
         sprintMultiplier = 1.0f + speed / 240;
         myAnimator.SetFloat("SprintMultiplier", sprintMultiplier);
+        //---------------------------------------------
+
+        //-------------------Camera--------------------
+        camera.transform.position = transform.position + offset;
+
+        if(isBoost){
+            if (boostTime < 0.5f)
+            {
+                camera.transform.position = Vector3.Lerp(camera.transform.position, boostLocation, Time.deltaTime);
+                boostTime += .1f;
+            }else{
+                isBoost = false;
+            }
+        }
         //---------------------------------------------
 
     }
@@ -432,4 +456,5 @@ public class PlayerController : MonoBehaviour
             isBLockRIght = false;
         }
     }
+
 }
