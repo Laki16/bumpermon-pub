@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour
     bool isCoroutineRunning = false;
 
     [Header("Animation")]
+    public float sprintMultiplier;
     Animator myAnimator;
 
     void Start()
@@ -281,6 +282,12 @@ public class PlayerController : MonoBehaviour
         speedText.text = ((int)speed + "km");
         distanceText.text = (((int)transform.position.x+20) + "");
         //---------------------------------------------
+
+        //-----------------Animations------------------
+        sprintMultiplier = 1.0f + speed / 240;
+        myAnimator.SetFloat("SprintMultiplier", sprintMultiplier);
+        //---------------------------------------------
+
     }
 
 
