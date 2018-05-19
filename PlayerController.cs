@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("UI")]
     public Scrollbar nitroBar;
-    public Image speedBar;
+    public Scrollbar speedBar;
     public Scrollbar gearBar;
     public Scrollbar playerBar;
     public Text speedText;
@@ -288,7 +288,7 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
         nitroBar.size = nitro / 100.0f;
-        speedBar.fillAmount = speed / maxSpeed;
+        speedBar.size = speed / maxSpeed;
         gearBar.value = (currentGear - 1) / 4.0f;
         playerBar.value = (transform.position.x / endDistance);
         speedText.text = ((int)speed + "km");

@@ -30,12 +30,12 @@ public class SpawnBlocks : MonoBehaviour
         endSpawn = true;
     }
 
-    void Start()
+    private void Start()
     {
         for (int i = 0; i < 10; i++) SpawnBlock();
     }
 
-    void Update()
+    private void FixedUpdate()
     {
         if (endSpawn)
         {
