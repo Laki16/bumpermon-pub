@@ -83,9 +83,8 @@ public class PlayerController : MonoBehaviour
     [Header("Camera")]
     public GameObject camera;
     public Vector3 offset;
-    public float boostOffset;
-    Vector3 boostLocation;
-    float boostTime = .5f;
+    float startTime;
+    float endTime;
 
     void Start()
     {
@@ -132,7 +131,11 @@ public class PlayerController : MonoBehaviour
                     else
                     {
                         isBoost = true;
-                        boostLocation = camera.transform.position + new Vector3(boostOffset, 0, 0);
+                        Debug.Log("Boost");
+                        startTime = Time.time;
+                        endTime = startTime + 0.7f;
+                        //offset += new Vector3(-1, 0, 0);
+                        
                         speed += 15.0f;
                     }
                     if (nitro + 10.0f > 100)
@@ -302,15 +305,17 @@ public class PlayerController : MonoBehaviour
 
         //-------------------Camera--------------------
         camera.transform.position = transform.position + offset;
-
-        if(isBoost){
-            if (boostTime < 0.5f)
-            {
-                camera.transform.position = Vector3.Lerp(camera.transform.position, boostLocation, Time.deltaTime);
-                boostTime += .1f;
-            }else{
-                isBoost = false;
-            }
+        if (isBoost && Time.time <= startTime + .5f)
+        {
+            offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime;
+        }
+        else if(Time.time >= startTime + .5f && Time.time <= endTime)
+        {
+            offset += new Vector3(2.5f, 0, 0) * Time.deltaTime;
+        }
+        else
+        {
+            offset = new Vector3(-2.0f, 1.5f, 0);
         }
         //---------------------------------------------
 
