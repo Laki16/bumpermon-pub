@@ -11,9 +11,11 @@ public class EnemyController : MonoBehaviour {
     float maxSpeed;
     long endDistance;
     float speed;
+    float distanceBetPlayer;
 
     [Header("UI")]
     public Scrollbar enemyBar;
+    public Scrollbar playerBar;
 
     // Use this for initialization
     void Start () {
@@ -27,9 +29,12 @@ public class EnemyController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+    void Update () {
+        distanceBetPlayer = player.transform.position.x - transform.position.x;
+        enemyBar.value = distanceBetPlayer / 1000;
+        playerBar.value = distanceBetPlayer / 1000;
         transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
-        enemyBar.value = (transform.position.x / endDistance);
+        //enemyBar.value = (transform.position.x / endDistance);
 	}
 
     void SpeedUp()
