@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
             groundController.GetComponent<SpawnGrounds>().SpawnGround();
         }
         //--------------------------------------------
-        //-------------------Ray-----------------------
+        //-------------------Ray----------------------
         Raycast();
         if (!isBlockChange)
         {
@@ -126,10 +126,13 @@ public class PlayerController : MonoBehaviour
                     if (speed + 15.0f > maxGearSpeed * currentGear - 1)
                     {
                         speed = maxGearSpeed * currentGear - 1;
+                        Debug.Log("Boost");
+                        startTime = Time.time;
+                        endTime = startTime + 0.7f;
                     }
                     else
                     {
-                        isBoost = true;
+                        //isBoost = true;
                         Debug.Log("Boost");
                         startTime = Time.time;
                         endTime = startTime + 0.7f;
@@ -157,7 +160,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        //---------------------------------------------
+        //--------------------------------------------
         //---------Increase & Decrease Speed----------
         if (!useNitro)
         {
@@ -225,18 +228,30 @@ public class PlayerController : MonoBehaviour
         //-----------------nitro-----------------------
         if (useNitro)
         {
+            Ray shockwaveRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
+            RaycastHit shockwaveHit;
+            if (Physics.Raycast(shockwaveRay, out shockwaveHit, 2.0f, 1 << 12))
+            {
+                if(nitroTime < 0.1f)
+                shockwaveHit.collider.gameObject.SetActive(false);
+            }
             myAnimator.SetBool("Roll", true);
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
+
             if (nitroTime < 0)
             {
                 myAnimator.SetBool("Roll", false);
-                useNitro = false;
                 isNitro = false;
                 nitro = 0;
                 speed = preSpeed;
                 currentGear = preGear;
                 nitroTime = 5.0f;
+                
+                if (!isNitroShockwave)
+                {
+                    StartCoroutine(NitroShockwave());
+                }
             }
         }
         //---------------------------------------------
@@ -256,7 +271,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
         {
             isKeyPressed = true;
-            if (transform.position.z < 1)
+            if (transform.position.z < 0.9f)
             {
                 if (!isBlockLeft)
                 {
@@ -273,7 +288,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow) && !isKeyPressed)
         {
             isKeyPressed = true;
-            if (transform.position.z > -1)
+            if (transform.position.z > -0.9f)
             {
                 if (!isBLockRIght)
                 {
@@ -303,13 +318,14 @@ public class PlayerController : MonoBehaviour
 
         //-------------------Camera--------------------
         camera.transform.position = transform.position + offset;
-        if (isBoost && Time.time <= startTime + .5f)
+        //if (isBoost && Time.time <= startTime + .5f)
+        if (Time.time <= startTime + .5f)
         {
-            offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime;
+            offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
         }
         else if(Time.time >= startTime + .5f && Time.time <= endTime)
         {
-            offset += new Vector3(2.5f, 0, 0) * Time.deltaTime;
+            offset += new Vector3(2.5f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
         }
         else
         {
@@ -319,6 +335,22 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public bool isNitroShockwave;
+    IEnumerator NitroShockwave()
+    {
+        isNitroShockwave = true;
+        Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f, 1 << 12);
+        if (cols != null)
+        {
+            for (int i = 0; i < cols.Length; i++)
+            {
+                cols[i].gameObject.GetComponent<Block>().StartCoroutine(cols[i].gameObject.GetComponent<Block>().SplitMesh(true));
+            }
+        }
+        useNitro = false;
+        isNitroShockwave = false;
+        yield return null;
+    }
 
     void Raycast()
     {
@@ -349,20 +381,24 @@ public class PlayerController : MonoBehaviour
             {
                 if (initialPos.x > finalPos.x)
                 {
-                    if (transform.position.z < 1)
+                    if (transform.position.z < 0.9f)
                     {
                         //Debug.Log("Left");
                         if (!isBlockLeft)
+                        {
                             lane++;
+                        }
                     }
                 }
                 else
                 {
-                    if (transform.position.z > -1)
+                    if (transform.position.z > -0.9f)
                     {
                         //Debug.Log("Right");
                         if (!isBLockRIght)
+                        {
                             lane--;
+                        }
                     }
                 }
             }
@@ -430,6 +466,7 @@ public class PlayerController : MonoBehaviour
     //---------------------------------------------
     IEnumerator SpeedRecovery()
     {
+        Debug.Log("Recover");
         //경직 시간만큼 기다림
         yield return new WaitForSeconds(stunTime);
         speed += minSpeed;
