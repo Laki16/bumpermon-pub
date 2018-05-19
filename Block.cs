@@ -16,7 +16,6 @@ public class Block : MonoBehaviour {
     
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Ouch");
         StartCoroutine(SplitMesh(true));
     }
 
@@ -90,7 +89,7 @@ public class Block : MonoBehaviour {
                 GO.AddComponent<BoxCollider>();
                 Vector3 explosionPos = new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(0f, 0.5f), transform.position.z + Random.Range(-0.5f, 0.5f));
                 GO.AddComponent<Rigidbody>().AddExplosionForce(Random.Range(300, 500), explosionPos, 5);
-                Destroy(GO, 5 + Random.Range(0.0f, 5.0f));
+                Destroy(GO, 0.8f + Random.Range(0.0f, 0.8f));
             }
         }
 

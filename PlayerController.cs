@@ -126,14 +126,12 @@ public class PlayerController : MonoBehaviour
                     if (speed + 15.0f > maxGearSpeed * currentGear - 1)
                     {
                         speed = maxGearSpeed * currentGear - 1;
-                        Debug.Log("Boost");
                         startTime = Time.time;
                         endTime = startTime + 0.7f;
                     }
                     else
                     {
                         //isBoost = true;
-                        Debug.Log("Boost");
                         startTime = Time.time;
                         endTime = startTime + 0.7f;
                         //offset += new Vector3(-1, 0, 0);
@@ -255,6 +253,9 @@ public class PlayerController : MonoBehaviour
             }
         }
         //---------------------------------------------
+        //--------------- touch control ---------------
+
+        //---------------------------------------------
         //--------------- mouse control ---------------
         if (Input.GetMouseButtonDown(0))
         {
@@ -335,7 +336,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public bool isNitroShockwave;
+    public bool isNitroShockwave = false;
     IEnumerator NitroShockwave()
     {
         isNitroShockwave = true;
@@ -466,7 +467,6 @@ public class PlayerController : MonoBehaviour
     //---------------------------------------------
     IEnumerator SpeedRecovery()
     {
-        Debug.Log("Recover");
         //경직 시간만큼 기다림
         yield return new WaitForSeconds(stunTime);
         speed += minSpeed;
