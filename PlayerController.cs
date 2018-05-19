@@ -231,15 +231,25 @@ public class PlayerController : MonoBehaviour
             myAnimator.SetBool("Roll", true);
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
+
             if (nitroTime < 0)
             {
                 myAnimator.SetBool("Roll", false);
-                useNitro = false;
                 isNitro = false;
                 nitro = 0;
                 speed = preSpeed;
                 currentGear = preGear;
                 nitroTime = 5.0f;
+                Ray shockwaveRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
+                RaycastHit shockwaveHit;
+                if (Physics.Raycast(shockwaveRay, out shockwaveHit, 2.0f, 1 << 12))
+                {
+                    shockwaveHit.collider.gameObject.SetActive(false);
+                }
+                if (!isNitroShockwave)
+                {
+                    StartCoroutine(NitroShockwave());
+                }
             }
         }
         //---------------------------------------------
@@ -324,6 +334,22 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public bool isNitroShockwave;
+    IEnumerator NitroShockwave()
+    {
+        isNitroShockwave = true;
+        Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f, 1 << 12);
+        if (cols != null)
+        {
+            for (int i = 0; i < cols.Length; i++)
+            {
+                cols[i].gameObject.GetComponent<Block>().StartCoroutine(cols[i].gameObject.GetComponent<Block>().SplitMesh(true));
+            }
+        }
+        useNitro = false;
+        isNitroShockwave = false;
+        yield return null;
+    }
 
     void Raycast()
     {
