@@ -228,6 +228,13 @@ public class PlayerController : MonoBehaviour
         //-----------------nitro-----------------------
         if (useNitro)
         {
+            Ray shockwaveRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
+            RaycastHit shockwaveHit;
+            if (Physics.Raycast(shockwaveRay, out shockwaveHit, 2.0f, 1 << 12))
+            {
+                if(nitroTime < 0.1f)
+                shockwaveHit.collider.gameObject.SetActive(false);
+            }
             myAnimator.SetBool("Roll", true);
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
@@ -240,12 +247,7 @@ public class PlayerController : MonoBehaviour
                 speed = preSpeed;
                 currentGear = preGear;
                 nitroTime = 5.0f;
-                Ray shockwaveRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
-                RaycastHit shockwaveHit;
-                if (Physics.Raycast(shockwaveRay, out shockwaveHit, 2.0f, 1 << 12))
-                {
-                    shockwaveHit.collider.gameObject.SetActive(false);
-                }
+                
                 if (!isNitroShockwave)
                 {
                     StartCoroutine(NitroShockwave());
@@ -320,11 +322,11 @@ public class PlayerController : MonoBehaviour
         //if (isBoost && Time.time <= startTime + .5f)
         if (Time.time <= startTime + .5f)
         {
-            offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime;
+            offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
         }
         else if(Time.time >= startTime + .5f && Time.time <= endTime)
         {
-            offset += new Vector3(2.5f, 0, 0) * Time.deltaTime;
+            offset += new Vector3(2.5f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
         }
         else
         {
