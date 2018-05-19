@@ -67,12 +67,11 @@ public class PlayerController : MonoBehaviour
 
     [Header("UI")]
     public Scrollbar nitroBar;
-    public Scrollbar speedBar;
+    public Image speedBar;
     public Scrollbar gearBar;
     public Scrollbar playerBar;
     public Text speedText;
     public Text distanceText;
-    public GameObject speedHandle;
     bool isChangeColor;
     bool isCoroutineRunning = false;
 
@@ -209,7 +208,7 @@ public class PlayerController : MonoBehaviour
             if (upgradeGear > 2.0f)
             {
                 currentGear++;
-                speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
+                speedBar.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
             }
             if (!isCoroutineRunning)
             {
@@ -219,7 +218,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             StopCoroutine(BlingSpeedColor());
-            speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
+            speedBar.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
             upgradeGear = 0.0f;
         }
         //---------------------------------------------
@@ -291,7 +290,7 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
         nitroBar.size = nitro / 100.0f;
-        speedBar.size = speed / maxSpeed;
+        speedBar.fillAmount = speed / maxSpeed;
         gearBar.value = (currentGear - 1) / 4.0f;
         playerBar.value = (transform.position.x / endDistance);
         speedText.text = ((int)speed + "km");
@@ -404,12 +403,12 @@ public class PlayerController : MonoBehaviour
         isCoroutineRunning = true;
         if (isChangeColor)
         {
-            speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 150.0f / 255.0f);
+            speedBar.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 150.0f / 255.0f);
             isChangeColor = false;
         }
         else
         {
-            speedHandle.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
+            speedBar.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
             isChangeColor = true;
         }
         yield return new WaitForSeconds(0.1f);

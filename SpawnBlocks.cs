@@ -24,18 +24,18 @@ public class SpawnBlocks : MonoBehaviour
     static public int minDifficulty = 5;
     private int beforeDifficulty;
 
-    private void Awake()
+    void Awake()
     {
         InitBlock();
         endSpawn = true;
     }
 
-    private void Start()
+    void Start()
     {
         for (int i = 0; i < 10; i++) SpawnBlock();
     }
 
-    private void FixedUpdate()
+    void Update()
     {
         if (endSpawn)
         {
