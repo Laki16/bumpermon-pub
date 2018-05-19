@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
             groundController.GetComponent<SpawnGrounds>().SpawnGround();
         }
         //--------------------------------------------
-        //-------------------Ray-----------------------
+        //-------------------Ray----------------------
         Raycast();
         if (!isBlockChange)
         {
@@ -126,10 +126,13 @@ public class PlayerController : MonoBehaviour
                     if (speed + 15.0f > maxGearSpeed * currentGear - 1)
                     {
                         speed = maxGearSpeed * currentGear - 1;
+                        Debug.Log("Boost");
+                        startTime = Time.time;
+                        endTime = startTime + 0.7f;
                     }
                     else
                     {
-                        isBoost = true;
+                        //isBoost = true;
                         Debug.Log("Boost");
                         startTime = Time.time;
                         endTime = startTime + 0.7f;
@@ -157,7 +160,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        //---------------------------------------------
+        //--------------------------------------------
         //---------Increase & Decrease Speed----------
         if (!useNitro)
         {
@@ -256,7 +259,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
         {
             isKeyPressed = true;
-            if (transform.position.z < 1)
+            if (transform.position.z < 0.9f)
             {
                 if (!isBlockLeft)
                 {
@@ -273,7 +276,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow) && !isKeyPressed)
         {
             isKeyPressed = true;
-            if (transform.position.z > -1)
+            if (transform.position.z > -0.9f)
             {
                 if (!isBLockRIght)
                 {
@@ -304,7 +307,8 @@ public class PlayerController : MonoBehaviour
 
         //-------------------Camera--------------------
         camera.transform.position = transform.position + offset;
-        if (isBoost && Time.time <= startTime + .5f)
+        //if (isBoost && Time.time <= startTime + .5f)
+        if (Time.time <= startTime + .5f)
         {
             offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime;
         }
@@ -350,20 +354,24 @@ public class PlayerController : MonoBehaviour
             {
                 if (initialPos.x > finalPos.x)
                 {
-                    if (transform.position.z < 1)
+                    if (transform.position.z < 0.9f)
                     {
                         //Debug.Log("Left");
                         if (!isBlockLeft)
+                        {
                             lane++;
+                        }
                     }
                 }
                 else
                 {
-                    if (transform.position.z > -1)
+                    if (transform.position.z > -0.9f)
                     {
                         //Debug.Log("Right");
                         if (!isBLockRIght)
+                        {
                             lane--;
+                        }
                     }
                 }
             }
@@ -431,6 +439,7 @@ public class PlayerController : MonoBehaviour
     //---------------------------------------------
     IEnumerator SpeedRecovery()
     {
+        Debug.Log("Recover");
         //경직 시간만큼 기다림
         yield return new WaitForSeconds(stunTime);
         speed += minSpeed;
