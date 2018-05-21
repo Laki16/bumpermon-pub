@@ -52,7 +52,7 @@ public class SpawnBlocks : MonoBehaviour
     //속도비례
     public void SetSpace()
     {
-        player.GetComponent < PlayerController>().speed
+        space = (int)(player.GetComponent<PlayerController>().speed / 100.0f) + minSpace;
     }
 
     //거리비례
@@ -85,7 +85,9 @@ public class SpawnBlocks : MonoBehaviour
         endSpawn = false;
         ComputeLane();
         beforeDifficulty += difficulty + space;
-        difficulty = Random.Range(5, 15);
+        //difficulty = Random.Range(5, 15);
+        SetDifficulty();
+        SetSpace();
 
         for (int i = 0; i < difficulty; i++)
         {
