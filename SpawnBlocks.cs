@@ -18,10 +18,12 @@ public class SpawnBlocks : MonoBehaviour
     private GameObject[] lane = new GameObject[maxBlocks];
 
     [Header("Difficulty")]
-    static public int space = 3;
+    static public int minSpace = 3;
+    static public int maxSpace = 10;
+    public int space;
     private int difficulty;
     static public int maxDifficulty = 15;
-    static public int minDifficulty = 5;
+    static public int minDifficulty = 2;
     private int beforeDifficulty;
 
     void Awake()
@@ -33,6 +35,7 @@ public class SpawnBlocks : MonoBehaviour
     void Start()
     {
         for (int i = 0; i < 10; i++) SpawnBlock();
+        //player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
@@ -46,8 +49,40 @@ public class SpawnBlocks : MonoBehaviour
         }
     }
 
+    //속도비례
+    public void SetSpace()
+    {
+        player.GetComponent < PlayerController>().speed
+    }
+
+    //거리비례
+    public void SetDifficulty()
+    {
+        if(player.transform.position.x <= 200.0f)
+        {
+            difficulty = Random.Range(10, maxDifficulty);
+        }
+        else if (200.0f < player.transform.position.x && player.transform.position.x <= 500.0f)
+        {
+            difficulty = Random.Range(5, 12);
+        }
+        else if (500.0f < player.transform.position.x && player.transform.position.x <= 1000.0f)
+        {
+            difficulty = Random.Range(4, 8);
+        }
+        else if (1000.0f < player.transform.position.x && player.transform.position.x <= 1500.0f)
+        {
+            difficulty = Random.Range(3, 5);
+        }
+        else
+        {
+            difficulty = Random.Range(minDifficulty, 4);
+        }
+    }
+
     public void SpawnBlock()
     {
+        endSpawn = false;
         ComputeLane();
         beforeDifficulty += difficulty + space;
         difficulty = Random.Range(5, 15);

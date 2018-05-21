@@ -359,8 +359,8 @@ public class PlayerController : MonoBehaviour
         //Debug.DrawRay(ray.origin, ray.direction * 3, Color.red, 0.01f);
         RaycastHit hit;
         //space 의 2/3 지점 이내일때 피하면 부스트 따라서, ray는 space만큼 쏘면 피했을때 다른 블럭이 잡히지않음
-        //Ray 거리는 최소노드길이(difficulty + space)보다 짧아야함****************
-        if (Physics.Raycast(ray, out hit, SpawnBlocks.minDifficulty + SpawnBlocks.space))
+        //Ray 거리는 최소노드길이(minDifficulty + minSpace)보다 짧아야함****************
+        if (Physics.Raycast(ray, out hit, SpawnBlocks.minDifficulty + SpawnBlocks.minSpace))
         {
             isBlockForward = true;
             forwardBlock = hit.collider.gameObject;
