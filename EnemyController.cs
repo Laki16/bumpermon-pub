@@ -17,9 +17,9 @@ public class EnemyController : MonoBehaviour
     public float speedWeight;
     public bool isSpeedDown = false;
 
-    [Header("UI")]
-    public Scrollbar enemyBar;
-    public Scrollbar playerBar;
+    //[Header("UI")]
+    //public Scrollbar enemyBar;
+    //public Scrollbar playerBar;
 
     // Use this for initialization
     void Start()
@@ -27,7 +27,7 @@ public class EnemyController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("PlayerController");
         minSpeed = player.GetComponent<PlayerController>().minSpeed;
         maxSpeed = player.GetComponent<PlayerController>().maxSpeed;
-        endDistance = player.GetComponent<PlayerController>().endDistance;
+        //endDistance = player.GetComponent<PlayerController>().endDistance;
 
         speed = minSpeed;
         //InvokeRepeating("SpeedUp", 0, 1.0f);
@@ -41,9 +41,9 @@ public class EnemyController : MonoBehaviour
         speedWeight += Time.deltaTime;
         mySpeed = (speedWeight / 60) * (speedWeight / 60);
         speed = player.GetComponent<PlayerController>().speed + mySpeed;
-        distanceBetPlayer = player.transform.position.x - transform.position.x;
-        enemyBar.value = distanceBetPlayer / 1000;
-        playerBar.value = distanceBetPlayer / 1000;
+        //distanceBetPlayer = player.transform.position.x - transform.position.x;
+        //enemyBar.value = distanceBetPlayer / 1000;
+        //playerBar.value = distanceBetPlayer / 1000;
         transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
         //enemyBar.value = (transform.position.x / endDistance);
     }
@@ -66,5 +66,4 @@ public class EnemyController : MonoBehaviour
     //{
     //    if (speed < maxSpeed) speed++;
     //}
-
 }
