@@ -422,10 +422,7 @@ public class PlayerController : MonoBehaviour
                 {
                     //위로 드래그
                     //Debug.Log("Up");
-                    //if(isNitro)
-                    //{
-                    //    //UseNitro();
-                    //}
+                    myAnimator.Play("Attack");
                 }
             }
         }
