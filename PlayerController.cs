@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("System")]
     private bool isMouseDown = false;
+    public GameObject enemy;
 
     [Header("Collision")]
     //앞에 블럭
@@ -135,8 +136,9 @@ public class PlayerController : MonoBehaviour
                         startTime = Time.time;
                         endTime = startTime + 0.7f;
                         //offset += new Vector3(-1, 0, 0);
-                        
+
                         speed += 15.0f;
+                        enemy.GetComponent<EnemyController>().BoostSpeedDown();
                     }
                     if (nitro + 10.0f > 100)
                     {
@@ -230,12 +232,16 @@ public class PlayerController : MonoBehaviour
             RaycastHit shockwaveHit;
             if (Physics.Raycast(shockwaveRay, out shockwaveHit, 2.0f, 1 << 12))
             {
-                if(nitroTime < 0.1f)
-                shockwaveHit.collider.gameObject.SetActive(false);
+                if (nitroTime < 0.1f)
+                    shockwaveHit.collider.gameObject.SetActive(false);
             }
             myAnimator.SetBool("Roll", true);
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
+            if (!enemy.GetComponent<EnemyController>().isSpeedDown)
+            {
+                enemy.GetComponent<EnemyController>().StartCoroutine(enemy.GetComponent<EnemyController>().NitroSpeedDown(4));
+            }
 
             if (nitroTime < 0)
             {
@@ -245,7 +251,7 @@ public class PlayerController : MonoBehaviour
                 speed = preSpeed;
                 currentGear = preGear;
                 nitroTime = 5.0f;
-                
+
                 if (!isNitroShockwave)
                 {
                     StartCoroutine(NitroShockwave());
@@ -324,7 +330,7 @@ public class PlayerController : MonoBehaviour
         {
             offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
         }
-        else if(Time.time >= startTime + .5f && Time.time <= endTime)
+        else if (Time.time >= startTime + .5f && Time.time <= endTime)
         {
             offset += new Vector3(2.5f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
         }
