@@ -11,13 +11,19 @@ public class EnemyArm : MonoBehaviour
     public float speed;
     private float movingTime;
     public int randomSeed;
+    public GameObject child;
 
     [Header("Action")]
     public bool isPlacing = false;
     public GameObject mine;
+
+    private Animator myAnimator;
+
     // Use this for initialization
     void Start()
     {
+        myAnimator = child.GetComponent<Animator>();
+
         //changedPosition = 0.0f;
         StartCoroutine(MoveArm());
         StartCoroutine(PlaceMine(2));
@@ -45,27 +51,28 @@ public class EnemyArm : MonoBehaviour
 
     public IEnumerator PlaceMine(int lane)
     {
-        while (true)
+        isPlacing = true;
+        Debug.Log("PlaceMine");
+        GameObject newMine;
+        //Play.animation(time)
+        //time 만큼
+        yield return new WaitForSeconds(2.5f);
+        if (lane == 1)
         {
-            isPlacing = true;
-            Debug.Log("PlaceMine");
-            GameObject newMine;
-            //Play.animation(time)
-            //time 만큼
-            yield return new WaitForSeconds(3.0f);
-            if (lane == 1)
-            {
-                newMine = Instantiate(mine, new Vector3(transform.position.x, 0, -1), new Quaternion(0, 0, 0, 0));
-            }
-            else if (lane == 2)
-            {
-                newMine = Instantiate(mine, new Vector3(transform.position.x, 0, 0), new Quaternion(0, 0, 0, 0));
-            }
-            else
-            {
-                newMine = Instantiate(mine, new Vector3(transform.position.x, 0, 1), new Quaternion(0, 0, 0, 0));
-            }
-            isPlacing = false;
+            myAnimator.SetTrigger("Lane1");
+            newMine = Instantiate(mine, new Vector3(transform.position.x, 0, -1), new Quaternion(0, 0, 0, 0));
         }
+        else if (lane == 2)
+        {
+            myAnimator.SetTrigger("Lane2");
+            newMine = Instantiate(mine, new Vector3(transform.position.x, 0, 0), new Quaternion(0, 0, 0, 0));
+        }
+        else
+        {
+            myAnimator.SetTrigger("Lane1");
+            newMine = Instantiate(mine, new Vector3(transform.position.x, 0, 1), new Quaternion(0, 0, 0, 0));
+        }
+        isPlacing = false;
+
     }
 }

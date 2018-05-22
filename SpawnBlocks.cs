@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpawnBlocks : MonoBehaviour
 {
+    [Header("Enemy")]
+    public GameObject enemyL;
+    public GameObject enemyR;
     [Header("System")]
     public GameObject player;
     private int beforeLane = 0;
@@ -36,6 +39,7 @@ public class SpawnBlocks : MonoBehaviour
     {
         for (int i = 0; i < 10; i++) SpawnBlock();
         //player = GameObject.FindGameObjectWithTag("Player");
+        StartCoroutine(Attack());
     }
 
     void Update()
@@ -146,6 +150,24 @@ public class SpawnBlocks : MonoBehaviour
         for (int i = 0; i < maxBlocks; i++)
         {
             lane[i] = Instantiate(block, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+        }
+    }
+
+    public IEnumerator Attack()
+    {
+        int num;
+
+        while(true){
+           num = Random.Range(1, 4);
+            if (num != 3)
+            {
+                StartCoroutine(enemyR.GetComponent<EnemyArm>().PlaceMine(num));
+            }
+            else
+            {
+                StartCoroutine(enemyL.GetComponent<EnemyArm>().PlaceMine(num));
+            }
+            yield return new WaitForSeconds(3.0f);
         }
     }
 }
