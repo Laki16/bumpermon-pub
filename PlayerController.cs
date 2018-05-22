@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private bool isKeyPressed = false;
     private bool isBlockLeft = false;
     private bool isBLockRIght = false;
+    private bool isAttack = false;
 
     [Header("Status")]
     [Range(1, 300)]
@@ -238,10 +239,10 @@ public class PlayerController : MonoBehaviour
             //myAnimator.SetBool("Roll", true);
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
-            if (!enemy.GetComponent<EnemyController>().isSpeedDown)
-            {
-                enemy.GetComponent<EnemyController>().StartCoroutine(enemy.GetComponent<EnemyController>().NitroSpeedDown(4));
-            }
+            //if (!enemy.GetComponent<EnemyController>().isSpeedDown)
+            //{
+            //    enemy.GetComponent<EnemyController>().StartCoroutine(enemy.GetComponent<EnemyController>().NitroSpeedDown(4));
+            //}
 
             if (nitroTime <= 0)
             {
@@ -257,6 +258,24 @@ public class PlayerController : MonoBehaviour
                 {
                     StartCoroutine(NitroShockwave());
                 }
+            }
+        }
+        //---------------------------------------------
+        //----------------- Attack --------------------
+        if (isAttack)
+        {
+            attackTime -= Time.deltaTime;
+            Ray attackRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
+            RaycastHit attackHit;
+            //13 : mine Layer
+            if (Physics.Raycast(attackRay, out attackHit, 2.0f, 1 << 13))
+            {
+                //폭발
+                attackHit.collider.gameObject.SetActive(false);
+            }
+            if(attackTime <= 0)
+            {
+                isAttack = false;
             }
         }
         //---------------------------------------------
@@ -423,7 +442,8 @@ public class PlayerController : MonoBehaviour
                     //위로 드래그
                     //Debug.Log("Up");
                     //myAnimator.ResetTrigger("Idle");
-                    myAnimator.SetTrigger("Attack");
+                    //myAnimator.SetTrigger("Attack");
+                    Attack();
                 }
             }
         }
@@ -440,6 +460,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private float attackTime;
+
+    public void Attack()
+    {
+        if (!isAttack)
+        {
+            isAttack = true;
+            attackTime = 1.0f;
+            myAnimator.SetTrigger("Attack");
+        }
+    }
     IEnumerator BlingSpeedColor()
     {
         isCoroutineRunning = true;
