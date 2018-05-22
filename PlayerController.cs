@@ -422,7 +422,8 @@ public class PlayerController : MonoBehaviour
                 {
                     //위로 드래그
                     //Debug.Log("Up");
-                    myAnimator.Play("Attack");
+                    //myAnimator.ResetTrigger("Idle");
+                    myAnimator.SetTrigger("Attack");
                 }
             }
         }
