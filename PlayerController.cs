@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour
                 if (nitroTime < 0.1f)
                     shockwaveHit.collider.gameObject.SetActive(false);
             }
-            myAnimator.SetBool("Roll", true);
+            //myAnimator.SetBool("Roll", true);
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
             if (!enemy.GetComponent<EnemyController>().isSpeedDown)
@@ -243,14 +243,15 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<EnemyController>().StartCoroutine(enemy.GetComponent<EnemyController>().NitroSpeedDown(4));
             }
 
-            if (nitroTime < 0)
+            if (nitroTime <= 0)
             {
-                myAnimator.SetBool("Roll", false);
+                //myAnimator.SetBool("Roll", false);
+                //myAnimator.Play("Idle");
                 isNitro = false;
                 nitro = 0;
                 speed = preSpeed;
                 currentGear = preGear;
-                nitroTime = 5.0f;
+                nitroTime = 4.3f;
 
                 if (!isNitroShockwave)
                 {
@@ -437,6 +438,7 @@ public class PlayerController : MonoBehaviour
             preSpeed = speed;
             preGear = currentGear;
             useNitro = true;
+            myAnimator.Play("Roll");
         }
     }
 
@@ -462,6 +464,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!useNitro)
         {
+            myAnimator.Play("Damage");
             if (currentGear > 1)
             {
                 currentGear--;
