@@ -280,7 +280,19 @@ public class PlayerController : MonoBehaviour
         }
         //---------------------------------------------
         //--------------- touch control ---------------
-
+        foreach (Touch touch in Input.touches)
+        {
+            if (touch.phase == TouchPhase.Began)
+            {
+                isMouseDown = true;
+                initialPos = touch.position;
+            }
+            if (touch.phase == TouchPhase.Ended)
+            {
+                isMouseDown = false;
+                Calculate(touch.position);
+            }
+        }
         //---------------------------------------------
         //--------------- mouse control ---------------
         if (Input.GetMouseButtonDown(0))
