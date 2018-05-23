@@ -7,6 +7,9 @@ public class SpawnBlocks : MonoBehaviour
     [Header("Enemy")]
     public GameObject enemyL;
     public GameObject enemyR;
+    public Vector3 attackPosition;
+    public bool isAttack = false;
+
     [Header("System")]
     public GameObject player;
     private int beforeLane = 0;
@@ -39,14 +42,14 @@ public class SpawnBlocks : MonoBehaviour
     {
         for (int i = 0; i < 10; i++) SpawnBlock();
         //player = GameObject.FindGameObjectWithTag("Player");
-        StartCoroutine(Attack());
+        //StartCoroutine(Attack());
     }
 
     void Update()
     {
         if (endSpawn)
         {
-            if(lane[iterator].transform.position.x + 25.0f < player.transform.position.x)
+            if (lane[iterator].transform.position.x + 25.0f < player.transform.position.x)
             {
                 SpawnBlock();
             }
@@ -62,7 +65,7 @@ public class SpawnBlocks : MonoBehaviour
     //거리비례
     public void SetDifficulty()
     {
-        if(player.transform.position.x <= 200.0f)
+        if (player.transform.position.x <= 200.0f)
         {
             difficulty = Random.Range(10, maxDifficulty);
         }
@@ -103,6 +106,13 @@ public class SpawnBlocks : MonoBehaviour
             iterator++;
             iterator %= maxBlocks;
         }
+
+        //------------------- Attack --------------------------
+        if (!isAttack)
+        {
+            //StartCoroutine(Attack(beforeDifficulty, difficulty));
+        }
+        //-----------------------------------------------------
         endSpawn = true;
     }
 
@@ -153,21 +163,24 @@ public class SpawnBlocks : MonoBehaviour
         }
     }
 
-    public IEnumerator Attack()
+    public IEnumerator Attack(int beforeDifficulty, int difficulty)
     {
-        int num;
+        isAttack = true;
 
-        while(true){
-           num = Random.Range(1, 4);
-            if (num != 3)
-            {
-                StartCoroutine(enemyR.GetComponent<EnemyArm>().PlaceMine(num));
-            }
-            else
-            {
-                StartCoroutine(enemyL.GetComponent<EnemyArm>().PlaceMine(num));
-            }
-            yield return new WaitForSeconds(3.0f);
+        int num;
+        num = Random.Range(1, 4);
+        //노드의 가운데 위치, 0, lane
+        attackPosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, num-2);
+        if (num != 3)
+        {
+            StartCoroutine(enemyR.GetComponent<EnemyArm>().PlaceMine(attackPosition, num));
         }
+        else
+        {
+            StartCoroutine(enemyL.GetComponent<EnemyArm>().PlaceMine(attackPosition, num));
+        }
+        yield return new WaitForSeconds(4.0f);
+
+        isAttack = false;
     }
 }
