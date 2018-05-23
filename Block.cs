@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Block : MonoBehaviour {
 
+    public CameraShake cameraShake;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -16,6 +18,7 @@ public class Block : MonoBehaviour {
     
     public void OnTriggerEnter(Collider other)
     {
+        StartCoroutine(cameraShake.Shake(.1f, .1f));
         StartCoroutine(SplitMesh(true));
     }
 

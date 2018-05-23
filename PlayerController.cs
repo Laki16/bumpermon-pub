@@ -83,10 +83,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Camera")]
     public GameObject camera;
-    public CameraShake cameraShake;
     public Vector3 offset;
     float startTime;
     float endTime;
+
+    [Header("Attack")]
+    private float attackTime;
 
     void Start()
     {
@@ -477,8 +479,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private float attackTime;
-
     public void Attack()
     {
         if (!isAttack)
@@ -511,7 +511,6 @@ public class PlayerController : MonoBehaviour
         if (!useNitro)
         {
             myAnimator.Play("Damage");
-            StartCoroutine(cameraShake.Shake(.1f, .2f));
             if (currentGear > 1)
             {
                 currentGear--;
