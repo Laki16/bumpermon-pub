@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.PostProcessing;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 240.0f;
     //맵의 끝 지점(가정)
     public long endDistance;
+    //목숨 : 벽에 부딪힐 때와 지뢰를 밟았을 때 줄어든다.
+    int lives = 3;
 
     [Header("Gear System")]
     [Tooltip("현재 기어")]
@@ -76,6 +79,8 @@ public class PlayerController : MonoBehaviour
     bool isChangeColor;
     bool isCoroutineRunning = false;
     public GameObject orb;
+    public Button startBtn;
+    public Button optionBtn;
 
     [Header("Animation")]
     public float sprintMultiplier;
@@ -83,12 +88,17 @@ public class PlayerController : MonoBehaviour
 
     [Header("Camera")]
     public GameObject camera;
+    public CameraShake cameraShake;
     public Vector3 offset;
     float startTime;
     float endTime;
 
     [Header("Attack")]
     private float attackTime;
+
+    //[Header("PostProcessing")]
+    //public PostProcessingProfile profile;
+    //BloomModel.Settings bloomsettings;
 
     void Start()
     {
@@ -101,10 +111,15 @@ public class PlayerController : MonoBehaviour
         isChangeColor = false;
 
         myAnimator = GetComponent<Animator>();
+        //bloomsettings = profile.bloom.settings;
+        //bloomsettings.bloom.intensity = 0;
     }
 
     void Update()
     {
+        if(lives <= 0){
+            GameOver();
+        }
         transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
         //-----------------Ray-----------------------
         SideRayCast();
@@ -378,6 +393,12 @@ public class PlayerController : MonoBehaviour
         }
         //---------------------------------------------
 
+        //---------------PostProcessing----------------
+        //if(isBoost || useNitro){
+        //    bloomsettings.bloom.intensity = speed / 100.0f;
+        //}
+        //---------------------------------------------
+
     }
 
     public bool isNitroShockwave = false;
@@ -513,6 +534,7 @@ public class PlayerController : MonoBehaviour
             myAnimator.Play("Damage");
             if (currentGear > 1)
             {
+                lives--;
                 currentGear--;
             }
             speed = -8.0f;
@@ -557,4 +579,16 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         useNitro = false;
     }
+
+    void SmashCameraEffect(){
+        float magnitude = speed / 1500.0f;
+        StartCoroutine(cameraShake.Smash(.5f, magnitude));
+    }
+
+    //--------------------- Menu UI -----------------------
+    void GameOver(){
+        
+    }
+    //-----------------------------------------------------
+
 }
