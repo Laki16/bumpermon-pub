@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.PostProcessing;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 240.0f;
     //맵의 끝 지점(가정)
     public long endDistance;
+    //목숨 : 벽에 부딪힐 때와 지뢰를 밟았을 때 줄어든다.
+    int lives = 3;
 
     [Header("Gear System")]
     [Tooltip("현재 기어")]
@@ -76,6 +79,8 @@ public class PlayerController : MonoBehaviour
     bool isChangeColor;
     bool isCoroutineRunning = false;
     public GameObject orb;
+    public Button startBtn;
+    public Button optionBtn;
 
     [Header("Animation")]
     public float sprintMultiplier;
@@ -87,11 +92,13 @@ public class PlayerController : MonoBehaviour
     public Vector3 offset;
     float startTime;
     float endTime;
-    //float smashTime;
-    //float smashEndTime;
 
     [Header("Attack")]
     private float attackTime;
+
+    //[Header("PostProcessing")]
+    //public PostProcessingProfile profile;
+    //BloomModel.Settings bloomsettings;
 
     void Start()
     {
@@ -104,10 +111,15 @@ public class PlayerController : MonoBehaviour
         isChangeColor = false;
 
         myAnimator = GetComponent<Animator>();
+        //bloomsettings = profile.bloom.settings;
+        //bloomsettings.bloom.intensity = 0;
     }
 
     void Update()
     {
+        if(lives <= 0){
+            GameOver();
+        }
         transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
         //-----------------Ray-----------------------
         SideRayCast();
@@ -379,13 +391,11 @@ public class PlayerController : MonoBehaviour
         {
             offset = new Vector3(-2.0f, 1.5f, 0);
         }
-        ////smash action
-        //if (Time.time <= smashTime + .3f){
-        //    offset += new Vector3(0, 3.0f, 0) * Time.deltaTime;
-        //}else if(Time.time >= smashTime + .3f && Time.time <= smashEndTime){
-        //    offset -= new Vector3(0, 1.5f, 0) * Time.deltaTime;
-        //}else{
-        //    offset = new Vector3(-2.0f, 1.5f, 0);
+        //---------------------------------------------
+
+        //---------------PostProcessing----------------
+        //if(isBoost || useNitro){
+        //    bloomsettings.bloom.intensity = speed / 100.0f;
         //}
         //---------------------------------------------
 
@@ -524,6 +534,7 @@ public class PlayerController : MonoBehaviour
             myAnimator.Play("Damage");
             if (currentGear > 1)
             {
+                lives--;
                 currentGear--;
             }
             speed = -8.0f;
@@ -574,5 +585,10 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(cameraShake.Smash(.5f, magnitude));
     }
 
+    //--------------------- Menu UI -----------------------
+    void GameOver(){
+        
+    }
+    //-----------------------------------------------------
 
 }
