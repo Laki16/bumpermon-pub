@@ -92,7 +92,6 @@ public class SpawnBlocks : MonoBehaviour
         endSpawn = false;
         ComputeLane();
         beforeDifficulty += difficulty + space;
-        //difficulty = Random.Range(5, 15);
         SetDifficulty();
         SetSpace();
 
@@ -110,11 +109,53 @@ public class SpawnBlocks : MonoBehaviour
         //------------------- Attack --------------------------
         if (!isAttack)
         {
-            //StartCoroutine(Attack(beforeDifficulty, difficulty));
+            Debug.Log("Attack Start");
+            isAttack = true;
+            //---------------공격 레인 정하기-----------------------
+            //1레인에 노드가 생겼다면
+            if (nowLane == 1)
+            {
+                StartCoroutine(Attack(false, 1, 3));
+            }
+            //2레인에 노드가 생겼다면
+            else if (nowLane == 0)
+            {
+                int num;
+                num = Random.Range(1, 3);
+                if (num == 1)
+                {
+                    //3번레인에 생성(-1)
+                    StartCoroutine(Attack(false, 1, 2));
+                }
+                //num == 2면
+                else
+                {
+                    //1번레인에 생성(+1)
+                    num = 3;
+                    StartCoroutine(Attack(true, 3, 4));
+                }
+            }
+            //3번레인에 노드가 생겼다면
+            else
+            {
+                int num;
+                num = Random.Range(2, 4);
+                if (num == 3)
+                {
+                    //1번레인에 생성(-1)
+                    StartCoroutine(Attack(false, 3, 4));
+                }
+                else
+                {
+                    //2번레인에 생성(0)
+                    StartCoroutine(Attack(false, 2, 3));
+                }
+            }
+            //----------------------------------------------------------
         }
-        //-----------------------------------------------------
         endSpawn = true;
     }
+    //--------------------------------
 
     public void ComputeLane()
     {
@@ -163,24 +204,53 @@ public class SpawnBlocks : MonoBehaviour
         }
     }
 
-    public IEnumerator Attack(int beforeDifficulty, int difficulty)
+    IEnumerator Attack(bool left, int n, int m)
     {
-        isAttack = true;
-
-        int num;
-        num = Random.Range(1, 4);
-        //노드의 가운데 위치, 0, lane
-        attackPosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, num-2);
-        if (num != 3)
+        //right
+        if (!left)
         {
-            StartCoroutine(enemyR.GetComponent<EnemyArm>().PlaceMine(attackPosition, num));
+            if (!enemyR.GetComponent<EnemyArm>().isMoving)
+            {
+                Debug.Log("Right");
+                //공격플래그
+                enemyR.GetComponent<EnemyArm>().justMove = false;
+
+                int num;
+                //1,2 레인중 하나
+                num = Random.Range(n, m);
+                //노드의 가운데 위치, 0, lane 전달
+                enemyR.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, num - 2);
+                enemyR.GetComponent<EnemyArm>().mineLane = num;
+                //확실한 전달을 위한 딜레이 / 플래그전달
+                yield return new WaitForSeconds(0.1f);
+                enemyR.GetComponent<EnemyArm>().isAttackInfoChanged = true;
+
+                Debug.Log(num);
+            }
         }
+        //left
         else
         {
-            StartCoroutine(enemyL.GetComponent<EnemyArm>().PlaceMine(attackPosition, num));
-        }
-        yield return new WaitForSeconds(4.0f);
+            if (!enemyL.GetComponent<EnemyArm>().isMoving)
+            {
 
+                Debug.Log("Left");
+                //공격플래그
+                enemyL.GetComponent<EnemyArm>().justMove = false;
+
+                int num;
+                //1,2 레인중 하나
+                num = Random.Range(n, m);
+                //노드의 가운데 위치, 0, lane 전달
+                enemyL.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, num - 2);
+                enemyL.GetComponent<EnemyArm>().mineLane = num;
+                //확실한 전달을 위한 딜레이 / 플래그전달
+                yield return new WaitForSeconds(0.1f);
+                enemyL.GetComponent<EnemyArm>().isAttackInfoChanged = true;
+
+                Debug.Log(num);
+            }
+        }
         isAttack = false;
     }
 }
