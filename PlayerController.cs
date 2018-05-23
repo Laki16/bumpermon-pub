@@ -83,9 +83,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Camera")]
     public GameObject camera;
+    public CameraShake cameraShake;
     public Vector3 offset;
     float startTime;
     float endTime;
+    //float smashTime;
+    //float smashEndTime;
 
     [Header("Attack")]
     private float attackTime;
@@ -376,6 +379,14 @@ public class PlayerController : MonoBehaviour
         {
             offset = new Vector3(-2.0f, 1.5f, 0);
         }
+        ////smash action
+        //if (Time.time <= smashTime + .3f){
+        //    offset += new Vector3(0, 3.0f, 0) * Time.deltaTime;
+        //}else if(Time.time >= smashTime + .3f && Time.time <= smashEndTime){
+        //    offset -= new Vector3(0, 1.5f, 0) * Time.deltaTime;
+        //}else{
+        //    offset = new Vector3(-2.0f, 1.5f, 0);
+        //}
         //---------------------------------------------
 
     }
@@ -557,4 +568,11 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         useNitro = false;
     }
+
+    void SmashCameraEffect(){
+        float magnitude = speed / 1500.0f;
+        StartCoroutine(cameraShake.Smash(.5f, magnitude));
+    }
+
+
 }
