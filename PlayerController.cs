@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Camera")]
     public GameObject camera;
+    public CameraShake cameraShake;
     public Vector3 offset;
     float startTime;
     float endTime;
@@ -118,48 +119,51 @@ public class PlayerController : MonoBehaviour
         if (!isBlockChange)
         {
             //거리측정
-            if (Vector3.Distance(transform.position, forwardBlock.transform.position) < 2.0f)
-            {
-                //벗어나면 && 충돌하고 회피할때 부스트 방지를 위해 최소 스피드이상일때만(스턴시간 수정시 따라서 적절히 수정필요)
-                if (!isBlockForward && speed > minSpeed)
+            if(forwardBlock != null){
+                if (Vector3.Distance(transform.position, forwardBlock.transform.position) < 2.0f)
                 {
-                    //부스트
-                    isBlockChange = true;
-                    if (speed + 15.0f > maxGearSpeed * currentGear - 1)
+                    //벗어나면 && 충돌하고 회피할때 부스트 방지를 위해 최소 스피드이상일때만(스턴시간 수정시 따라서 적절히 수정필요)
+                    if (!isBlockForward && speed > minSpeed)
                     {
-                        speed = maxGearSpeed * currentGear - 1;
-                        startTime = Time.time;
-                        endTime = startTime + 0.7f;
-                    }
-                    else
-                    {
-                        //isBoost = true;
-                        startTime = Time.time;
-                        endTime = startTime + 0.7f;
-                        //offset += new Vector3(-1, 0, 0);
+                        //부스트
+                        isBlockChange = true;
+                        if (speed + 15.0f > maxGearSpeed * currentGear - 1)
+                        {
+                            speed = maxGearSpeed * currentGear - 1;
+                            startTime = Time.time;
+                            endTime = startTime + 0.7f;
+                        }
+                        else
+                        {
+                            //isBoost = true;
+                            startTime = Time.time;
+                            endTime = startTime + 0.7f;
+                            //offset += new Vector3(-1, 0, 0);
 
-                        speed += 15.0f;
-                        enemy.GetComponent<EnemyController>().BoostSpeedDown();
-                    }
-                    if (nitro + 10.0f > 100)
-                    {
-                        nitro = 100.0f;
-                    }
-                    else
-                    {
-                        nitro += 15.0f;
+                            speed += 15.0f;
+                            enemy.GetComponent<EnemyController>().BoostSpeedDown();
+                        }
+                        if (nitro + 10.0f > 100)
+                        {
+                            nitro = 100.0f;
+                        }
+                        else
+                        {
+                            nitro += 15.0f;
+                        }
                     }
                 }
-            }
-            else
-            {
-                //벗어나면
-                if (!isBlockForward)
+                else
                 {
-                    //no부스트
-                    isBlockChange = true;
+                    //벗어나면
+                    if (!isBlockForward)
+                    {
+                        //no부스트
+                        isBlockChange = true;
+                    }
                 }
             }
+
         }
         //--------------------------------------------
         //---------Increase & Decrease Speed----------
@@ -229,13 +233,13 @@ public class PlayerController : MonoBehaviour
         //-----------------nitro-----------------------
         if (useNitro)
         {
-            Ray shockwaveRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
-            RaycastHit shockwaveHit;
-            if (Physics.Raycast(shockwaveRay, out shockwaveHit, 2.0f, 1 << 12))
-            {
-                if (nitroTime < 0.1f)
-                    shockwaveHit.collider.gameObject.SetActive(false);
-            }
+            //Ray shockwaveRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
+            //RaycastHit shockwaveHit;
+            //if (Physics.Raycast(shockwaveRay, out shockwaveHit, 4.0f, 1 << 12))
+            //{
+            //    if (nitroTime < 0.3f)
+            //        shockwaveHit.collider.gameObject.SetActive(false);
+            //}
             //myAnimator.SetBool("Roll", true);
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
@@ -378,7 +382,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator NitroShockwave()
     {
         isNitroShockwave = true;
-        Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f, 1 << 12);
+        Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f + speed/15, 1 << 12);
         if (cols != null)
         {
             for (int i = 0; i < cols.Length; i++)
@@ -386,8 +390,9 @@ public class PlayerController : MonoBehaviour
                 cols[i].gameObject.GetComponent<Block>().StartCoroutine(cols[i].gameObject.GetComponent<Block>().SplitMesh(true));
             }
         }
-        useNitro = false;
+        //useNitro = false;
         isNitroShockwave = false;
+        StartCoroutine(AfterNitro());
         yield return null;
     }
 
@@ -506,6 +511,7 @@ public class PlayerController : MonoBehaviour
         if (!useNitro)
         {
             myAnimator.Play("Damage");
+            StartCoroutine(cameraShake.Shake(.1f, .2f));
             if (currentGear > 1)
             {
                 currentGear--;
@@ -547,4 +553,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    IEnumerator AfterNitro()
+    {
+        yield return new WaitForSeconds(0.5f);
+        useNitro = false;
+    }
 }
