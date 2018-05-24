@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.PostProcessing;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,7 +27,8 @@ public class PlayerController : MonoBehaviour
     //맵의 끝 지점(가정)
     public long endDistance;
     //목숨 : 벽에 부딪힐 때와 지뢰를 밟았을 때 줄어든다.
-    int lives = 3;
+    public int live = 3;
+    public bool checkDead = false;
 
     [Header("Gear System")]
     [Tooltip("현재 기어")]
@@ -58,7 +58,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("System")]
     private bool isMouseDown = false;
-    public GameObject enemy;
+    public GameManager gameManager;
+    //public GameObject enemy;
 
     [Header("Collision")]
     //앞에 블럭
@@ -117,10 +118,18 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if(lives <= 0){
-            GameOver();
+        if (!checkDead && live <= 0)
+        {
+            checkDead = true;
+            speed = 0.0f;
+            myAnimator.Play("Die");
+            gameManager.GameOver();
         }
-        transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
+
+        if(live > 0)
+        {
+            transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
+        }
         //-----------------Ray-----------------------
         SideRayCast();
         //-------------------------------------------
@@ -158,7 +167,7 @@ public class PlayerController : MonoBehaviour
                             //offset += new Vector3(-1, 0, 0);
 
                             speed += 15.0f;
-                            enemy.GetComponent<EnemyController>().BoostSpeedDown();
+                            //enemy.GetComponent<EnemyController>().BoostSpeedDown();
                         }
                         if (nitro + 10.0f > 100)
                         {
@@ -402,7 +411,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public bool isNitroShockwave = false;
-    IEnumerator NitroShockwave()
+    public IEnumerator NitroShockwave()
     {
         isNitroShockwave = true;
         Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f + speed/15, 1 << 12);
@@ -531,10 +540,14 @@ public class PlayerController : MonoBehaviour
     {
         if (!useNitro)
         {
+            if(live > 0)
+            {
+                live--;
+                gameManager.LiveDown();
+            }
             myAnimator.Play("Damage");
             if (currentGear > 1)
             {
-                lives--;
                 currentGear--;
             }
             speed = -8.0f;
@@ -584,11 +597,4 @@ public class PlayerController : MonoBehaviour
         float magnitude = speed / 1500.0f;
         StartCoroutine(cameraShake.Smash(.5f, magnitude));
     }
-
-    //--------------------- Menu UI -----------------------
-    void GameOver(){
-        
-    }
-    //-----------------------------------------------------
-
 }
