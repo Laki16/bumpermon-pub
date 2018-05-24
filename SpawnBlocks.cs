@@ -206,66 +206,66 @@ public class SpawnBlocks : MonoBehaviour
         }
     }
 
-    IEnumerator Attack(bool left, int n, int m)
-    {
-        //right
-        if (!left)
-        {
-            if (!enemyR.GetComponent<EnemyArm>().isMoving)
-            {
-                Debug.Log("Right");
-                //공격플래그
-                enemyR.GetComponent<EnemyArm>().justMove = false;
+    //IEnumerator Attack(bool left, int n, int m)
+    //{
+    //    //right
+    //    if (!left)
+    //    {
+    //        if (!enemyR.GetComponent<EnemyArm>().isMoving)
+    //        {
+    //            Debug.Log("Right");
+    //            //공격플래그
+    //            enemyR.GetComponent<EnemyArm>().justMove = false;
 
-                int num;
-                int lane;
-                //1,2 레인중 하나
-                num = Random.Range(n, m);
-                if(num == 1)
-                {
-                    lane = 1;
-                }
-                else if(num == 2)
-                {
-                    lane = 0;
-                }
-                else
-                {
-                    lane = -1;
-                }
-                //노드의 가운데 위치, 0, lane 전달
-                enemyR.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, lane);
-                enemyR.GetComponent<EnemyArm>().mineLane = num;
-                //확실한 전달을 위한 딜레이 / 플래그전달
-                yield return new WaitForSeconds(0.1f);
-                enemyR.GetComponent<EnemyArm>().isAttackInfoChanged = true;
+    //            int num;
+    //            int lane;
+    //            //1,2 레인중 하나
+    //            num = Random.Range(n, m);
+    //            if(num == 1)
+    //            {
+    //                lane = 1;
+    //            }
+    //            else if(num == 2)
+    //            {
+    //                lane = 0;
+    //            }
+    //            else
+    //            {
+    //                lane = -1;
+    //            }
+    //            //노드의 가운데 위치, 0, lane 전달
+    //            enemyR.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, lane);
+    //            enemyR.GetComponent<EnemyArm>().mineLane = num;
+    //            //확실한 전달을 위한 딜레이 / 플래그전달
+    //            yield return new WaitForSeconds(0.1f);
+    //            enemyR.GetComponent<EnemyArm>().isAttackInfoChanged = true;
 
-                Debug.Log(num);
-            }
-        }
-        //left
-        else
-        {
-            if (!enemyL.GetComponent<EnemyArm>().isMoving)
-            {
+    //            Debug.Log(num);
+    //        }
+    //    }
+    //    //left
+    //    else
+    //    {
+    //        if (!enemyL.GetComponent<EnemyArm>().isMoving)
+    //        {
 
-                Debug.Log("Left");
-                //공격플래그
-                enemyL.GetComponent<EnemyArm>().justMove = false;
+    //            Debug.Log("Left");
+    //            //공격플래그
+    //            enemyL.GetComponent<EnemyArm>().justMove = false;
 
-                int num;
-                //1,2 레인중 하나
-                num = Random.Range(n, m);
-                //노드의 가운데 위치, 0, lane 전달
-                enemyL.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, num - 2);
-                enemyL.GetComponent<EnemyArm>().mineLane = num;
-                //확실한 전달을 위한 딜레이 / 플래그전달
-                yield return new WaitForSeconds(0.1f);
-                enemyL.GetComponent<EnemyArm>().isAttackInfoChanged = true;
+    //            int num;
+    //            //1,2 레인중 하나
+    //            num = Random.Range(n, m);
+    //            //노드의 가운데 위치, 0, lane 전달
+    //            enemyL.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, num - 2);
+    //            enemyL.GetComponent<EnemyArm>().mineLane = num;
+    //            //확실한 전달을 위한 딜레이 / 플래그전달
+    //            yield return new WaitForSeconds(0.1f);
+    //            enemyL.GetComponent<EnemyArm>().isAttackInfoChanged = true;
 
-                Debug.Log(num);
-            }
-        }
-        isAttack = false;
-    }
+    //            Debug.Log(num);
+    //        }
+    //    }
+    //    isAttack = false;
+    //}
 }

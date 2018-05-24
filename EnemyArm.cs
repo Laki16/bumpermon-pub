@@ -31,12 +31,14 @@ public class EnemyArm : MonoBehaviour
 
     private Animator myAnimator;
 
+    private IEnumerator moveCoroutine;
     // Use this for initialization
     void Start()
     {
         myAnimator = child.GetComponent<Animator>();
         Random.InitState(randomSeed);
-        StartCoroutine(MoveArmTemp());
+        moveCoroutine = MoveArmTemp();
+        StartCoroutine(moveCoroutine);
     }
 
     // Update is called once per frame
@@ -49,15 +51,15 @@ public class EnemyArm : MonoBehaviour
     
     public void PlaceMine(Vector3 minePosition)
     {
-        justMove = false;
-        StopCoroutine(MoveArmTemp());
+        //justMove = false;
+        StopCoroutine(moveCoroutine);
         changedPosition = 0.0f;
         StartCoroutine(Mine(minePosition));
     }
 
     public IEnumerator MoveArmTemp()
     {
-        while(justMove)
+        while(true)
         {
             movingTime = Random.Range(1, 3);
             changedPosition = 5.0f;
@@ -77,6 +79,8 @@ public class EnemyArm : MonoBehaviour
             changedPosition = 20.0f;
             yield return null;
         }
+        //공격 동안 멈추기(3초간)
+        changedPosition = -0.1f * speed;
         //이동 후 애니메이션 결정
         if (minePosition.z == 0)
         {
@@ -86,8 +90,6 @@ public class EnemyArm : MonoBehaviour
         {
             myAnimator.SetTrigger("Lane1");
         }
-        //공격 동안 멈추기(3초간)
-        changedPosition = -0.1f * speed;
         //3초 카운트 (애니메이션 이벤트로 대체 고려)
         float timeCount = 0;
         bool endCountAnimationTime = false;
@@ -118,7 +120,7 @@ public class EnemyArm : MonoBehaviour
         //회복 완료했으면 정상화
         EnemyController.GetComponent<EnemyController>().lArmJustMove = true;
         EnemyController.GetComponent<EnemyController>().rArmJustMove = true;
-        StartCoroutine(MoveArmTemp());
+        StartCoroutine(moveCoroutine);
     }
 
     //public IEnumerator MoveArm()
@@ -180,11 +182,13 @@ public class EnemyArm : MonoBehaviour
         {
             if (transform.position.x > player.transform.position.x + xOffset)
             {
-                changedPosition = -10.0f - speed / 100;
+                //changedPosition = -15.0f - speed / 100;
+                changedPosition = -0.1f * speed - 20.0f;
             }
             else
             {
-                changedPosition = 10.0f + speed / 100;
+                //changedPosition = 15.0f + speed / 100;
+                changedPosition = 0.1f * speed + 20.0f;
             }
             yield return null;
         }

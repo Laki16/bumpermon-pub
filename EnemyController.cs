@@ -36,7 +36,7 @@ public class EnemyController : MonoBehaviour
             //평소
             if (lArmJustMove)
             {
-                lArm.GetComponent<EnemyArm>().justMove = true;
+                //lArm.GetComponent<EnemyArm>().justMove = true;
                 //readyForLArmAction = true;
                 //오버헤드 방지
                 while (lArmJustMove)
@@ -64,7 +64,7 @@ public class EnemyController : MonoBehaviour
             //평소
             if (rArmJustMove)
             {
-                rArm.GetComponent<EnemyArm>().justMove = true;
+                //rArm.GetComponent<EnemyArm>().justMove = true;
                 //readyForRArmAction = true;
                 //오버헤드 방지
                 while (rArmJustMove)
