@@ -9,6 +9,7 @@ public class SpawnBlocks : MonoBehaviour
     public GameObject enemyR;
     public Vector3 attackPosition;
     public bool isAttack = false;
+    public GameObject enemyController;
 
     [Header("System")]
     public GameObject player;
@@ -107,52 +108,53 @@ public class SpawnBlocks : MonoBehaviour
         }
 
         //------------------- Attack --------------------------
-        if (!isAttack)
-        {
-            Debug.Log("Attack Start");
-            isAttack = true;
-            //---------------공격 레인 정하기-----------------------
-            //1레인에 노드가 생겼다면
-            if (nowLane == 1)
-            {
-                StartCoroutine(Attack(false, 2, 4));
-            }
-            //2레인에 노드가 생겼다면
-            else if (nowLane == 0)
-            {
-                int num;
-                num = Random.Range(1, 3);
-                if (num == 1)
-                {
-                    //3번레인에 생성(-1)
-                    StartCoroutine(Attack(false, 1, 2));
-                }
-                //num == 2면
-                else
-                {
-                    //1번레인에 생성(+1)
-                    num = 3;
-                    StartCoroutine(Attack(true, 3, 4));
-                }
-            }
-            //3번레인에 노드가 생겼다면
-            else
-            {
-                int num;
-                num = Random.Range(1, 3);
-                if (num == 1)
-                {
-                    //1번레인에 생성(-1)
-                    StartCoroutine(Attack(false, 1, 2));
-                }
-                else
-                {
-                    //2번레인에 생성(0)
-                    StartCoroutine(Attack(false, 2, 3));
-                }
-            }
+        enemyController.GetComponent<EnemyController>().MineRequest(beforeDifficulty, difficulty, nowLane);
+        //if (!isAttack)
+        //{
+        //    Debug.Log("Attack Start");
+        //    isAttack = true;
+        //    //---------------공격 레인 정하기-----------------------
+        //    //1레인에 노드가 생겼다면
+        //    if (nowLane == 1)
+        //    {
+        //        StartCoroutine(Attack(false, 2, 4));
+        //    }
+        //    //2레인에 노드가 생겼다면
+        //    else if (nowLane == 0)
+        //    {
+        //        int num;
+        //        num = Random.Range(1, 3);
+        //        if (num == 1)
+        //        {
+        //            //3번레인에 생성(-1)
+        //            StartCoroutine(Attack(false, 1, 2));
+        //        }
+        //        //num == 2면
+        //        else
+        //        {
+        //            //1번레인에 생성(+1)
+        //            num = 3;
+        //            StartCoroutine(Attack(true, 3, 4));
+        //        }
+        //    }
+        //    //3번레인에 노드가 생겼다면
+        //    else
+        //    {
+        //        int num;
+        //        num = Random.Range(1, 3);
+        //        if (num == 1)
+        //        {
+        //            //1번레인에 생성(-1)
+        //            StartCoroutine(Attack(true, 1, 2));
+        //        }
+        //        else
+        //        {
+        //            //2번레인에 생성(0)
+        //            StartCoroutine(Attack(false, 2, 3));
+        //        }
+        //    }
             //----------------------------------------------------------
-        }
+        //}
         endSpawn = true;
     }
     //--------------------------------

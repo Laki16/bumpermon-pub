@@ -5,65 +5,115 @@ using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
+    [Header("SYSTEM")]
+    public GameObject lArm;
+    public GameObject rArm;
+    public GameObject blockController;
 
-    [Header("System")]
-    GameObject player;
-    float minSpeed;
-    float maxSpeed;
-    long endDistance;
-    float speed;
-    float distanceBetPlayer;
-    float mySpeed;
-    public float speedWeight;
-    public bool isSpeedDown = false;
+    [Header("Flag")]
+    public bool readyForLArmAction;
+    public bool readyForRArmAction;
 
-    //[Header("UI")]
-    //public Scrollbar enemyBar;
-    //public Scrollbar playerBar;
+    [Header("Trigger")]
+    public bool lArmJustMove = true;
+    public bool rArmJustMove = true;
+    //마인 설치 가능여부
+    public bool readyForMine = true;
 
-    // Use this for initialization
+    [Header("MineInfo")]
+    Vector3 minePosition;
+
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("PlayerController");
-        minSpeed = player.GetComponent<PlayerController>().minSpeed;
-        maxSpeed = player.GetComponent<PlayerController>().maxSpeed;
-        //endDistance = player.GetComponent<PlayerController>().endDistance;
-
-        speed = minSpeed;
-        //InvokeRepeating("SpeedUp", 0, 1.0f);
-        mySpeed = 0.0f;
-        speedWeight = 0.0f;
+        StartCoroutine(LArmControl());
+        StartCoroutine(RArmControl());
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public IEnumerator LArmControl()
     {
-        speedWeight += Time.deltaTime;
-        mySpeed = (speedWeight / 60) * (speedWeight / 60);
-        speed = player.GetComponent<PlayerController>().speed + mySpeed;
-        //distanceBetPlayer = player.transform.position.x - transform.position.x;
-        //enemyBar.value = distanceBetPlayer / 1000;
-        //playerBar.value = distanceBetPlayer / 1000;
-        transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
-        //enemyBar.value = (transform.position.x / endDistance);
-    }
-    public void BoostSpeedDown()
-    {
-        speedWeight -= 1.0f;
-        Debug.Log("BoostSpeedDown");
-    }
-    public IEnumerator NitroSpeedDown(int n)
-    {
-        isSpeedDown = true;
-        while (n-- > 0)
+        while (true)
         {
-            speedWeight -= 2.0f;
-            yield return new WaitForSeconds(1.0f);
+            //평소
+            if (lArmJustMove)
+            {
+                lArm.GetComponent<EnemyArm>().justMove = true;
+                //readyForLArmAction = true;
+                //오버헤드 방지
+                while (lArmJustMove)
+                {
+                    yield return null;
+                }
+            }
+            //마인 설치 명령오면
+            else
+            {
+                //readyForLArmAction = false;
+                lArm.GetComponent<EnemyArm>().PlaceMine(minePosition);
+                while(!lArmJustMove)
+                {
+                    yield return null;
+                }
+                readyForMine = true;
+            }
         }
-        isSpeedDown = false;
     }
-    //void SpeedUp()
-    //{
-    //    if (speed < maxSpeed) speed++;
-    //}
+    public IEnumerator RArmControl()
+    {
+        while (true)
+        {
+            //평소
+            if (rArmJustMove)
+            {
+                rArm.GetComponent<EnemyArm>().justMove = true;
+                //readyForRArmAction = true;
+                //오버헤드 방지
+                while (rArmJustMove)
+                {
+                    yield return null;
+                }
+            }
+            //마인 설치 명령오면
+            else
+            {
+                //readyForRArmAction = false;
+                rArm.GetComponent<EnemyArm>().PlaceMine(minePosition);
+                while (!rArmJustMove)
+                {
+                    yield return null;
+                }
+                readyForMine = true;
+            }
+        }
+    }
+
+
+    //마인 설치 요구
+    public void MineRequest(int beforeDifficulty, int difficulty, int lane)
+    {
+        if (readyForMine)
+        {
+            readyForMine = false;
+            //공격 레인 결정
+            int mineLane;
+            if (lane == 1)
+            {
+                mineLane = Random.Range(2, 4);
+            }
+            else if (lane == 2)
+            {
+                mineLane = Random.Range(1, 3); if (mineLane == 2) { mineLane = 3; }
+            }
+            else
+            {
+                mineLane = Random.Range(1, 3);
+            }
+            if (mineLane == 2) { mineLane = 0; }
+            else if (mineLane == 3) { mineLane = -1; }
+
+            //공격 위치 결정
+            minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, mineLane);
+            if (mineLane == 1) { lArmJustMove = false; }
+            else { rArmJustMove = false; }
+        }
+    }
 }

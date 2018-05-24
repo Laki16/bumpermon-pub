@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
                             //offset += new Vector3(-1, 0, 0);
 
                             speed += 15.0f;
-                            enemy.GetComponent<EnemyController>().BoostSpeedDown();
+                            //enemy.GetComponent<EnemyController>().BoostSpeedDown();
                         }
                         if (nitro + 10.0f > 100)
                         {
