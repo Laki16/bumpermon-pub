@@ -115,7 +115,7 @@ public class SpawnBlocks : MonoBehaviour
             //1레인에 노드가 생겼다면
             if (nowLane == 1)
             {
-                StartCoroutine(Attack(false, 1, 3));
+                StartCoroutine(Attack(false, 2, 4));
             }
             //2레인에 노드가 생겼다면
             else if (nowLane == 0)
@@ -139,11 +139,11 @@ public class SpawnBlocks : MonoBehaviour
             else
             {
                 int num;
-                num = Random.Range(2, 4);
-                if (num == 3)
+                num = Random.Range(1, 3);
+                if (num == 1)
                 {
                     //1번레인에 생성(-1)
-                    StartCoroutine(Attack(false, 3, 4));
+                    StartCoroutine(Attack(false, 1, 2));
                 }
                 else
                 {
@@ -216,10 +216,23 @@ public class SpawnBlocks : MonoBehaviour
                 enemyR.GetComponent<EnemyArm>().justMove = false;
 
                 int num;
+                int lane;
                 //1,2 레인중 하나
                 num = Random.Range(n, m);
+                if(num == 1)
+                {
+                    lane = 1;
+                }
+                else if(num == 2)
+                {
+                    lane = 0;
+                }
+                else
+                {
+                    lane = -1;
+                }
                 //노드의 가운데 위치, 0, lane 전달
-                enemyR.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, num - 2);
+                enemyR.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, lane);
                 enemyR.GetComponent<EnemyArm>().mineLane = num;
                 //확실한 전달을 위한 딜레이 / 플래그전달
                 yield return new WaitForSeconds(0.1f);

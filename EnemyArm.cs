@@ -60,6 +60,7 @@ public class EnemyArm : MonoBehaviour
                 yield return new WaitForSeconds(movingTime);
                 changedPosition = -5.0f;
                 yield return new WaitForSeconds(movingTime);
+                changedPosition = 0.0f;
                 //justMove = false;
             }
             //마인 설치
@@ -92,7 +93,7 @@ public class EnemyArm : MonoBehaviour
             }
             isMoving = false;
             //공격을 위한 움직임 휴식(3초)
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(5.0f);
         }
     }
 
