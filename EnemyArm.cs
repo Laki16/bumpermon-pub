@@ -19,6 +19,11 @@ public class EnemyArm : MonoBehaviour
 
     [Header("Action")]
     public GameObject mine;
+    public GameObject life;
+    public GameObject coin;
+    public GameObject nitro;
+    public GameObject shield;
+    public GameObject item;
     public bool posRecoverEnd = true;
 
     private Animator myAnimator;
@@ -40,17 +45,44 @@ public class EnemyArm : MonoBehaviour
         transform.Translate(new Vector3(0.1f, 0, 0) * speed * Time.deltaTime);
         transform.Translate(new Vector3(changedPosition, 0, 0) * Time.deltaTime);
     }
-    
+
     public void PlaceMine(Vector3 minePosition)
     {
         StopCoroutine(moveCoroutine);
         changedPosition = 0.0f;
-        StartCoroutine(Mine(minePosition));
+        int itemType;
+        itemType = Random.Range(1, 100);
+        if (itemType < 40)
+        {
+            //코인
+            itemType = 3;
+        }
+        else if (40 < itemType && itemType < 70)
+        {
+            //마인
+            itemType = 1;
+        }
+        else if (70 < itemType && itemType < 80)
+        {
+            //니트로
+            itemType = 4;
+        }
+        else if (80 < itemType && itemType < 90)
+        {
+            //하트
+            itemType = 2;
+        }
+        else
+        {
+            //쉴드
+            itemType = 5;
+        }
+        StartCoroutine(Mine(minePosition, itemType));
     }
 
     public IEnumerator MoveArmTemp()
     {
-        while(true)
+        while (true)
         {
             movingTime = Random.Range(1, 3);
             changedPosition = 5.0f;
@@ -61,8 +93,27 @@ public class EnemyArm : MonoBehaviour
         }
     }
 
-    public IEnumerator Mine(Vector3 minePosition)
+    public IEnumerator Mine(Vector3 minePosition, int type)
     {
+        switch (type)
+        {
+            case 1:
+                item = mine;
+                break;
+            case 2:
+                item = life;
+                break;
+            case 3:
+                item = coin;
+                break;
+            case 4:
+                item = nitro;
+                break;
+            case 5:
+                item = shield;
+                break;
+        }
+
         Vector3 armPosition = new Vector3(minePosition.x, transform.position.y, transform.position.z);
         //마인 설치 지점까지 이동(오차 1)
         while (Vector3.Distance(transform.position, armPosition) >= 1.0f)
@@ -96,7 +147,8 @@ public class EnemyArm : MonoBehaviour
         }
         //마인 생성
         GameObject newMine;
-        newMine = Instantiate(mine, minePosition, new Quaternion(0, 0, 0, 0));
+        newMine = Instantiate(item, minePosition, new Quaternion(0, 0, 0, 0));
+        newMine.SetActive(true);
         //위치 회복
         changedPosition = 0.0f;
         posRecoverEnd = false;

@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     //목숨 : 벽에 부딪힐 때와 지뢰를 밟았을 때 줄어든다.
     public int live = 3;
     public bool checkDead = false;
+    public bool isShield = false;
 
     [Header("Gear System")]
     [Tooltip("현재 기어")]
@@ -540,18 +541,25 @@ public class PlayerController : MonoBehaviour
     {
         if (!useNitro)
         {
-            if(live > 0)
+            if (!isShield)
             {
-                live--;
-                gameManager.LiveDown();
+                if (live > 0)
+                {
+                    live--;
+                    gameManager.LiveDown();
+                }
+                myAnimator.Play("Damage");
+                if (currentGear > 1)
+                {
+                    currentGear--;
+                }
+                speed = -8.0f;
+                StartCoroutine(SpeedRecovery());
             }
-            myAnimator.Play("Damage");
-            if (currentGear > 1)
+            else
             {
-                currentGear--;
+                isShield = false;
             }
-            speed = -8.0f;
-            StartCoroutine(SpeedRecovery());
         }
     }
     //---------------------------------------------

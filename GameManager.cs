@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour {
     public GameObject coins;
     public GameObject lives;
 
+    public int coinTotal;
+    public int coin;
+
     public Sprite livingheart;
     public Sprite deadHeart;
 
