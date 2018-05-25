@@ -187,4 +187,16 @@ public class EnemyArm : MonoBehaviour
         changedPosition = 0.0f;
         posRecoverEnd = true;
     }
+
+    public void Idle(){
+        myAnimator.Play("Idle");
+    }
+
+    public void Laugh(){
+        myAnimator.Play("Laugh");
+    }
+
+    public void Surprise(){
+        myAnimator.Play("Surprise");
+    }
 }
