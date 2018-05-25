@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour {
     public Camera camera;
     float meterBetBlock;
     int timeLeft = 3;
+    public EnemyArm leftEnemyArm;
+    public EnemyArm rightEnemyArm;
 
     [Header("Animation")]
     Animator myCameraAnimator;
@@ -214,6 +216,8 @@ public class GameManager : MonoBehaviour {
 
         //광고시스템 추가
 
+        leftEnemyArm.Idle();
+        rightEnemyArm.Idle();
         StartCoroutine(GameStart());
 
         //주변 블럭 날리기

@@ -64,7 +64,8 @@ public class PlayerController : MonoBehaviour
     [Header("System")]
     private bool isMouseDown = false;
     public GameManager gameManager;
-    //public GameObject enemy;
+    public EnemyArm leftEnemyArm;
+    public EnemyArm rightEnemyArm;
 
     [Header("Collision")]
     //앞에 블럭
@@ -131,6 +132,8 @@ public class PlayerController : MonoBehaviour
             checkDead = true;
             speed = 0.0f;
             myAnimator.Play("Die");
+            leftEnemyArm.Laugh();
+            rightEnemyArm.Laugh();
             gameManager.GameOver();
         }
 
@@ -520,6 +523,8 @@ public class PlayerController : MonoBehaviour
             preGear = currentGear;
             useNitro = true;
             myAnimator.Play("Roll");
+            leftEnemyArm.Surprise();
+            rightEnemyArm.Surprise();
         }
     }
 
