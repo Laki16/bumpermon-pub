@@ -123,6 +123,7 @@ public class PlayerController : MonoBehaviour
         GameObject shield;
         shield = Instantiate(shieldFX, transform.position + new Vector3(0, 0.3f, 0), transform.rotation, transform);
         shieldEffect = shield;
+        shieldEffect.SetActive(false);
     }
 
     void Update()

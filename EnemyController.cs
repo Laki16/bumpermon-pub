@@ -97,23 +97,23 @@ public class EnemyController : MonoBehaviour
             int mineLane;
             if (lane == 1)
             {
-                mineLane = Random.Range(2, 4);
+                mineLane = Random.Range(-1, 1);
             }
-            else if (lane == 2)
+            else if (lane == 0)
             {
-                mineLane = Random.Range(1, 3); if (mineLane == 2) { mineLane = 3; }
+                mineLane = Random.Range(1, 3); if (mineLane == 2) { mineLane = -1; }
             }
             else
             {
-                mineLane = Random.Range(1, 3);
+                mineLane = Random.Range(0, 2);
             }
-            if (mineLane == 2) { mineLane = 0; }
-            else if (mineLane == 3) { mineLane = -1; }
 
             //공격 위치 결정
             minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0.3f, mineLane);
             if (mineLane == 1) { lArmJustMove = false; }
             else { rArmJustMove = false; }
+            Debug.Log(lane);
+            Debug.Log(mineLane);
         }
     }
 }
