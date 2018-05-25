@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     public GameObject gearUpFX_1;
     public GameObject gearDownFX_1;
     public GameObject gearDownFX_2;
+    public GameObject nitroFX;
 
 
     [Header("Gear System")]
@@ -316,6 +317,7 @@ public class PlayerController : MonoBehaviour
 
             if (nitroTime <= 0)
             {
+                nitroFX.SetActive(false);
                 //myAnimator.SetBool("Roll", false);
                 //myAnimator.Play("Idle");
                 isNitro = false;
@@ -550,6 +552,7 @@ public class PlayerController : MonoBehaviour
             preGear = currentGear;
             useNitro = true;
             myAnimator.Play("Roll");
+            nitroFX.SetActive(true);
             leftEnemyArm.Surprise();
             rightEnemyArm.Surprise();
         }
