@@ -17,6 +17,9 @@ public class EnemyArm : MonoBehaviour
     public float xOffset;
     public float zOffset;
 
+    [Header("FX")]
+    public GameObject mineFX;
+
     [Header("Action")]
     public GameObject mine;
     public GameObject life;
@@ -132,6 +135,9 @@ public class EnemyArm : MonoBehaviour
         {
             myAnimator.SetTrigger("Lane1");
         }
+        GameObject newMineFX;
+        newMineFX = Instantiate(mineFX, minePosition, mineFX.transform.rotation);
+        newMineFX.SetActive(true);
         //3초 카운트 (애니메이션 이벤트로 대체 고려)
         float timeCount = 0;
         bool endCountAnimationTime = false;
@@ -145,6 +151,7 @@ public class EnemyArm : MonoBehaviour
             }
             yield return null;
         }
+        Destroy(newMineFX);
         //마인 생성
         GameObject newMine;
         newMine = Instantiate(item, minePosition, new Quaternion(0, 0, 0, 0));

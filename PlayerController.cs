@@ -32,8 +32,15 @@ public class PlayerController : MonoBehaviour
     public bool isShield = false;
 
     [Header("FX")]
+    private bool moveLeft = false;
     public GameObject shieldFX;
     public GameObject shieldEffect;
+    public GameObject sprintFX;
+    public GameObject justActionLeftFX;
+    public GameObject justActionRightFX;
+    public GameObject gearUpFX_1;
+    public GameObject gearDownFX_1;
+
 
     [Header("Gear System")]
     [Tooltip("현재 기어")]
@@ -168,6 +175,14 @@ public class PlayerController : MonoBehaviour
                         {
                             //부스트
                             isBlockChange = true;
+                            if(moveLeft)
+                            {
+                                StartCoroutine(LeftFX());
+                            }
+                            else
+                            {
+                                StartCoroutine(RightFX());
+                            }
                             if (speed + 15.0f > maxGearSpeed * currentGear - 1)
                             {
                                 speed = maxGearSpeed * currentGear - 1;
@@ -213,6 +228,7 @@ public class PlayerController : MonoBehaviour
             if (isMouseDown)
             {
                 myAnimator.SetBool("Sprint", true);
+                //sprintFX.SetActive(true);
                 unGear = 10.0f;
                 if (nitro < 100)
                 {
@@ -230,6 +246,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 myAnimator.SetBool("Sprint", false);
+                //sprintFX.SetActive(false);
                 if (speed >= minSpeed)
                 {
                     speed -= decreaseWeight * currentGear * Time.deltaTime;
@@ -478,6 +495,7 @@ public class PlayerController : MonoBehaviour
                         if (!isBlockLeft)
                         {
                             lane++;
+                            moveLeft = true;
                         }
                     }
                 }
@@ -489,6 +507,7 @@ public class PlayerController : MonoBehaviour
                         if (!isBLockRIght)
                         {
                             lane--;
+                            moveLeft = false;
                         }
                     }
                 }
@@ -652,5 +671,18 @@ public class PlayerController : MonoBehaviour
     {
         float magnitude = speed / 1500.0f;
         StartCoroutine(cameraShake.Smash(.5f, magnitude));
+    }
+
+    IEnumerator LeftFX()
+    {
+        justActionLeftFX.SetActive(true);
+        yield return new WaitForSeconds(0.6f);
+        justActionLeftFX.SetActive(false);
+    }
+    IEnumerator RightFX()
+    {
+        justActionRightFX.SetActive(true);
+        yield return new WaitForSeconds(0.6f);
+        justActionRightFX.SetActive(false);
     }
 }
