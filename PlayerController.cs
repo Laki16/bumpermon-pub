@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     public GameObject justActionRightFX;
     public GameObject gearUpFX_1;
     public GameObject gearDownFX_1;
+    public GameObject gearDownFX_2;
 
 
     [Header("Gear System")]
@@ -228,6 +229,7 @@ public class PlayerController : MonoBehaviour
             if (isMouseDown)
             {
                 myAnimator.SetBool("Sprint", true);
+                gearDownFX_1.SetActive(false);
                 //sprintFX.SetActive(true);
                 unGear = 10.0f;
                 if (nitro < 100)
@@ -254,13 +256,16 @@ public class PlayerController : MonoBehaviour
                 if (unGear > 0 && currentGear > 1)
                 {
                     unGear -= currentGear * Time.deltaTime;
+                    gearDownFX_1.SetActive(true);
                     if (unGear <= 0)
                     {
                         if (currentGear > 0)
                         {
+                            StartCoroutine(GearDownFX());
                             currentGear--;
                         }
                         unGear = 10.0f;
+                        gearDownFX_1.SetActive(false);
                     }
                 }
             }
@@ -271,6 +276,7 @@ public class PlayerController : MonoBehaviour
         if (speed >= currentGear * maxGearSpeed && isMouseDown && !useNitro && currentGear < maxGear)
         {
             upgradeGear += Time.deltaTime;
+            gearUpFX_1.SetActive(true);
             if (upgradeGear > 2.0f)
             {
                 currentGear++;
@@ -283,6 +289,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            gearUpFX_1.SetActive(false);
             StopCoroutine(BlingSpeedColor());
             speedBar.GetComponent<Image>().color = new Color(220.0f / 255.0f, 60.0f / 255.0f, 10.0f / 255.0f, 255.0f / 255.0f);
             upgradeGear = 0.0f;
@@ -684,5 +691,11 @@ public class PlayerController : MonoBehaviour
         justActionRightFX.SetActive(true);
         yield return new WaitForSeconds(0.6f);
         justActionRightFX.SetActive(false);
+    }
+    IEnumerator GearDownFX()
+    {
+        gearDownFX_2.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        gearDownFX_2.SetActive(false);
     }
 }
