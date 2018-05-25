@@ -9,6 +9,7 @@ public class SpawnBlocks : MonoBehaviour
     public GameObject enemyR;
     public Vector3 attackPosition;
     public bool isAttack = false;
+    public GameObject enemyController;
 
     [Header("System")]
     public GameObject player;
@@ -92,7 +93,6 @@ public class SpawnBlocks : MonoBehaviour
         endSpawn = false;
         ComputeLane();
         beforeDifficulty += difficulty + space;
-        //difficulty = Random.Range(5, 15);
         SetDifficulty();
         SetSpace();
 
@@ -108,13 +108,56 @@ public class SpawnBlocks : MonoBehaviour
         }
 
         //------------------- Attack --------------------------
-        if (!isAttack)
-        {
-            //StartCoroutine(Attack(beforeDifficulty, difficulty));
-        }
-        //-----------------------------------------------------
+        enemyController.GetComponent<EnemyController>().MineRequest(beforeDifficulty, difficulty, nowLane);
+        //if (!isAttack)
+        //{
+        //    Debug.Log("Attack Start");
+        //    isAttack = true;
+        //    //---------------공격 레인 정하기-----------------------
+        //    //1레인에 노드가 생겼다면
+        //    if (nowLane == 1)
+        //    {
+        //        StartCoroutine(Attack(false, 2, 4));
+        //    }
+        //    //2레인에 노드가 생겼다면
+        //    else if (nowLane == 0)
+        //    {
+        //        int num;
+        //        num = Random.Range(1, 3);
+        //        if (num == 1)
+        //        {
+        //            //3번레인에 생성(-1)
+        //            StartCoroutine(Attack(false, 1, 2));
+        //        }
+        //        //num == 2면
+        //        else
+        //        {
+        //            //1번레인에 생성(+1)
+        //            num = 3;
+        //            StartCoroutine(Attack(true, 3, 4));
+        //        }
+        //    }
+        //    //3번레인에 노드가 생겼다면
+        //    else
+        //    {
+        //        int num;
+        //        num = Random.Range(1, 3);
+        //        if (num == 1)
+        //        {
+        //            //1번레인에 생성(-1)
+        //            StartCoroutine(Attack(true, 1, 2));
+        //        }
+        //        else
+        //        {
+        //            //2번레인에 생성(0)
+        //            StartCoroutine(Attack(false, 2, 3));
+        //        }
+        //    }
+            //----------------------------------------------------------
+        //}
         endSpawn = true;
     }
+    //--------------------------------
 
     public void ComputeLane()
     {
@@ -163,24 +206,66 @@ public class SpawnBlocks : MonoBehaviour
         }
     }
 
-    public IEnumerator Attack(int beforeDifficulty, int difficulty)
-    {
-        isAttack = true;
+    //IEnumerator Attack(bool left, int n, int m)
+    //{
+    //    //right
+    //    if (!left)
+    //    {
+    //        if (!enemyR.GetComponent<EnemyArm>().isMoving)
+    //        {
+    //            Debug.Log("Right");
+    //            //공격플래그
+    //            enemyR.GetComponent<EnemyArm>().justMove = false;
 
-        int num;
-        num = Random.Range(1, 4);
-        //노드의 가운데 위치, 0, lane
-        attackPosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, num-2);
-        if (num != 3)
-        {
-            StartCoroutine(enemyR.GetComponent<EnemyArm>().PlaceMine(attackPosition, num));
-        }
-        else
-        {
-            StartCoroutine(enemyL.GetComponent<EnemyArm>().PlaceMine(attackPosition, num));
-        }
-        yield return new WaitForSeconds(4.0f);
+    //            int num;
+    //            int lane;
+    //            //1,2 레인중 하나
+    //            num = Random.Range(n, m);
+    //            if(num == 1)
+    //            {
+    //                lane = 1;
+    //            }
+    //            else if(num == 2)
+    //            {
+    //                lane = 0;
+    //            }
+    //            else
+    //            {
+    //                lane = -1;
+    //            }
+    //            //노드의 가운데 위치, 0, lane 전달
+    //            enemyR.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, lane);
+    //            enemyR.GetComponent<EnemyArm>().mineLane = num;
+    //            //확실한 전달을 위한 딜레이 / 플래그전달
+    //            yield return new WaitForSeconds(0.1f);
+    //            enemyR.GetComponent<EnemyArm>().isAttackInfoChanged = true;
 
-        isAttack = false;
-    }
+    //            Debug.Log(num);
+    //        }
+    //    }
+    //    //left
+    //    else
+    //    {
+    //        if (!enemyL.GetComponent<EnemyArm>().isMoving)
+    //        {
+
+    //            Debug.Log("Left");
+    //            //공격플래그
+    //            enemyL.GetComponent<EnemyArm>().justMove = false;
+
+    //            int num;
+    //            //1,2 레인중 하나
+    //            num = Random.Range(n, m);
+    //            //노드의 가운데 위치, 0, lane 전달
+    //            enemyL.GetComponent<EnemyArm>().minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, num - 2);
+    //            enemyL.GetComponent<EnemyArm>().mineLane = num;
+    //            //확실한 전달을 위한 딜레이 / 플래그전달
+    //            yield return new WaitForSeconds(0.1f);
+    //            enemyL.GetComponent<EnemyArm>().isAttackInfoChanged = true;
+
+    //            Debug.Log(num);
+    //        }
+    //    }
+    //    isAttack = false;
+    //}
 }

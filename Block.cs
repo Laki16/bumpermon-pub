@@ -18,7 +18,7 @@ public class Block : MonoBehaviour {
     
     public void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(cameraShake.Shake(.1f, .1f));
+        //StartCoroutine(cameraShake.Shake(.1f, .1f));
         StartCoroutine(SplitMesh(true));
     }
 
