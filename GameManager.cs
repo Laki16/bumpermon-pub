@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour {
     public Button continueBtn;
     public Button rankingBtn;
     public Button homeBtn2;
+    public GameObject skullFX;
     
 
     [Header("System")]
@@ -213,7 +214,7 @@ public class GameManager : MonoBehaviour {
     {
         myGameOverAnimator.SetBool("GameOver", false);
         optionBtn.GetComponent<Button>().interactable = true;
-
+        skullFX.SetActive(false);
         //광고시스템 추가
 
         leftEnemyArm.Idle();
@@ -255,6 +256,6 @@ public class GameManager : MonoBehaviour {
     {
         optionBtn.GetComponent<Button>().interactable = false;
         myGameOverAnimator.SetBool("GameOver", true);
-        
+        skullFX.SetActive(true);
     }
 }

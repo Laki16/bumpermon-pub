@@ -64,6 +64,7 @@ public class Item : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        Destroy(myEffect);
         Debug.Log("ouch");
         switch (myType)
         {
