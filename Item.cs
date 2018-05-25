@@ -32,6 +32,13 @@ public class Item : MonoBehaviour
     public GameObject getShield;
     public GameObject shieldFX;
 
+    void Update()
+    {
+        if(player.transform.position.x > transform.position.x + 20.0f)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void OnEnable()
     {
