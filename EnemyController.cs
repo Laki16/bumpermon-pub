@@ -10,9 +10,9 @@ public class EnemyController : MonoBehaviour
     public GameObject rArm;
     public GameObject blockController;
 
-    [Header("Flag")]
-    public bool readyForLArmAction;
-    public bool readyForRArmAction;
+    //[Header("Flag")]
+    //public bool readyForLArmAction;
+    //public bool readyForRArmAction;
 
     [Header("Trigger")]
     public bool lArmJustMove = true;
