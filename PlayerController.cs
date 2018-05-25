@@ -80,8 +80,8 @@ public class PlayerController : MonoBehaviour
     bool isChangeColor;
     bool isCoroutineRunning = false;
     public GameObject orb;
-    public Button startBtn;
-    public Button optionBtn;
+    //public Button startBtn;
+    //public Button optionBtn;
 
     [Header("Animation")]
     public float sprintMultiplier;
