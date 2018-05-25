@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour
     public bool checkDead = false;
     public bool isShield = false;
 
+    [Header("FX")]
+    public GameObject shieldFX;
+
     [Header("Gear System")]
     [Tooltip("현재 기어")]
     public int currentGear;
@@ -408,7 +411,6 @@ public class PlayerController : MonoBehaviour
         //    bloomsettings.bloom.intensity = speed / 100.0f;
         //}
         //---------------------------------------------
-
     }
 
     public bool isNitroShockwave = false;
@@ -543,22 +545,26 @@ public class PlayerController : MonoBehaviour
         {
             if (!isShield)
             {
-                if (live > 0)
+                if (other.gameObject.layer != LayerMask.NameToLayer("item"))
                 {
-                    live--;
-                    gameManager.LiveDown();
+                    if (live > 0)
+                    {
+                        live--;
+                        gameManager.LiveDown();
+                    }
+                    myAnimator.Play("Damage");
+                    if (currentGear > 1)
+                    {
+                        currentGear--;
+                    }
+                    speed = -8.0f;
+                    StartCoroutine(SpeedRecovery());
                 }
-                myAnimator.Play("Damage");
-                if (currentGear > 1)
-                {
-                    currentGear--;
-                }
-                speed = -8.0f;
-                StartCoroutine(SpeedRecovery());
             }
             else
             {
                 isShield = false;
+                shieldFX.SetActive(false);
             }
         }
     }

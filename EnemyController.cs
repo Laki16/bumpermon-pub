@@ -111,7 +111,7 @@ public class EnemyController : MonoBehaviour
             else if (mineLane == 3) { mineLane = -1; }
 
             //공격 위치 결정
-            minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0, mineLane);
+            minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0.3f, mineLane);
             if (mineLane == 1) { lArmJustMove = false; }
             else { rArmJustMove = false; }
         }

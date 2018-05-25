@@ -27,6 +27,7 @@ public class Item : MonoBehaviour
     public GameObject lifeFX;
     public GameObject getCoin;
     public GameObject coinFX;
+    public GameObject getNitro;
     public GameObject nitroFX;
     public GameObject getShield;
     public GameObject shieldFX;
@@ -40,13 +41,13 @@ public class Item : MonoBehaviour
                 myEffect = Instantiate(mineFX, transform.position, transform.rotation);
                 break;
             case ItemType.LIFE:
-                myEffect = Instantiate(mineFX, transform.position, transform.rotation);
+                myEffect = Instantiate(lifeFX, transform.position, transform.rotation);
                 break;
             case ItemType.COIN:
-                myEffect = Instantiate(mineFX, transform.position, transform.rotation);
+                myEffect = Instantiate(coinFX, transform.position, transform.rotation);
                 break;
             case ItemType.NITRO:
-                myEffect = Instantiate(mineFX, transform.position, transform.rotation);
+                myEffect = Instantiate(nitroFX, transform.position, transform.rotation);
                 break;
             case ItemType.SHIELD:
                 myEffect = Instantiate(shieldFX, transform.position, transform.rotation);
@@ -56,6 +57,7 @@ public class Item : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        Debug.Log("ouch");
         switch (myType)
         {
             case ItemType.MINE:
@@ -112,21 +114,31 @@ public class Item : MonoBehaviour
             player.GetComponent<PlayerController>().live++;
             gameManager.GetComponent<GameManager>().LiveUp();
         }
+        Destroy(gameObject);
     }
 
     private void GetCoin()
     {
         gameManager.GetComponent<GameManager>().coin++;
+        
+        Destroy(gameObject);
     }
 
     private void UseNitro()
     {
         player.GetComponent<PlayerController>().isNitro = true;
         player.GetComponent<PlayerController>().UseNitro();
+        Destroy(gameObject);
+
     }
 
     private void GetShield()
     {
+        //GameObject shieldFX;
         player.GetComponent<PlayerController>().isShield = true;
+        //shieldFX = Instantiate(player.GetComponent<PlayerController>().shieldFX, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0), player.transform);
+        player.GetComponent<PlayerController>().shieldFX.SetActive(true);
+        Destroy(gameObject);
+
     }
 }
