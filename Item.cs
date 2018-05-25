@@ -110,6 +110,7 @@ public class Item : MonoBehaviour
         if (player.GetComponent<PlayerController>().live < 3)
         {
             player.GetComponent<PlayerController>().live++;
+            gameManager.GetComponent<GameManager>().LiveUp();
         }
     }
 
