@@ -16,7 +16,7 @@ public class Item : MonoBehaviour
         LIFE,
         COIN,
         NITRO,
-        SHIELD;
+        SHIELD
     }
 
     [Header("FX")]
