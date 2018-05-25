@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour {
     int timeLeft = 3;
     public EnemyArm leftEnemyArm;
     public EnemyArm rightEnemyArm;
+    public GameObject SoundManager;
 
     [Header("Animation")]
     Animator myCameraAnimator;
@@ -131,6 +132,7 @@ public class GameManager : MonoBehaviour {
         blockController.SetActive(true);
         myCameraAnimator.Play("StartMoving");
         StartCoroutine(GameStart());
+        SoundManager.GetComponent<SoundManager>().isLobbyEnd = true;
     }
 
     public void BtnOnOption()
@@ -203,6 +205,8 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1;
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
+        SoundManager.GetComponent<SoundManager>().StopBGM();
+        StartCoroutine(SoundManager.GetComponent<SoundManager>().BeginBGM());
     }
     
     public void BtnOnNo()
@@ -213,6 +217,8 @@ public class GameManager : MonoBehaviour {
     public void BtnOnContinue()
     {
         myGameOverAnimator.SetBool("GameOver", false);
+        SoundManager.GetComponent<SoundManager>().StopBGM();
+        StartCoroutine(SoundManager.GetComponent<SoundManager>().Continue());
         optionBtn.GetComponent<Button>().interactable = true;
         skullFX.SetActive(false);
         //광고시스템 추가
@@ -256,6 +262,8 @@ public class GameManager : MonoBehaviour {
     {
         optionBtn.GetComponent<Button>().interactable = false;
         myGameOverAnimator.SetBool("GameOver", true);
+        SoundManager.GetComponent<SoundManager>().StopBGM();
+        StartCoroutine(SoundManager.GetComponent<SoundManager>().GameOver());
         skullFX.SetActive(true);
     }
 }
