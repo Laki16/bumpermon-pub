@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("FX")]
     public GameObject shieldFX;
+    public GameObject shieldEffect;
 
     [Header("Gear System")]
     [Tooltip("현재 기어")]
@@ -118,6 +119,9 @@ public class PlayerController : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         //bloomsettings = profile.bloom.settings;
         //bloomsettings.bloom.intensity = 0;
+        GameObject shield;
+        shield = Instantiate(shieldFX, transform.position + new Vector3(0, 0.3f, 0), transform.rotation, transform);
+        shieldEffect = shield;
     }
 
     void Update()
@@ -130,7 +134,7 @@ public class PlayerController : MonoBehaviour
             gameManager.GameOver();
         }
 
-        if(live > 0)
+        if (live > 0)
         {
             transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed);
         }
@@ -145,55 +149,58 @@ public class PlayerController : MonoBehaviour
         }
         //--------------------------------------------
         //-------------------Ray----------------------
+        if(!useNitro)
+        { 
         Raycast();
-        if (!isBlockChange)
-        {
-            //거리측정
-            if(forwardBlock != null){
-                if (Vector3.Distance(transform.position, forwardBlock.transform.position) < 2.0f)
+            if (!isBlockChange)
+            {
+                //거리측정
+                if (forwardBlock != null)
                 {
-                    //벗어나면 && 충돌하고 회피할때 부스트 방지를 위해 최소 스피드이상일때만(스턴시간 수정시 따라서 적절히 수정필요)
-                    if (!isBlockForward && speed > minSpeed)
+                    if (Vector3.Distance(transform.position, forwardBlock.transform.position) < 2.0f)
                     {
-                        //부스트
-                        isBlockChange = true;
-                        if (speed + 15.0f > maxGearSpeed * currentGear - 1)
+                        //벗어나면 && 충돌하고 회피할때 부스트 방지를 위해 최소 스피드이상일때만(스턴시간 수정시 따라서 적절히 수정필요)
+                        if (!isBlockForward && speed > minSpeed)
                         {
-                            speed = maxGearSpeed * currentGear - 1;
-                            startTime = Time.time;
-                            endTime = startTime + 0.7f;
-                        }
-                        else
-                        {
-                            //isBoost = true;
-                            startTime = Time.time;
-                            endTime = startTime + 0.7f;
-                            //offset += new Vector3(-1, 0, 0);
+                            //부스트
+                            isBlockChange = true;
+                            if (speed + 15.0f > maxGearSpeed * currentGear - 1)
+                            {
+                                speed = maxGearSpeed * currentGear - 1;
+                                startTime = Time.time;
+                                endTime = startTime + 0.7f;
+                            }
+                            else
+                            {
+                                //isBoost = true;
+                                startTime = Time.time;
+                                endTime = startTime + 0.7f;
+                                //offset += new Vector3(-1, 0, 0);
 
-                            speed += 15.0f;
-                            //enemy.GetComponent<EnemyController>().BoostSpeedDown();
-                        }
-                        if (nitro + 10.0f > 100)
-                        {
-                            nitro = 100.0f;
-                        }
-                        else
-                        {
-                            nitro += 15.0f;
+                                speed += 15.0f;
+                                //enemy.GetComponent<EnemyController>().BoostSpeedDown();
+                            }
+                            if (nitro + 10.0f > 100)
+                            {
+                                nitro = 100.0f;
+                            }
+                            else
+                            {
+                                nitro += 15.0f;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    //벗어나면
-                    if (!isBlockForward)
+                    else
                     {
-                        //no부스트
-                        isBlockChange = true;
+                        //벗어나면
+                        if (!isBlockForward)
+                        {
+                            //no부스트
+                            isBlockChange = true;
+                        }
                     }
                 }
             }
-
         }
         //--------------------------------------------
         //---------Increase & Decrease Speed----------
@@ -308,7 +315,7 @@ public class PlayerController : MonoBehaviour
                 //폭발
                 attackHit.collider.gameObject.SetActive(false);
             }
-            if(attackTime <= 0)
+            if (attackTime <= 0)
             {
                 isAttack = false;
             }
@@ -418,7 +425,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator NitroShockwave()
     {
         isNitroShockwave = true;
-        Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f + speed/15, 1 << 12);
+        Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f + speed / 15, 1 << 12);
         if (cols != null)
         {
             for (int i = 0; i < cols.Length; i++)
@@ -488,7 +495,10 @@ public class PlayerController : MonoBehaviour
                 {
                     // 밑으로 드래그
                     //Debug.Log("Down");
-                    UseNitro();
+                    if (!useNitro)
+                    {
+                        UseNitro();
+                    }
                 }
                 else
                 {
@@ -542,11 +552,11 @@ public class PlayerController : MonoBehaviour
     //----------------충돌------------------------
     private void OnTriggerEnter(Collider other)
     {
-        if (!useNitro)
+        if (other.gameObject.layer != LayerMask.NameToLayer("Item"))
         {
-            if (!isShield)
+            if (!useNitro)
             {
-                if (other.gameObject.layer != LayerMask.NameToLayer("item"))
+                if (!isShield)
                 {
                     if (live > 0)
                     {
@@ -561,12 +571,36 @@ public class PlayerController : MonoBehaviour
                     speed = -8.0f;
                     StartCoroutine(SpeedRecovery());
                 }
+                else
+                {
+                    myAnimator.Play("Damage");
+                    speed = -8.0f;
+                    StartCoroutine(SpeedRecovery());
+                    isShield = false;
+                    shieldEffect.SetActive(false);
+                }
             }
-            else
+        }
+    }
+
+    public void GetShield()
+    {
+        isShield = true;
+        shieldEffect.SetActive(true);
+    }
+
+    public IEnumerator GetNitro()
+    {
+        if (!useNitro)
+        {
+            float nowNitro = nitro;
+            isNitro = true;
+            UseNitro();
+            while (isNitro || useNitro)
             {
-                isShield = false;
-                shieldFX.SetActive(false);
+                yield return null;
             }
+            nitro += nowNitro;
         }
     }
     //---------------------------------------------
@@ -608,7 +642,8 @@ public class PlayerController : MonoBehaviour
         useNitro = false;
     }
 
-    void SmashCameraEffect(){
+    void SmashCameraEffect()
+    {
         float magnitude = speed / 1500.0f;
         StartCoroutine(cameraShake.Smash(.5f, magnitude));
     }

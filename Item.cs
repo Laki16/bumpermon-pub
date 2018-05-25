@@ -120,25 +120,18 @@ public class Item : MonoBehaviour
     private void GetCoin()
     {
         gameManager.GetComponent<GameManager>().coin++;
-        
         Destroy(gameObject);
     }
 
     private void UseNitro()
     {
-        player.GetComponent<PlayerController>().isNitro = true;
-        player.GetComponent<PlayerController>().UseNitro();
+        StartCoroutine(player.GetComponent<PlayerController>().GetNitro());
         Destroy(gameObject);
-
     }
 
     private void GetShield()
     {
-        //GameObject shieldFX;
-        player.GetComponent<PlayerController>().isShield = true;
-        //shieldFX = Instantiate(player.GetComponent<PlayerController>().shieldFX, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0), player.transform);
-        player.GetComponent<PlayerController>().shieldFX.SetActive(true);
+        player.GetComponent<PlayerController>().GetShield();
         Destroy(gameObject);
-
     }
 }

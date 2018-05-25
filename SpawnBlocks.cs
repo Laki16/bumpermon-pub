@@ -102,7 +102,7 @@ public class SpawnBlocks : MonoBehaviour
         }
 
         //------------------- Attack --------------------------
-        enemyController.GetComponent<EnemyController>().MineRequest(beforeDifficulty, difficulty, nowLane);
+        enemyController.GetComponent<EnemyController>().MineRequest(beforeDifficulty, difficulty, beforeLane);
         //-----------------------------------------------------
         endSpawn = true;
     }
