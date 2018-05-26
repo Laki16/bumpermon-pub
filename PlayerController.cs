@@ -263,7 +263,7 @@ public class PlayerController : MonoBehaviour
                 }
                 if (unGear > 0 && currentGear > 1)
                 {
-                    unGear -= currentGear * Time.deltaTime;
+                    unGear -= (currentGear * 2  - 1 )* Time.deltaTime;
                     gearDownFX_1.SetActive(true);
                     if (unGear <= 0)
                     {
