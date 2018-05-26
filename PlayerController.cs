@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
     public GameManager gameManager;
     public EnemyArm leftEnemyArm;
     public EnemyArm rightEnemyArm;
+    public GameObject enemyController;
 
     [Header("Collision")]
     //앞에 블럭
@@ -141,6 +142,7 @@ public class PlayerController : MonoBehaviour
         {
             checkDead = true;
             speed = 0.0f;
+            StartCoroutine(enemyController.GetComponent<EnemyController>().GameOverWait());
             myAnimator.Play("Die");
             leftEnemyArm.Laugh();
             rightEnemyArm.Laugh();
@@ -209,6 +211,11 @@ public class PlayerController : MonoBehaviour
                             {
                                 nitro += 15.0f;
                             }
+                        }
+                        //버그(부딪히고 저스트액션 했을때, 노부스트되어야함)
+                        else if(!isBlockForward && speed < minSpeed)
+                        {
+                            isBlockChange = true;
                         }
                     }
                     else
@@ -476,7 +483,8 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         //space 의 2/3 지점 이내일때 피하면 부스트 따라서, ray는 space만큼 쏘면 피했을때 다른 블럭이 잡히지않음
         //Ray 거리는 최소노드길이(minDifficulty + minSpace)보다 짧아야함****************
-        if (Physics.Raycast(ray, out hit, SpawnBlocks.minDifficulty + SpawnBlocks.minSpace))
+        //if (Physics.Raycast(ray, out hit, SpawnBlocks.minDifficulty + SpawnBlocks.minSpace))
+        if (Physics.Raycast(ray, out hit, SpawnBlocks.minDifficulty + SpawnBlocks.minSpace, 1 << 12))
         {
             isBlockForward = true;
             forwardBlock = hit.collider.gameObject;
@@ -490,55 +498,58 @@ public class PlayerController : MonoBehaviour
 
     void Calculate(Vector3 finalPos)
     {
-        float disX = Mathf.Abs(initialPos.x - finalPos.x);
-        float disY = Mathf.Abs(initialPos.y - finalPos.y);
-        if (disX > 0 || disY > 0)
+        if (!checkDead)
         {
-            if (disX > disY)
+            float disX = Mathf.Abs(initialPos.x - finalPos.x);
+            float disY = Mathf.Abs(initialPos.y - finalPos.y);
+            if (disX > 0 || disY > 0)
             {
-                if (initialPos.x > finalPos.x)
+                if (disX > disY)
                 {
-                    if (transform.position.z < 0.9f)
+                    if (initialPos.x > finalPos.x)
                     {
-                        //Debug.Log("Left");
-                        if (!isBlockLeft)
+                        if (transform.position.z < 0.9f)
                         {
-                            lane++;
-                            moveLeft = true;
+                            //Debug.Log("Left");
+                            if (!isBlockLeft)
+                            {
+                                lane++;
+                                moveLeft = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (transform.position.z > -0.9f)
+                        {
+                            //Debug.Log("Right");
+                            if (!isBLockRIght)
+                            {
+                                lane--;
+                                moveLeft = false;
+                            }
                         }
                     }
                 }
                 else
                 {
-                    if (transform.position.z > -0.9f)
+                    if (initialPos.y > finalPos.y)
                     {
-                        //Debug.Log("Right");
-                        if (!isBLockRIght)
+                        // 밑으로 드래그
+                        //Debug.Log("Down");
+                        if (!useNitro)
                         {
-                            lane--;
-                            moveLeft = false;
+                            UseNitro();
                         }
                     }
-                }
-            }
-            else
-            {
-                if (initialPos.y > finalPos.y)
-                {
-                    // 밑으로 드래그
-                    //Debug.Log("Down");
-                    if (!useNitro)
+                    else
                     {
-                        UseNitro();
+                        //위로 드래그
+                        //Debug.Log("Up");
+                        //myAnimator.ResetTrigger("Idle");
+                        //myAnimator.SetTrigger("Attack");
+                        Attack();
                     }
-                }
-                else
-                {
-                    //위로 드래그
-                    //Debug.Log("Up");
-                    //myAnimator.ResetTrigger("Idle");
-                    //myAnimator.SetTrigger("Attack");
-                    Attack();
                 }
             }
         }
@@ -643,7 +654,10 @@ public class PlayerController : MonoBehaviour
     {
         //경직 시간만큼 기다림
         yield return new WaitForSeconds(stunTime);
-        speed += minSpeed;
+        if (!checkDead)
+        {
+            speed += minSpeed;
+        }
     }
 
     void SideRayCast()

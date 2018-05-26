@@ -116,4 +116,15 @@ public class EnemyController : MonoBehaviour
             Debug.Log(mineLane);
         }
     }
+
+    public IEnumerator GameOverWait()
+    {
+        StopAllCoroutines();
+        lArmJustMove = true;
+        rArmJustMove = true;
+        readyForMine = true;
+        StartCoroutine(LArmControl());
+        StartCoroutine(RArmControl());
+        yield return null;
+    }
 }

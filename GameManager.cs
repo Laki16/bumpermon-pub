@@ -233,6 +233,7 @@ public class GameManager : MonoBehaviour {
         player.GetComponent<Animator>().Play("Idle");
         player.GetComponent<PlayerController>().live = 1;
         player.GetComponent<PlayerController>().checkDead = false;
+        player.GetComponent<PlayerController>().speed += player.GetComponent<PlayerController>().minSpeed;
         LiveUp();
     }
 

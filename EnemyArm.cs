@@ -44,7 +44,14 @@ public class EnemyArm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        speed = player.GetComponent<PlayerController>().speed;
+        if (!player.GetComponent<PlayerController>().checkDead)
+        {
+            speed = player.GetComponent<PlayerController>().speed;
+        }
+        else
+        {
+            speed = 0;
+        }
         transform.Translate(new Vector3(0.1f, 0, 0) * speed * Time.deltaTime);
         transform.Translate(new Vector3(changedPosition, 0, 0) * Time.deltaTime);
     }
