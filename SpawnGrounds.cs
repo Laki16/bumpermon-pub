@@ -12,6 +12,9 @@ public class SpawnGrounds : MonoBehaviour
     public static float groundXSize = 5.0f;
     public GameObject[] groundArray = new GameObject[3];
     private int groundIterator = 0;
+    private int backGroundIterator = 0;
+    public GameObject backGround;
+    public GameObject[] backGroundArray = new GameObject[3];
 
     [Header("Position")]
     private Vector3 localPostion;
@@ -19,13 +22,13 @@ public class SpawnGrounds : MonoBehaviour
 
     void Start()
     {
-        localPostion = new Vector3(0,0,0);
+        localPostion = new Vector3(0, 0, 0);
         spawnPosition = localPostion + new Vector3(-50, 0, 0);
         InitGround();
     }
     void Update()
     {
-        
+
     }
 
     //in Loading
@@ -35,14 +38,24 @@ public class SpawnGrounds : MonoBehaviour
         {
             groundArray[i] = Instantiate(ground, spawnPosition, new Quaternion(0, 0, 0, 0));
             groundArray[i].SetActive(true);
-            spawnPosition += new Vector3(groundXSize*10, 0, 0);
+
+                backGroundArray[i] = Instantiate(backGround, localPostion + new Vector3(150 * i +75, 0, 0), new Quaternion(0, 0, 0, 0));
+                backGroundArray[i].SetActive(true);
+
+            spawnPosition += new Vector3(groundXSize * 10, 0, 0);
         }
     }
 
     public void SpawnGround()
     {
-        groundArray[groundIterator].transform.position += new Vector3(groundXSize *3* 10, 0, 0);
+        groundArray[groundIterator].transform.position += new Vector3(groundXSize * 3 * 10, 0, 0);
         groundIterator++;
         groundIterator %= 3;
+        if (groundIterator == 0)
+        {
+            backGroundArray[backGroundIterator].transform.position += new Vector3(450f, 0, 0);
+            backGroundIterator++;
+            backGroundIterator %= 3;
+        }
     }
 }

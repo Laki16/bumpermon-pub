@@ -17,7 +17,10 @@ public class SpawnBlocks : MonoBehaviour
     [Header("Block")]
     public GameObject block;
     public static float blockXSize = 1.0f;
-    private static int maxBlocks = 150;
+    private static int maxBlocks = 250;
+    private int maxNodes = 10;
+    private int firstBlock = 0;
+    private int lastBlock = 0;
     private GameObject[] lane = new GameObject[maxBlocks];
 
     [Header("Difficulty")]
@@ -90,6 +93,7 @@ public class SpawnBlocks : MonoBehaviour
         SetDifficulty();
         SetSpace();
 
+        firstBlock = iterator;
         for (int i = 0; i < difficulty; i++)
         {
             lane[iterator].transform.position = new Vector3(beforeDifficulty, 0, 0);
@@ -100,10 +104,10 @@ public class SpawnBlocks : MonoBehaviour
             iterator++;
             iterator %= maxBlocks;
         }
-
         //------------------- Attack --------------------------
         enemyController.GetComponent<EnemyController>().MineRequest(beforeDifficulty, difficulty, nowLane);
         //-----------------------------------------------------
+        lastBlock = iterator;
         endSpawn = true;
     }
 
