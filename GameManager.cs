@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour {
     public EnemyArm leftEnemyArm;
     public EnemyArm rightEnemyArm;
     public GameObject SoundManager;
+    public GameObject lArm;
+    public GameObject rArm;
 
     [Header("Animation")]
     Animator myCameraAnimator;
@@ -146,6 +148,8 @@ public class GameManager : MonoBehaviour {
         blockController.SetActive(true);
         myCameraAnimator.Play("StartMoving");
         StartCoroutine(GameStart());
+        lArm.GetComponent<EnemyArm>().StopArm();
+        rArm.GetComponent<EnemyArm>().StopArm();
         SoundManager.GetComponent<SoundManager>().isLobbyEnd = true;
     }
 
