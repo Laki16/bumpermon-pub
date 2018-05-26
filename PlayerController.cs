@@ -324,14 +324,14 @@ public class PlayerController : MonoBehaviour
 
             if (nitroTime <= 0)
             {
-                nitroFX.SetActive(false);
-                //myAnimator.SetBool("Roll", false);
-                //myAnimator.Play("Idle");
-                isNitro = false;
-                nitro = 0;
-                speed = preSpeed;
-                currentGear = preGear;
-                nitroTime = 4.3f;
+                //nitroFX.SetActive(false);
+                ////myAnimator.SetBool("Roll", false);
+                ////myAnimator.Play("Idle");
+                //isNitro = false;
+                //nitro = 0;
+                //speed = preSpeed;
+                //currentGear = preGear;
+                //nitroTime = 4.3f;
 
                 if (!isNitroShockwave)
                 {
@@ -640,6 +640,7 @@ public class PlayerController : MonoBehaviour
         if (!useNitro)
         {
             float nowNitro = nitro;
+            nitro = 100.0f;
             isNitro = true;
             UseNitro();
             while (isNitro || useNitro)
@@ -688,6 +689,12 @@ public class PlayerController : MonoBehaviour
     IEnumerator AfterNitro()
     {
         yield return new WaitForSeconds(0.5f);
+        nitroFX.SetActive(false);
+        isNitro = false;
+        nitro = 0;
+        speed = preSpeed;
+        currentGear = preGear;
+        nitroTime = 4.3f;
         useNitro = false;
     }
 
