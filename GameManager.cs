@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
     [Header("OutGameUI")]
     public Text introduceText;
     public Text titleText;
+    public Text recordText;
 
     public GameObject outGamePanel;
     public GameObject optionPanel;
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour {
 
     [Header("GameOverUI")]
     public GameObject gameOverPanel;
+    public GameObject highScore;
     public Text coinText;
     public Button continueBtn;
     public Button rankingBtn;
@@ -80,7 +82,18 @@ public class GameManager : MonoBehaviour {
         myMenuAnimator = optionPanel.GetComponent<Animator>();
         myGameOverAnimator = gameOverPanel.GetComponent<Animator>();
 
+        LoadRecord();
         LoadSample();
+    }
+
+    void LoadRecord(){
+        int score = 0;
+        if(PlayerPrefs.HasKey("Score")){
+            score = PlayerPrefs.GetInt("Score");
+        }else{
+            PlayerPrefs.SetInt("Score", score);
+        }
+        recordText.text = ("HIGH SCORE : " + score);
     }
 
     void LoadSample(){
@@ -119,6 +132,7 @@ public class GameManager : MonoBehaviour {
         myMenuAnimator.SetBool("Down", false);
 
         startBtn.SetActive(false);
+        recordText.enabled = false;
         devBtn.SetActive(false);
         homeBtn.SetActive(true);
         titleText.gameObject.SetActive(false);
@@ -261,6 +275,17 @@ public class GameManager : MonoBehaviour {
     public void GameOver()
     {
         optionBtn.GetComponent<Button>().interactable = false;
+        int curScore = (int)player.transform.position.x + 20;
+        int prevScore = PlayerPrefs.GetInt("Score");
+
+        if(curScore >= prevScore){
+            PlayerPrefs.SetInt("Score", curScore);
+            PlayerPrefs.Save();
+            highScore.SetActive(true);
+        }else{
+            highScore.SetActive(false);
+        }
+
         myGameOverAnimator.SetBool("GameOver", true);
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().GameOver());
