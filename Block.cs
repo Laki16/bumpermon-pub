@@ -81,7 +81,8 @@ public class Block : MonoBehaviour {
                 mesh.normals = newNormals;
                 mesh.uv = newUvs;
 
-                mesh.triangles = new int[] { 0, 1, 2, 2, 1, 0 };
+                //mesh.triangles = new int[] { 0, 1, 2, 2, 1, 0 };
+                mesh.triangles = new int[] { 0, 1, 2};
 
                 GameObject GO = new GameObject("Triangle " + (i / 3));
                 GO.layer = LayerMask.NameToLayer("Particle");
