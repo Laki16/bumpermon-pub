@@ -21,7 +21,7 @@ public class SpawnBlocks : MonoBehaviour
     private GameObject[] lane = new GameObject[maxBlocks];
 
     [Header("Difficulty")]
-    static public int minSpace = 3;
+    static public int minSpace = 4;
     static public int maxSpace = 10;
     public int space;
     private int difficulty;
@@ -66,19 +66,19 @@ public class SpawnBlocks : MonoBehaviour
         }
         else if (200.0f < player.transform.position.x && player.transform.position.x <= 500.0f)
         {
-            difficulty = Random.Range(5, 12);
+            difficulty = Random.Range(8, 13);
         }
         else if (500.0f < player.transform.position.x && player.transform.position.x <= 1000.0f)
         {
-            difficulty = Random.Range(4, 8);
+            difficulty = Random.Range(6, 10);
         }
         else if (1000.0f < player.transform.position.x && player.transform.position.x <= 1500.0f)
         {
-            difficulty = Random.Range(3, 5);
+            difficulty = Random.Range(4, 8);
         }
         else
         {
-            difficulty = Random.Range(minDifficulty, 4);
+            difficulty = Random.Range(minDifficulty, 7);
         }
     }
 
