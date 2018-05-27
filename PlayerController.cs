@@ -376,53 +376,53 @@ public class PlayerController : MonoBehaviour
             }
         }
         //---------------------------------------------
-        //--------------- mouse control ---------------
-        if (Input.GetMouseButtonDown(0))
-        {
-            isMouseDown = true;
-            initialPos = Input.mousePosition;
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            isMouseDown = false;
-            Calculate(Input.mousePosition);
-        }
-        //---------------------------------------------
-        //--------------- keyboard control ------------
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
-        {
-            isKeyPressed = true;
-            if (transform.position.z < 0.9f)
-            {
-                if (!isBlockLeft)
-                {
-                    //Debug.Log("Left");
-                    lane++;
-                }
-            }
-        }
-        if (Input.GetKeyUp(KeyCode.LeftArrow) && isKeyPressed)
-        {
-            isKeyPressed = false;
-        }
+        ////--------------- mouse control ---------------
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    isMouseDown = true;
+        //    initialPos = Input.mousePosition;
+        //}
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    isMouseDown = false;
+        //    Calculate(Input.mousePosition);
+        //}
+        ////---------------------------------------------
+        ////--------------- keyboard control ------------
+        //if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
+        //{
+        //    isKeyPressed = true;
+        //    if (transform.position.z < 0.9f)
+        //    {
+        //        if (!isBlockLeft)
+        //        {
+        //            //Debug.Log("Left");
+        //            lane++;
+        //        }
+        //    }
+        //}
+        //if (Input.GetKeyUp(KeyCode.LeftArrow) && isKeyPressed)
+        //{
+        //    isKeyPressed = false;
+        //}
 
-        if (Input.GetKeyDown(KeyCode.RightArrow) && !isKeyPressed)
-        {
-            isKeyPressed = true;
-            if (transform.position.z > -0.9f)
-            {
-                if (!isBLockRIght)
-                {
-                    //Debug.Log("Right");
-                    lane--;
-                }
-            }
-        }
-        if (Input.GetKeyUp(KeyCode.RightArrow) && isKeyPressed)
-        {
-            isKeyPressed = false;
-        }
-        //---------------------------------------------
+        //if (Input.GetKeyDown(KeyCode.RightArrow) && !isKeyPressed)
+        //{
+        //    isKeyPressed = true;
+        //    if (transform.position.z > -0.9f)
+        //    {
+        //        if (!isBLockRIght)
+        //        {
+        //            //Debug.Log("Right");
+        //            lane--;
+        //        }
+        //    }
+        //}
+        //if (Input.GetKeyUp(KeyCode.RightArrow) && isKeyPressed)
+        //{
+        //    isKeyPressed = false;
+        //}
+        ////---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
         orb.GetComponent<OrbFill>().Fill = nitro / 100.0f;
