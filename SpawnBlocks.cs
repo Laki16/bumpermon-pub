@@ -19,8 +19,8 @@ public class SpawnBlocks : MonoBehaviour
     [Header("Block")]
     public GameObject block;
     public static float blockXSize = 1.0f;
-    private static int maxBlocks = 250;
-    private static int maxNodes = 15;
+    private static int maxBlocks = 400;
+    private static int maxNodes = 25;
     private int existNode = 0;
     private GameObject[] lane = new GameObject[maxBlocks];
     private GameObject[] node = new GameObject[maxNodes];

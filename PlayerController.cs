@@ -376,18 +376,18 @@ public class PlayerController : MonoBehaviour
             }
         }
         //---------------------------------------------
-        ////--------------- mouse control ---------------
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    isMouseDown = true;
-        //    initialPos = Input.mousePosition;
-        //}
-        //if (Input.GetMouseButtonUp(0))
-        //{
-        //    isMouseDown = false;
-        //    Calculate(Input.mousePosition);
-        //}
-        ////---------------------------------------------
+        //--------------- mouse control ---------------
+        if (Input.GetMouseButtonDown(0))
+        {
+            isMouseDown = true;
+            initialPos = Input.mousePosition;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            isMouseDown = false;
+            Calculate(Input.mousePosition);
+        }
+        //---------------------------------------------
         ////--------------- keyboard control ------------
         //if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
         //{
