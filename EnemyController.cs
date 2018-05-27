@@ -112,8 +112,8 @@ public class EnemyController : MonoBehaviour
             minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0.3f, mineLane);
             if (mineLane == 1) { lArmJustMove = false; }
             else { rArmJustMove = false; }
-            Debug.Log(lane);
-            Debug.Log(mineLane);
+            //Debug.Log(lane);
+            //Debug.Log(mineLane);
         }
     }
 

@@ -6,15 +6,17 @@ public class SoundManager : MonoBehaviour {
 
     public GameObject GameManager;
 
-    public AudioSource buttonClick;
-    public AudioSource efxSource;
-    public AudioSource musicSource;
     public AudioSource BGM;
+    public AudioSource boxSFX;
+    public AudioSource efxSource;
+    public AudioSource itemSFX;
+    public AudioSource buttonClick;
+
     public static SoundManager Instance = null;
 
     //타이틀 드럼 끝났는지 체크
     public bool isLobbyEnd = false;
-    [Header("AudioClips")]
+    [Header("BGM")]
     //타이틀 드럼(loop)
     public AudioClip lobbyBGM;
     public AudioClip InGameBGM;
@@ -26,6 +28,16 @@ public class SoundManager : MonoBehaviour {
     public AudioClip gameOverBGM;
     public AudioClip continueBGM;
 
+    [Header("SFX")]
+    public AudioClip boostSFX;
+    public AudioClip nitroSFX;
+    public AudioClip boxBrokenSFX;
+
+    [Header("ITEM")]
+    public AudioClip itemLifeSFX;
+    public AudioClip itemNitroSFX;
+    public AudioClip itemShieldSFX;
+    public AudioClip itemCoinSFX;
 
 
     // Use this for initialization
@@ -48,9 +60,77 @@ public class SoundManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
-	}
+        if (Input.GetMouseButtonDown(0))
+        {
+            PlayClick();
+        }
+    }
 
+    public void PlayClick()
+    {
+        buttonClick.Play();
+    }
+
+    public void Mute(bool mute)
+    {
+        if(mute)
+        {
+            BGM.mute = true;
+            efxSource.mute = true;
+            boxSFX.mute = true;
+            itemSFX.mute = true;
+            buttonClick.mute = true;
+        }
+        else
+        {
+            BGM.mute = false;
+            efxSource.mute = false;
+            boxSFX.mute = false;
+            itemSFX.mute = false;
+            buttonClick.mute = false;
+        }
+
+    }
+
+    public void PlayItemLife()
+    {
+        itemSFX.clip = itemLifeSFX;
+        itemSFX.Play();
+    }
+
+    public void PlayItemNitro()
+    {
+        itemSFX.clip = itemNitroSFX;
+        itemSFX.Play();
+    }
+
+    public void PlayItemShield()
+    {
+        itemSFX.clip = itemShieldSFX;
+        itemSFX.Play();
+    }
+
+    public void PlayItemCoin()
+    {
+        itemSFX.clip = itemCoinSFX;
+        itemSFX.Play();
+    }
+
+
+    public void PlayBox()
+    {
+        boxSFX.Play();
+    }
+    public void PlayBoost()
+    {
+        efxSource.clip = boostSFX;
+        efxSource.Play();
+    }
+    public void PlayNitro()
+    {
+        efxSource.clip = nitroSFX;
+        efxSource.Play();
+    }
     public void StopBGM()
     {
         StopAllCoroutines();

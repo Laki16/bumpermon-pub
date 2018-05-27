@@ -12,16 +12,18 @@ public class SpawnBlocks : MonoBehaviour
     private int beforeLane = 0;
     private int nowLane = 0;
     private int iterator = 0;
+    private int nodeIterator = 0;
+    private int delNodeIterator = 0;
     private bool endSpawn = true;
 
     [Header("Block")]
     public GameObject block;
     public static float blockXSize = 1.0f;
     private static int maxBlocks = 250;
-    private int maxNodes = 10;
-    private int firstBlock = 0;
-    private int lastBlock = 0;
+    private static int maxNodes = 15;
+    private int existNode = 0;
     private GameObject[] lane = new GameObject[maxBlocks];
+    private GameObject[] node = new GameObject[maxNodes];
 
     [Header("Difficulty")]
     static public int minSpace = 4;
@@ -45,13 +47,32 @@ public class SpawnBlocks : MonoBehaviour
 
     void Update()
     {
+        DeleteBlock();
+        //if (node[delNodeIterator].transform.position.x < player.transform.position.x)
+        //{
+        //    if (existNode > 0)
+        //    {
+        //        existNode--;
+        //        delNodeIterator++;
+        //        delNodeIterator %= maxNodes;
+        //    }
+        //}
+        //Debug.Log(existNode);
         if (endSpawn)
         {
             if (lane[iterator].transform.position.x + 25.0f < player.transform.position.x)
             {
-                SpawnBlock();
+                //if (lane[iterator] == node[nodeIterator])
+                //{
+                //    existNode--;
+                //}
+                if (existNode < maxNodes)
+                {
+                    SpawnBlock();
+                }
             }
         }
+
     }
 
     //속도비례
@@ -93,7 +114,7 @@ public class SpawnBlocks : MonoBehaviour
         SetDifficulty();
         SetSpace();
 
-        firstBlock = iterator;
+        //node[nodeIterator] = lane[iterator];
         for (int i = 0; i < difficulty; i++)
         {
             lane[iterator].transform.position = new Vector3(beforeDifficulty, 0, 0);
@@ -101,14 +122,33 @@ public class SpawnBlocks : MonoBehaviour
             lane[iterator].SetActive(true);
             lane[iterator].GetComponent<Renderer>().enabled = true;
             lane[iterator].GetComponent<Collider>().enabled = true;
+            if (i == difficulty - 1)
+            {
+                node[nodeIterator] = lane[iterator];
+            }
             iterator++;
             iterator %= maxBlocks;
         }
         //------------------- Attack --------------------------
         enemyController.GetComponent<EnemyController>().MineRequest(beforeDifficulty, difficulty, nowLane);
         //-----------------------------------------------------
-        lastBlock = iterator;
+        existNode++;
+        nodeIterator++;
+        nodeIterator %= maxNodes;
         endSpawn = true;
+    }
+
+    public void DeleteBlock()
+    {
+        if (node[delNodeIterator].transform.position.x + 5.0f < player.transform.position.x)
+        {
+            if (existNode > 0)
+            {
+                existNode--;
+                delNodeIterator++;
+                delNodeIterator %= maxNodes;
+            }
+        }
     }
 
     public void ComputeLane()

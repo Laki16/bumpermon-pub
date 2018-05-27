@@ -43,6 +43,9 @@ public class PlayerController : MonoBehaviour
     public GameObject gearDownFX_2;
     public GameObject nitroFX;
 
+    [Header("SFX")]
+    public GameObject soundManager;
+
 
     [Header("Gear System")]
     [Tooltip("현재 기어")]
@@ -324,14 +327,14 @@ public class PlayerController : MonoBehaviour
 
             if (nitroTime <= 0)
             {
-                nitroFX.SetActive(false);
-                //myAnimator.SetBool("Roll", false);
-                //myAnimator.Play("Idle");
-                isNitro = false;
-                nitro = 0;
-                speed = preSpeed;
-                currentGear = preGear;
-                nitroTime = 4.3f;
+                //nitroFX.SetActive(false);
+                ////myAnimator.SetBool("Roll", false);
+                ////myAnimator.Play("Idle");
+                //isNitro = false;
+                //nitro = 0;
+                //speed = preSpeed;
+                //currentGear = preGear;
+                //nitroTime = 4.3f;
 
                 if (!isNitroShockwave)
                 {
@@ -463,6 +466,7 @@ public class PlayerController : MonoBehaviour
     {
         isNitroShockwave = true;
         Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f + speed / 15, 1 << 12);
+        //soundManager.GetComponent<SoundManager>().PlayBox();
         if (cols != null)
         {
             for (int i = 0; i < cols.Length; i++)
@@ -562,6 +566,7 @@ public class PlayerController : MonoBehaviour
             preSpeed = speed;
             preGear = currentGear;
             useNitro = true;
+            soundManager.GetComponent<SoundManager>().PlayNitro();
             myAnimator.Play("Roll");
             nitroFX.SetActive(true);
             leftEnemyArm.Surprise();
@@ -600,6 +605,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.layer != LayerMask.NameToLayer("Item"))
         {
+            soundManager.GetComponent<SoundManager>().PlayBox();
             if (!useNitro)
             {
                 if (!isShield)
@@ -640,6 +646,7 @@ public class PlayerController : MonoBehaviour
         if (!useNitro)
         {
             float nowNitro = nitro;
+            nitro = 100.0f;
             isNitro = true;
             UseNitro();
             while (isNitro || useNitro)
@@ -688,6 +695,12 @@ public class PlayerController : MonoBehaviour
     IEnumerator AfterNitro()
     {
         yield return new WaitForSeconds(0.5f);
+        nitroFX.SetActive(false);
+        isNitro = false;
+        nitro = 0;
+        speed = preSpeed;
+        currentGear = preGear;
+        nitroTime = 4.3f;
         useNitro = false;
     }
 
@@ -700,12 +713,14 @@ public class PlayerController : MonoBehaviour
     IEnumerator LeftFX()
     {
         justActionLeftFX.SetActive(true);
+        soundManager.GetComponent<SoundManager>().PlayBoost();
         yield return new WaitForSeconds(0.6f);
         justActionLeftFX.SetActive(false);
     }
     IEnumerator RightFX()
     {
         justActionRightFX.SetActive(true);
+        soundManager.GetComponent<SoundManager>().PlayBoost();
         yield return new WaitForSeconds(0.6f);
         justActionRightFX.SetActive(false);
     }
