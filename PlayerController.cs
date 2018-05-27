@@ -390,16 +390,16 @@ public class PlayerController : MonoBehaviour
         //}
         //---------------------------------------------
         //--------------- mouse control ---------------
-        if (Input.GetMouseButtonDown(0))
-        {
-            isMouseDown = true;
-            initialPos = Input.mousePosition;
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            isMouseDown = false;
-            Calculate(Input.mousePosition);
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    isMouseDown = true;
+        //    initialPos = Input.mousePosition;
+        //}
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    isMouseDown = false;
+        //    Calculate(Input.mousePosition);
+        //}
         //---------------------------------------------
         ////--------------- keyboard control ------------
         //if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
@@ -616,6 +616,7 @@ public class PlayerController : MonoBehaviour
     //----------------충돌------------------------
     private void OnTriggerEnter(Collider other)
     {
+        //if (other.gameObject.layer != LayerMask.NameToLayer("Item"))
         if (other.gameObject.layer != LayerMask.NameToLayer("Item"))
         {
             soundManager.GetComponent<SoundManager>().PlayBox();
