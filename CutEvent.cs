@@ -10,6 +10,8 @@ public class CutEvent : MonoBehaviour {
     public GameObject rightArm;
     bool isRotate = false;
     public GameObject golemPlayer;
+    public GameObject IngamePanel;
+    public GameObject tutorial;
 
     Vector3 targetPos = new Vector3(-8, 0, 0);
     Quaternion targetRot = new Quaternion(0, 0, 0, 0);
@@ -63,5 +65,9 @@ public class CutEvent : MonoBehaviour {
     {
         golemDummy.SetActive(false);
         golemPlayer.SetActive(true);
+        IngamePanel.SetActive(true);
+        tutorial.SetActive(true);
+        //StartCoroutine(tutorial.GetComponent<TutorialController>().Tutorial());
+        //Debug.Log("tutorial coroutine start.");
     }
 }

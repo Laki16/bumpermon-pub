@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour {
     Animator myCameraAnimator;
     Animator myMenuAnimator;
     Animator myGameOverAnimator;
+    
 
     // Use this for initialization
     void Start()
@@ -85,7 +86,7 @@ public class GameManager : MonoBehaviour {
         myGameOverAnimator = gameOverPanel.GetComponent<Animator>();
 
         LoadRecord();
-        LoadSample();
+        //LoadSample();
     }
 
     void LoadRecord(){
@@ -94,13 +95,14 @@ public class GameManager : MonoBehaviour {
             score = PlayerPrefs.GetInt("Score");
         }else{
             PlayerPrefs.SetInt("Score", score);
+            SceneManager.LoadScene(1);
         }
         recordText.text = ("HIGH SCORE : " + score);
     }
 
-    void LoadSample(){
+    //void LoadSample(){
         
-    }
+    //}
 
     void LateUpdate()
     {

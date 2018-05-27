@@ -116,6 +116,9 @@ public class PlayerController : MonoBehaviour
     [Header("Attack")]
     private float attackTime;
 
+    [Header("Tutorial")]
+    public bool tutorial = false;
+
     //[Header("PostProcessing")]
     //public PostProcessingProfile profile;
     //BloomModel.Settings bloomsettings;
@@ -149,7 +152,8 @@ public class PlayerController : MonoBehaviour
             myAnimator.Play("Die");
             leftEnemyArm.Laugh();
             rightEnemyArm.Laugh();
-            gameManager.GameOver();
+            if(gameManager != null)
+                gameManager.GameOver();
         }
 
         if (live > 0)
@@ -582,8 +586,10 @@ public class PlayerController : MonoBehaviour
             soundManager.GetComponent<SoundManager>().PlayNitro();
             myAnimator.Play("Roll");
             nitroFX.SetActive(true);
-            leftEnemyArm.Surprise();
-            rightEnemyArm.Surprise();
+            if(leftEnemyArm != null)
+                leftEnemyArm.Surprise();
+            if (rightEnemyArm != null)
+                rightEnemyArm.Surprise();
         }
     }
 
@@ -626,8 +632,10 @@ public class PlayerController : MonoBehaviour
                 {
                     if (live > 0)
                     {
-                        live--;
-                        gameManager.LiveDown();
+                        if(!tutorial)
+                            live--;
+                        if(gameManager != null)
+                            gameManager.LiveDown();
                     }
                     myAnimator.Play("Damage");
                     if (currentGear > 1)
