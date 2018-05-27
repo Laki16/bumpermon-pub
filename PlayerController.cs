@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
                                 endTime = startTime + 0.7f;
                                 //offset += new Vector3(-1, 0, 0);
 
-                                speed += 15.0f;
+                                speed += 10.0f;
                                 //enemy.GetComponent<EnemyController>().BoostSpeedDown();
                             }
                             if (nitro + 10.0f > 100)
@@ -212,7 +212,7 @@ public class PlayerController : MonoBehaviour
                             }
                             else
                             {
-                                nitro += 15.0f;
+                                nitro += 10.0f;
                             }
                         }
                         //버그(부딪히고 저스트액션 했을때, 노부스트되어야함)
@@ -245,7 +245,7 @@ public class PlayerController : MonoBehaviour
                 unGear = 10.0f;
                 if (nitro < 100)
                 {
-                    nitro += 10 * speed / maxSpeed * Time.deltaTime;
+                    nitro += 5 * speed / maxSpeed * Time.deltaTime;
                 }
                 else
                 {
