@@ -362,19 +362,32 @@ public class PlayerController : MonoBehaviour
         }
         //---------------------------------------------
         //--------------- touch control ---------------
-        foreach (Touch touch in Input.touches)
+        for (int i = 0; i< Input.touches.Length; i++)
         {
-            if (touch.phase == TouchPhase.Began)
+            if (Input.touches[i].phase == TouchPhase.Began)
             {
                 isMouseDown = true;
-                initialPos = touch.position;
+                initialPos = Input.touches[i].position;
             }
-            if (touch.phase == TouchPhase.Ended)
+            if (Input.touches[i].phase == TouchPhase.Ended)
             {
                 isMouseDown = false;
-                Calculate(touch.position);
+                Calculate(Input.touches[i].position);
             }
         }
+        //foreach (Touch touch in Input.touches)
+        //{
+        //    if (touch.phase == TouchPhase.Began)
+        //    {
+        //        isMouseDown = true;
+        //        initialPos = touch.position;
+        //    }
+        //    if (touch.phase == TouchPhase.Ended)
+        //    {
+        //        isMouseDown = false;
+        //        Calculate(touch.position);
+        //    }
+        //}
         //---------------------------------------------
         //--------------- mouse control ---------------
         if (Input.GetMouseButtonDown(0))
@@ -698,7 +711,7 @@ public class PlayerController : MonoBehaviour
         nitroFX.SetActive(false);
         isNitro = false;
         nitro = 0;
-        speed = preSpeed;
+        speed = maxGearSpeed * currentGear;
         currentGear = preGear;
         nitroTime = 4.3f;
         useNitro = false;
