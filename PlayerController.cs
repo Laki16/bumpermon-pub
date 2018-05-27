@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     [Header("Control")]
-    GameObject groundController;
-    GameObject blockController;
+    public GameObject groundController;
+    public GameObject blockController;
     private Vector2 initialPos;
     private int lane;
     public float swipeSpeed = 10.0f;
@@ -123,8 +123,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         lane = 0;
-        groundController = GameObject.FindGameObjectWithTag("GroundController");
-        blockController = GameObject.FindGameObjectWithTag("BlockController");
+        //groundController = GameObject.FindGameObjectWithTag("GroundController");
+        //blockController = GameObject.FindGameObjectWithTag("BlockController");
         groundCount = 0.0f;
         speed = minSpeed;
 
