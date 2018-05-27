@@ -39,8 +39,8 @@ public class EnemyArm : MonoBehaviour
         myAnimator = child.GetComponent<Animator>();
         Random.InitState(randomSeed);
         moveCoroutine = MoveArmTemp();
-        //StartCoroutine(moveCoroutine);
-        StartCoroutine(LobbyMoving());
+        StartCoroutine(moveCoroutine);
+        //StartCoroutine(LobbyMoving());
     }
 
     // Update is called once per frame
@@ -48,7 +48,7 @@ public class EnemyArm : MonoBehaviour
     {
         if (!player.GetComponent<PlayerController>().checkDead)
         {
-            if(!isLobby)
+            //if(!isLobby)
             speed = player.GetComponent<PlayerController>().speed;
         }
         else
@@ -190,29 +190,29 @@ public class EnemyArm : MonoBehaviour
         StartCoroutine(moveCoroutine);
     }
 
-    public IEnumerator LobbyMoving()
-    {
-        speed = 70.0f;
-        StartCoroutine(LobbyFollowCamera());
-        while (true)
-        {
-            movingTime = Random.Range(1, 3);
-            changedPosition = 5.0f;
-            yield return new WaitForSeconds(movingTime);
-            changedPosition = -5.0f;
-            yield return new WaitForSeconds(movingTime);
-            changedPosition = 0.0f;
-        }
-    }
+    //public IEnumerator LobbyMoving()
+    //{
+    //    speed = 70.0f;
+    //    StartCoroutine(LobbyFollowCamera());
+    //    while (true)
+    //    {
+    //        movingTime = Random.Range(1, 3);
+    //        changedPosition = 5.0f;
+    //        yield return new WaitForSeconds(movingTime);
+    //        changedPosition = -5.0f;
+    //        yield return new WaitForSeconds(movingTime);
+    //        changedPosition = 0.0f;
+    //    }
+    //}
 
-    public IEnumerator LobbyFollowCamera()
-    {
-        while(true)
-        {
-            yield return new WaitForSeconds(3.3f);
-            transform.position = new Vector3(-20, transform.position.y, transform.position.z);
-        }
-    }
+    //public IEnumerator LobbyFollowCamera()
+    //{
+    //    while(true)
+    //    {
+    //        yield return new WaitForSeconds(3.3f);
+    //        transform.position = new Vector3(-20, transform.position.y, transform.position.z);
+    //    }
+    //}
 
     public IEnumerator ArmSpeedRecovery()
     {

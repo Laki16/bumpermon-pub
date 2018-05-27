@@ -20,7 +20,7 @@ public class SpawnBlocks : MonoBehaviour
     public GameObject block;
     public static float blockXSize = 1.0f;
     private static int maxBlocks = 250;
-    private static int maxNodes = 20;
+    private static int maxNodes = 15;
     private int existNode = 0;
     private GameObject[] lane = new GameObject[maxBlocks];
     private GameObject[] node = new GameObject[maxNodes];

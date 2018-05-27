@@ -18,6 +18,8 @@ public class Item : MonoBehaviour
         NITRO,
         SHIELD
     }
+    [Header("SFX")]
+    public GameObject soundManager;
 
     [Header("FX")]
     GameObject myEffect;
@@ -65,24 +67,28 @@ public class Item : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         Destroy(myEffect);
-        Debug.Log("ouch");
+        //Debug.Log("ouch");
         switch (myType)
         {
             case ItemType.MINE:
                 myEffect = Instantiate(mineBoom, transform.position, transform.rotation);
                 break;
             case ItemType.LIFE:
+                soundManager.GetComponent<SoundManager>().PlayItemLife();
                 myEffect = Instantiate(getLife, transform.position, transform.rotation);
                 GetLife();
                 break;
             case ItemType.COIN:
+                soundManager.GetComponent<SoundManager>().PlayItemCoin();
                 myEffect = Instantiate(getCoin, transform.position, transform.rotation);
                 GetCoin();
                 break;
             case ItemType.NITRO:
+                soundManager.GetComponent<SoundManager>().PlayItemNitro();
                 UseNitro();
                 break;
             case ItemType.SHIELD:
+                soundManager.GetComponent<SoundManager>().PlayItemShield();
                 myEffect = Instantiate(getShield, transform.position, transform.rotation);
                 GetShield();
                 break;

@@ -148,8 +148,9 @@ public class GameManager : MonoBehaviour {
         blockController.SetActive(true);
         myCameraAnimator.Play("StartMoving");
         StartCoroutine(GameStart());
-        lArm.GetComponent<EnemyArm>().StopArm();
-        rArm.GetComponent<EnemyArm>().StopArm();
+        //팔 로비 애니메이션으로 대체할것
+        //lArm.GetComponent<EnemyArm>().StopArm();
+        //rArm.GetComponent<EnemyArm>().StopArm();
         SoundManager.GetComponent<SoundManager>().isLobbyEnd = true;
     }
 
@@ -186,12 +187,14 @@ public class GameManager : MonoBehaviour {
         if (isMusicOn)
         {
             //sound off
+            SoundManager.GetComponent<SoundManager>().Mute(true);
             musicBtn.GetComponent<Image>().color = new Color32(200, 200, 200, 255);
             isMusicOn = false;
         }
         else
         {
             //sound on
+            SoundManager.GetComponent<SoundManager>().Mute(false);
             musicBtn.GetComponent<Image>().color = new Color32(255, 255, 0, 255);
             isMusicOn = true;
         }
