@@ -362,67 +362,80 @@ public class PlayerController : MonoBehaviour
         }
         //---------------------------------------------
         //--------------- touch control ---------------
-        foreach (Touch touch in Input.touches)
+        for (int i = 0; i< Input.touches.Length; i++)
         {
-            if (touch.phase == TouchPhase.Began)
+            if (Input.touches[i].phase == TouchPhase.Began)
             {
                 isMouseDown = true;
-                initialPos = touch.position;
+                initialPos = Input.touches[i].position;
             }
-            if (touch.phase == TouchPhase.Ended)
+            if (Input.touches[i].phase == TouchPhase.Ended)
             {
                 isMouseDown = false;
-                Calculate(touch.position);
+                Calculate(Input.touches[i].position);
             }
         }
+        //foreach (Touch touch in Input.touches)
+        //{
+        //    if (touch.phase == TouchPhase.Began)
+        //    {
+        //        isMouseDown = true;
+        //        initialPos = touch.position;
+        //    }
+        //    if (touch.phase == TouchPhase.Ended)
+        //    {
+        //        isMouseDown = false;
+        //        Calculate(touch.position);
+        //    }
+        //}
         //---------------------------------------------
         //--------------- mouse control ---------------
-        if (Input.GetMouseButtonDown(0))
-        {
-            isMouseDown = true;
-            initialPos = Input.mousePosition;
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            isMouseDown = false;
-            Calculate(Input.mousePosition);
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    isMouseDown = true;
+        //    initialPos = Input.mousePosition;
+        //}
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    isMouseDown = false;
+        //    Calculate(Input.mousePosition);
+        //}
         //---------------------------------------------
-        //--------------- keyboard control ------------
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
-        {
-            isKeyPressed = true;
-            if (transform.position.z < 0.9f)
-            {
-                if (!isBlockLeft)
-                {
-                    //Debug.Log("Left");
-                    lane++;
-                }
-            }
-        }
-        if (Input.GetKeyUp(KeyCode.LeftArrow) && isKeyPressed)
-        {
-            isKeyPressed = false;
-        }
+        ////--------------- keyboard control ------------
+        //if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
+        //{
+        //    isKeyPressed = true;
+        //    if (transform.position.z < 0.9f)
+        //    {
+        //        if (!isBlockLeft)
+        //        {
+        //            //Debug.Log("Left");
+        //            lane++;
+        //        }
+        //    }
+        //}
+        //if (Input.GetKeyUp(KeyCode.LeftArrow) && isKeyPressed)
+        //{
+        //    isKeyPressed = false;
+        //}
 
-        if (Input.GetKeyDown(KeyCode.RightArrow) && !isKeyPressed)
-        {
-            isKeyPressed = true;
-            if (transform.position.z > -0.9f)
-            {
-                if (!isBLockRIght)
-                {
-                    //Debug.Log("Right");
-                    lane--;
-                }
-            }
-        }
-        if (Input.GetKeyUp(KeyCode.RightArrow) && isKeyPressed)
-        {
-            isKeyPressed = false;
-        }
-        //---------------------------------------------
+        //if (Input.GetKeyDown(KeyCode.RightArrow) && !isKeyPressed)
+        //{
+        //    isKeyPressed = true;
+        //    if (transform.position.z > -0.9f)
+        //    {
+        //        if (!isBLockRIght)
+        //        {
+        //            //Debug.Log("Right");
+        //            lane--;
+        //        }
+        //    }
+        //}
+        //if (Input.GetKeyUp(KeyCode.RightArrow) && isKeyPressed)
+        //{
+        //    isKeyPressed = false;
+        //}
+        ////---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
         orb.GetComponent<OrbFill>().Fill = nitro / 100.0f;
@@ -603,6 +616,7 @@ public class PlayerController : MonoBehaviour
     //----------------충돌------------------------
     private void OnTriggerEnter(Collider other)
     {
+        //if (other.gameObject.layer != LayerMask.NameToLayer("Item"))
         if (other.gameObject.layer != LayerMask.NameToLayer("Item"))
         {
             soundManager.GetComponent<SoundManager>().PlayBox();
@@ -698,7 +712,7 @@ public class PlayerController : MonoBehaviour
         nitroFX.SetActive(false);
         isNitro = false;
         nitro = 0;
-        speed = preSpeed;
+        speed = maxGearSpeed * currentGear;
         currentGear = preGear;
         nitroTime = 4.3f;
         useNitro = false;
