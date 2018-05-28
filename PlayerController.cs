@@ -116,9 +116,6 @@ public class PlayerController : MonoBehaviour
     [Header("Attack")]
     private float attackTime;
 
-    [Header("Tutorial")]
-    public bool tutorial = false;
-
     //[Header("PostProcessing")]
     //public PostProcessingProfile profile;
     //BloomModel.Settings bloomsettings;
@@ -636,8 +633,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (live > 0)
                     {
-                        if(!tutorial)
-                            live--;
+                        live--;
                         if(gameManager != null)
                             gameManager.LiveDown();
                     }

@@ -8,8 +8,14 @@ public class TutorialController : MonoBehaviour
 {
     //public GameObject nonClickPanel;
     public GameObject panel1;
+    public GameObject outgamePanel;
+    public GameObject ingamePanel;
+    public GameObject fadePanel;
     public GameObject player;
     public Image pointer;
+
+    public GameObject rightBoostEffect;
+    public GameObject leftBoostEffect;
 
     bool isStop = false;
     bool t1 = false;
@@ -19,6 +25,9 @@ public class TutorialController : MonoBehaviour
     bool t5 = false;
     bool t6 = false;
     bool isEnd = false;
+    bool cameraMoving = false;
+    bool endCR = false;
+    bool fade = false;
 
     float holdCount = 0;
     float tutorialCount = 0;
@@ -29,7 +38,12 @@ public class TutorialController : MonoBehaviour
 
     public Text tutorialText;
     public GameObject tutorialBg;
-    
+
+    public GameObject tutorialEndingTitle;
+    public GameObject mainCam;
+    public GameObject tutorialEndingCamera;
+    Vector3 targetPos;
+
     void OnEnable()
     {
         //nonClickPanel.SetActive(true);
@@ -37,7 +51,7 @@ public class TutorialController : MonoBehaviour
         tutorialCount = Time.time;
         StartCoroutine(Tutorial());
 
-        player.GetComponent<PlayerController>().tutorial = true;
+        player.GetComponent<PlayerController>().live = 10000;
     }
 
     public IEnumerator Tutorial()
@@ -74,18 +88,22 @@ public class TutorialController : MonoBehaviour
 
         //RIGHT_ACTION
         yield return new WaitForSeconds(5.0f);
-        
+
+        //booster trigger
+        t4 = true;
+
         tutorialBg.gameObject.SetActive(true);
         tutorialText.text = "아슬아슬하게 피하면\n 순간부스터가 발동된다.";
         //pointer.gameObject.SetActive(true);
         //pointer.GetComponent<Animator>().Play("Right");
-
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(2.0f);
+        tutorialText.text = "순간부스터는\n 속도와 소울을 채워준다.";
+        yield return new WaitForSeconds(2.0f);
         tutorialBg.gameObject.SetActive(false);
         
 
         //HOLD
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(1.0f);
         tutorialBg.gameObject.SetActive(true);
         tutorialText.text = "화면을 누르고 있으면\n 속도가 빨라진다.";
         pointer.gameObject.SetActive(true);
@@ -145,14 +163,26 @@ public class TutorialController : MonoBehaviour
             }
         }
 
-        if(tutorialCount + 100.0f <= Time.time)
+        if(tutorialCount + 150.0f <= Time.time)
         {
-            EndTutorial();
+            if(!endCR)
+                StartCoroutine(EndTutorial());
         }
         
-        if(boostTime + 4.5f <= Time.time)
+        if(boostTime + 5.0f <= Time.time)
         {
-            EndTutorial();
+            if(!endCR)
+                StartCoroutine(EndTutorial());
+        }
+
+        if(cameraMoving){
+            tutorialEndingCamera.transform.position
+                                = Vector3.Lerp(tutorialEndingCamera.transform.position, targetPos, Time.deltaTime * .5f);
+        }
+
+        if(fade){
+            fadePanel.GetComponent<Image>().color
+                     = Color.Lerp(fadePanel.GetComponent<Image>().color, new Color(0, 0, 0, 1), Time.deltaTime * 1.2f);
         }
 
     }
@@ -171,7 +201,10 @@ public class TutorialController : MonoBehaviour
                     if (transform.position.z < 0.9f)
                     {
                         //Debug.Log("Left");
-                        if (t1) t4 = true;
+                        if (t1 && t2 && !t4)
+                        {
+                            leftBoostEffect.SetActive(true);
+                        }
                         t1 = true;
                     }
                 }
@@ -180,7 +213,10 @@ public class TutorialController : MonoBehaviour
                     if (transform.position.z > -0.9f)
                     {
                         //Debug.Log("Right");
-                        if (t2) t5 = true;
+                        if (t1 && t2 && !t4)
+                        {
+                            rightBoostEffect.SetActive(true);
+                        }
                         t2 = true;
                     }
                 }
@@ -202,9 +238,25 @@ public class TutorialController : MonoBehaviour
     }
 
 
-    void EndTutorial()
+    IEnumerator EndTutorial()
     {
-        Debug.Log("tutorial end");
+        endCR = true;
+        tutorialEndingCamera.transform.position = mainCam.transform.position;
+        mainCam.SetActive(false);
+        tutorialEndingCamera.SetActive(true);
+        targetPos = tutorialEndingCamera.transform.position + new Vector3(-50, 20, 0);
+        cameraMoving = true;
+
+        //Debug.Log("tutorial end");
+        //isStop = true;
+        outgamePanel.SetActive(false);
+        ingamePanel.SetActive(false);
+        yield return new WaitForSeconds(2.0f);
+        tutorialEndingTitle.SetActive(true);
+        yield return new WaitForSeconds(4.0f);
+        fadePanel.SetActive(true);
+        fade = true;
+        yield return new WaitForSeconds(1.5f);
 
         SceneManager.LoadScene(0);
     }
