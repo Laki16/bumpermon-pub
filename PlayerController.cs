@@ -476,6 +476,10 @@ public class PlayerController : MonoBehaviour
         //    bloomsettings.bloom.intensity = speed / 100.0f;
         //}
         //---------------------------------------------
+
+        if(nitro >= 100){
+            orb.GetComponent<OrbColor>().AccentColor = new Color32((byte)255, (byte)215, (byte)0, (byte)255);
+        }
     }
 
     public bool isNitroShockwave = false;
@@ -724,6 +728,7 @@ public class PlayerController : MonoBehaviour
         currentGear = preGear;
         nitroTime = 4.3f;
         useNitro = false;
+        orb.GetComponent<OrbColor>().AccentColor = new Color32((byte)165, (byte)0, (byte)0, (byte)255);
     }
 
     void SmashCameraEffect()
