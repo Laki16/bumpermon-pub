@@ -65,22 +65,22 @@ public class EnemyArm : MonoBehaviour
         changedPosition = 0.0f;
         int itemType;
         itemType = Random.Range(1, 100);
-        if (itemType < 20)
+        if (itemType < 30)
         {
             //코인
             itemType = 3;
         }
-        else if (20 < itemType && itemType < 40)
+        else if (30 <= itemType && itemType < 60)
         {
             //마인
             itemType = 1;
         }
-        else if (40 < itemType && itemType < 60)
+        else if (60 <= itemType && itemType < 80)
         {
             //니트로
             itemType = 4;
         }
-        else if (60 < itemType && itemType < 80)
+        else if (80 <= itemType && itemType < 90)
         {
             //하트
             itemType = 2;

@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour {
     public GameObject SoundManager;
     public GameObject lArm;
     public GameObject rArm;
+    public GameObject soundManager;
 
     [Header("Animation")]
     Animator myCameraAnimator;
@@ -81,6 +82,8 @@ public class GameManager : MonoBehaviour {
         isDown = false;
         isMusicOn = true;
         isGameStart = false;
+
+        StartCoroutine(soundManager.GetComponent<SoundManager>().BeginBGM());
 
         myCameraAnimator = camera.GetComponent<Animator>();
         myMenuAnimator = optionPanel.GetComponent<Animator>();

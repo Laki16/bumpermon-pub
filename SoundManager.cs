@@ -42,7 +42,7 @@ public class SoundManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        StartCoroutine(BeginBGM());
+        //StartCoroutine(BeginBGM());
 	}
 
     void Awake()

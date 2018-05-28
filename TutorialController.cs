@@ -44,6 +44,8 @@ public class TutorialController : MonoBehaviour
     public GameObject tutorialEndingCamera;
     Vector3 targetPos;
 
+    //public GameObject soundManager;
+
     void OnEnable()
     {
         //nonClickPanel.SetActive(true);
