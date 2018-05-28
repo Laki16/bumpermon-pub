@@ -327,7 +327,7 @@ public class PlayerController : MonoBehaviour
             //{
             //    enemy.GetComponent<EnemyController>().StartCoroutine(enemy.GetComponent<EnemyController>().NitroSpeedDown(4));
             //}
-            nitro -= Time.deltaTime * 25;
+            nitro -= Time.deltaTime * 22;
 
             if (nitroTime <= 0)
             {

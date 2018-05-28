@@ -13,11 +13,8 @@ public class GameManager : MonoBehaviour {
     public GameObject checkPanel;
 
     public GameObject homeBtn;
-    public GameObject coins;
+    public GameObject coinUI;
     public GameObject lives;
-
-    public int coinTotal;
-    public int coin;
 
     public Sprite livingheart;
     public Sprite deadHeart;
@@ -27,6 +24,7 @@ public class GameManager : MonoBehaviour {
     public Text introduceText;
     public Text titleText;
     public Text recordText;
+    public Text totalCoins;
 
     public GameObject outGamePanel;
     public GameObject optionPanel;
@@ -53,6 +51,7 @@ public class GameManager : MonoBehaviour {
     public Button rankingBtn;
     public Button homeBtn2;
     public GameObject skullFX;
+    bool isContinueAvailable = true;
     
 
     [Header("System")]
@@ -72,7 +71,9 @@ public class GameManager : MonoBehaviour {
     Animator myCameraAnimator;
     Animator myMenuAnimator;
     Animator myGameOverAnimator;
-    
+
+    [Header("DB")]
+    public int coin;
 
     // Use this for initialization
     void Start()
@@ -91,13 +92,19 @@ public class GameManager : MonoBehaviour {
 
     void LoadRecord(){
         int score = 0;
+        int loadCoin = 0;
+
         if(PlayerPrefs.HasKey("Score")){
             score = PlayerPrefs.GetInt("Score");
+            loadCoin = PlayerPrefs.GetInt("Coin");
         }else{
             PlayerPrefs.SetInt("Score", score);
+            PlayerPrefs.SetInt("Coin", loadCoin);
+            //load tutorial
             SceneManager.LoadScene(1);
         }
         recordText.text = ("HIGH SCORE : " + score);
+        totalCoins.text = ("" + loadCoin);
     }
 
     //void LoadSample(){
@@ -142,7 +149,7 @@ public class GameManager : MonoBehaviour {
         titleText.gameObject.SetActive(false);
         introduceText.enabled = false;
 
-        coins.SetActive(false);
+        coinUI.SetActive(false);
         lives.SetActive(true);
 
         checkPanel.SetActive(true);
@@ -239,6 +246,7 @@ public class GameManager : MonoBehaviour {
 
     public void BtnOnContinue()
     {
+        isContinueAvailable = false;
         myGameOverAnimator.SetBool("GameOver", false);
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().Continue());
@@ -275,7 +283,6 @@ public class GameManager : MonoBehaviour {
 
     public void LiveDown()
     {
-        Debug.Log("LiveDown");
         int heartNum = player.GetComponent<PlayerController>().live;
         string temp = "Live" + (heartNum + 1).ToString();
         GameObject heart = GameObject.Find(temp);
@@ -284,17 +291,26 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
+        if(!isContinueAvailable){
+            continueBtn.GetComponent<Image>().sprite = deadHeart;
+            continueBtn.interactable = false;
+        }
         optionBtn.GetComponent<Button>().interactable = false;
         int curScore = (int)player.transform.position.x + 20;
         int prevScore = PlayerPrefs.GetInt("Score");
 
+        coinText.text = ("" + coin);
+        int prevCoins = PlayerPrefs.GetInt("Coin");
+        prevCoins += coin;
+        PlayerPrefs.SetInt("Coin", coin);
+
         if(curScore >= prevScore){
             PlayerPrefs.SetInt("Score", curScore);
-            PlayerPrefs.Save();
             highScore.SetActive(true);
         }else{
             highScore.SetActive(false);
         }
+        PlayerPrefs.Save();
 
         myGameOverAnimator.SetBool("GameOver", true);
         SoundManager.GetComponent<SoundManager>().StopBGM();
