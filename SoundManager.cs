@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
 
-    public GameObject GameManager;
-
     public AudioSource BGM;
     public AudioSource boxSFX;
     public AudioSource efxSource;
     public AudioSource itemSFX;
     public AudioSource buttonClick;
 
-    public static SoundManager Instance = null;
+    //public static SoundManager Instance = null;
 
     //타이틀 드럼 끝났는지 체크
     public bool isLobbyEnd = false;
@@ -45,18 +43,18 @@ public class SoundManager : MonoBehaviour {
         //StartCoroutine(BeginBGM());
 	}
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-    }
+    //void Awake()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        Instance = this;
+    //    }
+    //    else if (Instance != this)
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //    DontDestroyOnLoad(gameObject);
+    //}
 
     // Update is called once per frame
     void Update () {

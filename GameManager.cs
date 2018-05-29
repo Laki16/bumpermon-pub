@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        SoundManager = GameObject.FindGameObjectWithTag("SoundManager");
+        //SoundManager = GameObject.FindGameObjectWithTag("SoundManager");
         isDown = false;
         isMusicOn = true;
         isGameStart = false;

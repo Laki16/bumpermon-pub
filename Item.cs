@@ -34,6 +34,10 @@ public class Item : MonoBehaviour
     public GameObject getShield;
     public GameObject shieldFX;
 
+    //void Start()
+    //{
+    //    soundManager = GameObject.FindGameObjectWithTag("SoundManager");
+    //}
     void Update()
     {
         if(player.transform.position.x > transform.position.x + 20.0f)
