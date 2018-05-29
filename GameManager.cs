@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
     public GameObject optionBtn;
     public GameObject musicBtn;
     public GameObject devBtn;
+    public GameObject quitBtn;
 
     public Sprite optionDown;
     public Sprite optionUp;
@@ -148,6 +149,7 @@ public class GameManager : MonoBehaviour {
         startBtn.SetActive(false);
         recordText.enabled = false;
         devBtn.SetActive(false);
+        quitBtn.SetActive(false);
         homeBtn.SetActive(true);
         titleText.gameObject.SetActive(false);
         introduceText.enabled = false;
@@ -319,5 +321,10 @@ public class GameManager : MonoBehaviour {
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().GameOver());
         skullFX.SetActive(true);
+    }
+
+    public void BtnOnQuit()
+    {
+        Application.Quit();
     }
 }
