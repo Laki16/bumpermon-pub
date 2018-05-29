@@ -60,7 +60,10 @@ public class SoundManager : MonoBehaviour {
     void Update () {
         if (Input.GetMouseButtonDown(0))
         {
-            PlayClick();
+            if (!isLobbyEnd)
+            {
+                PlayClick();
+            }
         }
     }
 
