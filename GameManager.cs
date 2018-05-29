@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviour {
         coinText.text = ("" + coin);
         int prevCoins = PlayerPrefs.GetInt("Coin");
         prevCoins += coin;
-        PlayerPrefs.SetInt("Coin", coin);
+        PlayerPrefs.SetInt("Coin", prevCoins);
 
         if(curScore >= prevScore){
             PlayerPrefs.SetInt("Score", curScore);

@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour
     public Image speedBar;
     public Scrollbar gearBar;
     public Text speedText;
+    int tempSpeed;
     public Text distanceText;
     bool isChangeColor;
     bool isCoroutineRunning = false;
@@ -442,7 +443,15 @@ public class PlayerController : MonoBehaviour
         orb.GetComponent<OrbFill>().Fill = nitro / 100.0f;
         speedBar.fillAmount = speed / maxSpeed;
         gearBar.value = (currentGear - 1) / 4.0f;
-        speedText.text = ((int)speed + "km");
+        if (speed < 0)
+        {
+            tempSpeed = 0;
+            speedText.text = ((int)tempSpeed + "km");
+        }
+        else
+        {
+            speedText.text = ((int)speed + "km");
+        }
         distanceText.text = (((int)transform.position.x + 20) + "");
         //---------------------------------------------
 
