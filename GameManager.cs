@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour {
             PlayerPrefs.SetInt("Score", score);
             PlayerPrefs.SetInt("Coin", loadCoin);
             //load tutorial
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(0);
         }
         recordText.text = ("HIGH SCORE : " + score);
         totalCoins.text = ("" + loadCoin);
