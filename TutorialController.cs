@@ -260,7 +260,7 @@ public class TutorialController : MonoBehaviour
         fade = true;
         yield return new WaitForSeconds(1.5f);
 
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
 }

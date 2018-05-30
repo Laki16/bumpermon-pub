@@ -223,12 +223,12 @@ public class EnemyArm : MonoBehaviour
             if (transform.position.x > player.transform.position.x + xOffset)
             {
                 //changedPosition = -15.0f - speed / 100;
-                changedPosition = -0.1f * speed - 20.0f;
+                changedPosition = -0.1f * speed - 40.0f;
             }
             else
             {
                 //changedPosition = 15.0f + speed / 100;
-                changedPosition = 0.1f * speed + 20.0f;
+                changedPosition = 0.1f * speed + 40.0f;
             }
             yield return null;
         }
