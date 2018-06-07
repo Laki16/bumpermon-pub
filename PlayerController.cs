@@ -311,33 +311,12 @@ public class PlayerController : MonoBehaviour
         //-----------------nitro-----------------------
         if (useNitro)
         {
-            //Ray shockwaveRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
-            //RaycastHit shockwaveHit;
-            //if (Physics.Raycast(shockwaveRay, out shockwaveHit, 4.0f, 1 << 12))
-            //{
-            //    if (nitroTime < 0.3f)
-            //        shockwaveHit.collider.gameObject.SetActive(false);
-            //}
-            //myAnimator.SetBool("Roll", true);
             speed = preSpeed + currentGear * 30;
             nitroTime -= Time.deltaTime;
-            //if (!enemy.GetComponent<EnemyController>().isSpeedDown)
-            //{
-            //    enemy.GetComponent<EnemyController>().StartCoroutine(enemy.GetComponent<EnemyController>().NitroSpeedDown(4));
-            //}
             nitro -= Time.deltaTime * 22;
 
             if (nitroTime <= 0)
             {
-                //nitroFX.SetActive(false);
-                ////myAnimator.SetBool("Roll", false);
-                ////myAnimator.Play("Idle");
-                //isNitro = false;
-                //nitro = 0;
-                //speed = preSpeed;
-                //currentGear = preGear;
-                //nitroTime = 4.3f;
-
                 if (!isNitroShockwave)
                 {
                     StartCoroutine(NitroShockwave());
@@ -392,51 +371,51 @@ public class PlayerController : MonoBehaviour
         //}
         //---------------------------------------------
         //---------------mouse control-------------- -
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    isMouseDown = true;
-        //    initialPos = Input.mousePosition;
-        //}
-        //if (Input.GetMouseButtonUp(0))
-        //{
-        //    isMouseDown = false;
-        //    Calculate(Input.mousePosition);
-        //}
+        if (Input.GetMouseButtonDown(0))
+        {
+            isMouseDown = true;
+            initialPos = Input.mousePosition;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            isMouseDown = false;
+            Calculate(Input.mousePosition);
+        }
         //---------------------------------------------
         //--------------- keyboard control ------------
-        //if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
-        //{
-        //    isKeyPressed = true;
-        //    if (transform.position.z < 0.9f)
-        //    {
-        //        if (!isBlockLeft)
-        //        {
-        //            //Debug.Log("Left");
-        //            lane++;
-        //        }
-        //    }
-        //}
-        //if (Input.GetKeyUp(KeyCode.LeftArrow) && isKeyPressed)
-        //{
-        //    isKeyPressed = false;
-        //}
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && !isKeyPressed)
+        {
+            isKeyPressed = true;
+            if (lane < 1)
+            {
+                if (!isBlockLeft)
+                {
+                    //Debug.Log("Left");
+                    lane++;
+                }
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.LeftArrow) && isKeyPressed)
+        {
+            isKeyPressed = false;
+        }
 
-        //if (Input.GetKeyDown(KeyCode.RightArrow) && !isKeyPressed)
-        //{
-        //    isKeyPressed = true;
-        //    if (transform.position.z > -0.9f)
-        //    {
-        //        if (!isBLockRIght)
-        //        {
-        //            //Debug.Log("Right");
-        //            lane--;
-        //        }
-        //    }
-        //}
-        //if (Input.GetKeyUp(KeyCode.RightArrow) && isKeyPressed)
-        //{
-        //    isKeyPressed = false;
-        //}
+        if (Input.GetKeyDown(KeyCode.RightArrow) && !isKeyPressed)
+        {
+            isKeyPressed = true;
+            if (lane > -1)
+            {
+                if (!isBLockRIght)
+                {
+                    //Debug.Log("Right");
+                    lane--;
+                }
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.RightArrow) && isKeyPressed)
+        {
+            isKeyPressed = false;
+        }
         //---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
@@ -539,7 +518,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (initialPos.x > finalPos.x)
                     {
-                        if (transform.position.z < 0.9f)
+                        if (lane < 1)
                         {
                             //Debug.Log("Left");
                             if (!isBlockLeft)
@@ -551,7 +530,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        if (transform.position.z > -0.9f)
+                        if (lane > -1)
                         {
                             //Debug.Log("Right");
                             if (!isBLockRIght)
@@ -577,8 +556,6 @@ public class PlayerController : MonoBehaviour
                     {
                         //위로 드래그
                         //Debug.Log("Up");
-                        //myAnimator.ResetTrigger("Idle");
-                        //myAnimator.SetTrigger("Attack");
                         Attack();
                     }
                 }
