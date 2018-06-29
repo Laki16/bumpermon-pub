@@ -19,7 +19,8 @@ public class SpawnBlocks : MonoBehaviour
     [Header("Block")]
     public GameObject block;
     public static float blockXSize = 1.0f;
-    private static int maxBlocks = 400;
+    //maxBlocks >= maxNodes * maxDifficulty 이어야 함
+    private static int maxBlocks = 210;
     private static int maxNodes = 25;
     private int existNode = 0;
     private GameObject[] lane = new GameObject[maxBlocks];
@@ -30,8 +31,9 @@ public class SpawnBlocks : MonoBehaviour
     static public int maxSpace = 10;
     public int space;
     private int difficulty;
-    static public int maxDifficulty = 15;
-    static public int minDifficulty = 2;
+    static public int maxDifficulty = 8;
+    //1일시, 마인이 나오는 위치는 노드의 중간위치이므로 사실상 가로로 2칸이 이어진 장애물이 나오게된다. (피하는거 가능한가? 안되면 추후 늘리기 (최소3으로))
+    static public int minDifficulty = 1;
     private int beforeDifficulty;
 
     void Awake()
@@ -86,23 +88,23 @@ public class SpawnBlocks : MonoBehaviour
     {
         if (player.transform.position.x <= 200.0f)
         {
-            difficulty = Random.Range(10, maxDifficulty);
+            difficulty = Random.Range(7, maxDifficulty);
         }
         else if (200.0f < player.transform.position.x && player.transform.position.x <= 500.0f)
         {
-            difficulty = Random.Range(8, 13);
+            difficulty = Random.Range(5, maxDifficulty);
         }
         else if (500.0f < player.transform.position.x && player.transform.position.x <= 1000.0f)
         {
-            difficulty = Random.Range(6, 10);
+            difficulty = Random.Range(4, 6);
         }
         else if (1000.0f < player.transform.position.x && player.transform.position.x <= 1500.0f)
         {
-            difficulty = Random.Range(4, 8);
+            difficulty = Random.Range(3, 5);
         }
         else
         {
-            difficulty = Random.Range(minDifficulty, 7);
+            difficulty = Random.Range(minDifficulty, 4);
         }
     }
 

@@ -20,10 +20,12 @@ public class PlayerController : MonoBehaviour
     [Range(1, 300)]
     public float speed;
     private float groundCount;
-    //최소 자동전진 속도
+    //최소 속도
     public float minSpeed;
     //최고속도
     public float maxSpeed = 240.0f;
+    //최소 자동전진 속도
+    public float minAutoSpeed;
     //맵의 끝 지점(가정)
     public long endDistance;
     //목숨 : 벽에 부딪힐 때와 지뢰를 밟았을 때 줄어든다.
@@ -31,47 +33,46 @@ public class PlayerController : MonoBehaviour
     public bool checkDead = false;
     public bool isShield = false;
     //부딪혔을때 속도 제어용 변수
-    private float damagedSpeed = 1.0f;
+    public float damagedSpeed = 1.0f;
 
     [Header("FX")]
     private bool moveLeft = false;
     public GameObject shieldFX;
     public GameObject shieldEffect;
-    public GameObject sprintFX;
+    //public GameObject sprintFX;
     public GameObject justActionLeftFX;
     public GameObject justActionRightFX;
-    public GameObject gearUpFX_1;
-    public GameObject gearDownFX_1;
-    public GameObject gearDownFX_2;
+    //public GameObject gearUpFX_1;
+    //public GameObject gearDownFX_1;
+    //public GameObject gearDownFX_2;
     public GameObject nitroFX;
 
     [Header("SFX")]
     public GameObject soundManager;
 
-
-    [Header("Gear System")]
-    [Tooltip("현재 기어")]
-    public int currentGear;
-    [Tooltip("기어별 상한속도")]
-    public float maxGearSpeed;
-    [Tooltip("기어 풀리는 변수")]
-    public float unGear;
-    [Tooltip("max 속도일때 이 시간만큼 유지하면 기어업")]
-    public float upgradeGear;
-    [Tooltip("최대 기어")]
-    [Range(1, 6)]
-    public int maxGear;
-    [Tooltip("속도 증가 가중치")]
-    public float increaseWeight;
-    [Tooltip("속도 감소 가중치")]
-    public float decreaseWeight;
+    //[Header("Gear System")]
+    //[Tooltip("현재 기어")]
+    //public int currentGear;
+    //[Tooltip("기어별 상한속도")]
+    //public float maxGearSpeed;
+    //[Tooltip("기어 풀리는 변수")]
+    //public float unGear;
+    //[Tooltip("max 속도일때 이 시간만큼 유지하면 기어업")]
+    //public float upgradeGear;
+    //[Tooltip("최대 기어")]
+    //[Range(1, 6)]
+    //public int maxGear;
+    //[Tooltip("속도 증가 가중치")]
+    //public float increaseWeight;
+    //[Tooltip("속도 감소 가중치")]
+    //public float decreaseWeight;
 
     [Header("Nitro System")]
     public float nitro = 0;
     public bool isNitro = false;
     public bool useNitro = false;
-    float preSpeed;
-    int preGear;
+    public float preSpeed;
+    //int preGear;
     public float nitroTime = 0.0f;
     bool isBoost = false;
 
@@ -128,6 +129,7 @@ public class PlayerController : MonoBehaviour
         lane = 0;
         groundCount = 0.0f;
         speed = minSpeed;
+        minAutoSpeed = minSpeed;
 
         isChangeColor = false;
 
@@ -150,12 +152,16 @@ public class PlayerController : MonoBehaviour
             myAnimator.Play("Die");
             leftEnemyArm.Laugh();
             rightEnemyArm.Laugh();
-            if(gameManager != null)
+            if (gameManager != null)
                 gameManager.GameOver();
         }
 
         if (live > 0)
         {
+            if(speed < minAutoSpeed)
+            {
+                speed += 1.0f * Time.deltaTime;
+            }
             transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed * damagedSpeed);
         }
         //-----------------Ray-----------------------
@@ -165,13 +171,15 @@ public class PlayerController : MonoBehaviour
         if (transform.position.x - groundCount >= 0)
         {
             groundCount += SpawnGrounds.groundXSize * 10;
-            groundController.GetComponent<SpawnGrounds>().SpawnGround();
+            //groundController.GetComponent<SpawnGrounds>().SpawnGround();
+            groundController.GetComponent<SpawnGrounds>().DecideGround();
+            minAutoSpeed += 5.0f;
         }
         //--------------------------------------------
         //-------------------Ray----------------------
-        if(!useNitro)
-        { 
-        Raycast();
+        if (!useNitro)
+        {
+            Raycast();
             if (!isBlockChange)
             {
                 //거리측정
@@ -184,7 +192,7 @@ public class PlayerController : MonoBehaviour
                         {
                             //부스트
                             isBlockChange = true;
-                            if(moveLeft)
+                            if (moveLeft)
                             {
                                 StartCoroutine(LeftFX());
                             }
@@ -193,7 +201,7 @@ public class PlayerController : MonoBehaviour
                                 StartCoroutine(RightFX());
                             }
                             if (speed < maxSpeed)
-                            { 
+                            {
                                 startTime = Time.time;
                                 endTime = startTime + 0.7f;
                                 speed += 10.0f;
@@ -201,7 +209,7 @@ public class PlayerController : MonoBehaviour
                             nitro += 10.0f;
                         }
                         //버그(부딪히고 저스트액션 했을때, 노부스트되어야함)
-                        else if(!isBlockForward && speed < minSpeed)
+                        else if (!isBlockForward && speed < minSpeed)
                         {
                             isBlockChange = true;
                         }
@@ -241,7 +249,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 myAnimator.SetBool("Sprint", false);
-                if (speed >= minSpeed)
+                if (speed >= minAutoSpeed)
                 {
                     speed -= Mathf.Pow(speed, 0.25f) * Time.deltaTime;
                 }
@@ -259,31 +267,31 @@ public class PlayerController : MonoBehaviour
             {
                 if (!isNitroShockwave)
                 {
-                    StartCoroutine(NitroShockwave());
+                    StartCoroutine(NitroShockwave(false));
                 }
             }
         }
         //---------------------------------------------
         //----------------- Attack --------------------
-        if (isAttack)
-        {
-            attackTime -= Time.deltaTime;
-            Ray attackRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
-            RaycastHit attackHit;
-            //13 : mine Layer
-            if (Physics.Raycast(attackRay, out attackHit, 2.0f, 1 << 13))
-            {
-                //폭발
-                attackHit.collider.gameObject.SetActive(false);
-            }
-            if (attackTime <= 0)
-            {
-                isAttack = false;
-            }
-        }
+        //if (isAttack)
+        //{
+        //    attackTime -= Time.deltaTime;
+        //    Ray attackRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
+        //    RaycastHit attackHit;
+        //    //13 : mine Layer
+        //    if (Physics.Raycast(attackRay, out attackHit, 2.0f, 1 << 13))
+        //    {
+        //        //폭발
+        //        attackHit.collider.gameObject.SetActive(false);
+        //    }
+        //    if (attackTime <= 0)
+        //    {
+        //        isAttack = false;
+        //    }
+        //}
         //---------------------------------------------
         //--------------- touch control ---------------
-        for (int i = 0; i< Input.touches.Length; i++)
+        for (int i = 0; i < Input.touches.Length; i++)
         {
             if (Input.touches[i].phase == TouchPhase.Began)
             {
@@ -361,7 +369,6 @@ public class PlayerController : MonoBehaviour
         //---------------------UI----------------------
         orb.GetComponent<OrbFill>().Fill = nitro / 100.0f;
         speedBar.fillAmount = speed / maxSpeed;
-        //gearBar.value = (currentGear - 1) / 4.0f;
         if (speed < 0)
         {
             tempSpeed = 0;
@@ -402,17 +409,17 @@ public class PlayerController : MonoBehaviour
         //}
         //---------------------------------------------
 
-        if(nitro >= 100){
+        if (nitro >= 100)
+        {
             orb.GetComponent<OrbColor>().AccentColor = new Color32((byte)255, (byte)215, (byte)0, (byte)255);
         }
     }
 
     public bool isNitroShockwave = false;
-    public IEnumerator NitroShockwave()
+    public IEnumerator NitroShockwave(bool isRevival)
     {
         isNitroShockwave = true;
         Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f + speed / 15, 1 << 12);
-        //soundManager.GetComponent<SoundManager>().PlayBox();
         if (cols != null)
         {
             for (int i = 0; i < cols.Length; i++)
@@ -420,8 +427,8 @@ public class PlayerController : MonoBehaviour
                 cols[i].gameObject.GetComponent<Block>().StartCoroutine(cols[i].gameObject.GetComponent<Block>().SplitMesh(true));
             }
         }
-        //useNitro = false;
         isNitroShockwave = false;
+        if(!isRevival)
         StartCoroutine(AfterNitro());
         yield return null;
     }
@@ -507,13 +514,18 @@ public class PlayerController : MonoBehaviour
     {
         if (isNitro)
         {
+            if (speedRecovery != null)
+            {
+                StopCoroutine(speedRecovery);
+            }
             preSpeed = speed;
             //preGear = currentGear;
+            damagedSpeed = 1.0f;
             useNitro = true;
             soundManager.GetComponent<SoundManager>().PlayNitro();
             myAnimator.Play("Roll");
             nitroFX.SetActive(true);
-            if(leftEnemyArm != null)
+            if (leftEnemyArm != null)
                 leftEnemyArm.Surprise();
             if (rightEnemyArm != null)
                 rightEnemyArm.Surprise();
@@ -549,7 +561,6 @@ public class PlayerController : MonoBehaviour
     //----------------충돌------------------------
     private void OnTriggerEnter(Collider other)
     {
-        //if (other.gameObject.layer != LayerMask.NameToLayer("Item"))
         if (other.gameObject.layer != LayerMask.NameToLayer("Item"))
         {
             soundManager.GetComponent<SoundManager>().PlayBox();
@@ -557,23 +568,24 @@ public class PlayerController : MonoBehaviour
             {
                 if (!isShield)
                 {
-                    if (live > 0)
-                    {
-                        live--;
-                        if(gameManager != null)
-                            gameManager.LiveDown();
-                    }
                     myAnimator.Play("Damage");
                     preSpeed = speed;
                     speed = 0.0f;
-                    StartCoroutine(SpeedRecovery());
+                    if (live > 0)
+                    {
+                        live--;
+                        if (gameManager != null)
+                            gameManager.LiveDown();
+                    }
+
+                    speedRecovery = StartCoroutine(SpeedRecovery());
                 }
                 else
                 {
                     myAnimator.Play("Damage");
                     preSpeed = speed;
                     speed = 0.0f;
-                    StartCoroutine(SpeedRecovery());
+                    speedRecovery = StartCoroutine(SpeedRecovery());
                     isShield = false;
                     shieldEffect.SetActive(false);
                 }
@@ -603,6 +615,8 @@ public class PlayerController : MonoBehaviour
         }
     }
     //---------------------------------------------
+
+    Coroutine speedRecovery;
     IEnumerator SpeedRecovery()
     {
         damagedSpeed = -8.0f;
@@ -613,11 +627,16 @@ public class PlayerController : MonoBehaviour
             damagedSpeed = 1.0f;
             speed += minSpeed;
         }
-        while(speed < preSpeed/2)
+        while(speed > minAutoSpeed)
         {
-            speed += preSpeed / 10 * Time.deltaTime;
+            speed += 10 * Time.deltaTime;
             yield return null;
         }
+        //while (speed < preSpeed / 2)
+        //{
+        //    speed += preSpeed / 10 * Time.deltaTime;
+        //    yield return null;
+        //}
     }
 
     void SideRayCast()
@@ -651,8 +670,14 @@ public class PlayerController : MonoBehaviour
         nitroFX.SetActive(false);
         isNitro = false;
         nitro = 0;
-        speed = preSpeed;
-        //currentGear = preGear;
+        if(preSpeed < minAutoSpeed)
+        {
+            speed = minAutoSpeed;
+        }
+        else
+        {
+            speed = preSpeed;
+        }
         nitroTime = 4.3f;
         useNitro = false;
         orb.GetComponent<OrbColor>().AccentColor = new Color32((byte)165, (byte)0, (byte)0, (byte)255);
@@ -678,10 +703,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
         justActionRightFX.SetActive(false);
     }
-    IEnumerator GearDownFX()
-    {
-        gearDownFX_2.SetActive(true);
-        yield return new WaitForSeconds(1.5f);
-        gearDownFX_2.SetActive(false);
-    }
+    //IEnumerator IncreaseMinAutoSpeed()
+    //{
+    //    float startTime = Time.time;
+    //    float runningTime = 0;
+    //}
 }

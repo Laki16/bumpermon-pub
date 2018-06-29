@@ -131,7 +131,7 @@ public class EnemyArm : MonoBehaviour
         //마인 설치 지점까지 이동(오차 1)
         while (Vector3.Distance(transform.position, armPosition) >= 1.0f)
         {
-            changedPosition = 20.0f;
+            changedPosition = 40.0f;
             yield return null;
         }
         //공격 동안 멈추기(3초간)

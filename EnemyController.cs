@@ -86,7 +86,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-
     //마인 설치 요구
     public void MineRequest(int beforeDifficulty, int difficulty, int lane)
     {
@@ -112,8 +111,6 @@ public class EnemyController : MonoBehaviour
             minePosition = new Vector3(beforeDifficulty + (difficulty / 2), 0.3f, mineLane);
             if (mineLane == 1) { lArmJustMove = false; }
             else { rArmJustMove = false; }
-            //Debug.Log(lane);
-            //Debug.Log(mineLane);
         }
     }
 

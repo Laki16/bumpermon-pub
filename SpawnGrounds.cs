@@ -13,12 +13,23 @@ public class SpawnGrounds : MonoBehaviour
     public GameObject[] groundArray = new GameObject[3];
     private int groundIterator = 0;
     private int backGroundIterator = 0;
-    public GameObject backGround;
+    public GameObject[] backGround = new GameObject[3];
     public GameObject[] backGroundArray = new GameObject[3];
 
     [Header("Position")]
     private Vector3 localPostion;
     private Vector3 spawnPosition;
+
+    [Header("Stage")]
+    //스테이지 바뀌는 중
+    public bool betweenStage = false;
+    public int nowStage = 0;
+    //맵이 바뀌는 속도(터널길이)
+    public int mapLoadingCount = 0;
+    public GameObject tunnel;
+    public GameObject stageController;
+    //진행상황 (스테이지 길이를 늘리려면 +)
+    public int progressCount = 0;
 
     void Start()
     {
@@ -26,9 +37,20 @@ public class SpawnGrounds : MonoBehaviour
         spawnPosition = localPostion + new Vector3(-50, 0, 0);
         InitGround();
     }
-    void Update()
-    {
 
+    private void Update()
+    {
+        if(progressCount > 3)
+        {
+            stageController.GetComponent<StageController>().EndStage();
+        }
+    }
+
+    public void StageStart()
+    {
+        progressCount = 0;
+        betweenStage = true;
+        nowStage++;
     }
 
     //in Loading
@@ -39,11 +61,25 @@ public class SpawnGrounds : MonoBehaviour
             groundArray[i] = Instantiate(ground, spawnPosition, new Quaternion(0, 0, 0, 0));
             groundArray[i].SetActive(true);
 
-                backGroundArray[i] = Instantiate(backGround, localPostion + new Vector3(150 * i +75, 0, 0), new Quaternion(0, 0, 0, 0));
+                backGroundArray[i] = Instantiate(backGround[nowStage], localPostion + new Vector3(150 * i +75, 0, 0), new Quaternion(0, 0, 0, 0));
                 backGroundArray[i].SetActive(true);
 
             spawnPosition += new Vector3(groundXSize * 10, 0, 0);
         }
+    }
+
+    public void DecideGround()
+    {
+        if(betweenStage)
+        {
+            ChangeGround();
+        }
+        else
+        {
+            SpawnGround();
+        }
+        if(!betweenStage)
+        progressCount++;
     }
 
     public void SpawnGround()
@@ -53,6 +89,41 @@ public class SpawnGrounds : MonoBehaviour
         groundIterator %= 3;
         if (groundIterator == 0)
         {
+            backGroundArray[backGroundIterator].transform.position += new Vector3(450f, 0, 0);
+            backGroundIterator++;
+            backGroundIterator %= 3;
+        }
+    }
+
+    public void ChangeGround()
+    {
+        groundArray[groundIterator].transform.position += new Vector3(groundXSize * 3 * 10, 0, 0);
+        groundIterator++;
+        groundIterator %= 3;
+        if (groundIterator == 0)
+        {
+            Vector3 backGroundPos = backGroundArray[backGroundIterator].transform.position;
+            Quaternion backGroundRotation = backGroundArray[backGroundIterator].transform.rotation;
+
+            //Destroy(backGroundArray[backGroundIterator]);
+            if (mapLoadingCount < 3)
+            {
+                backGroundArray[backGroundIterator] = Instantiate(tunnel, backGroundPos, backGroundRotation);
+                backGroundArray[backGroundIterator].SetActive(true);
+                mapLoadingCount++;
+            }
+            else if(mapLoadingCount < 6)
+            {
+                backGroundArray[backGroundIterator] = Instantiate(backGround[nowStage], backGroundPos, backGroundRotation);
+                backGroundArray[backGroundIterator].SetActive(true);
+                mapLoadingCount++;
+            }
+            else
+            {
+                mapLoadingCount = 0;
+                betweenStage = false;
+                //return;
+            }
             backGroundArray[backGroundIterator].transform.position += new Vector3(450f, 0, 0);
             backGroundIterator++;
             backGroundIterator %= 3;

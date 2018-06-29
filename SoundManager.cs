@@ -138,7 +138,7 @@ public class SoundManager : MonoBehaviour {
     }
     public IEnumerator GameOver()
     {
-        BGM.Stop();
+        //BGM.Stop();
         BGM.clip = gameOverEffect;
         BGM.Play();
         yield return new WaitForSeconds(BGM.clip.length);

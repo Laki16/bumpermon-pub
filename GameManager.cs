@@ -264,12 +264,15 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(GameStart());
 
         //주변 블럭 날리기
-        StartCoroutine(player.GetComponent<PlayerController>().NitroShockwave());
+        StartCoroutine(player.GetComponent<PlayerController>().NitroShockwave(true));
+        //player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minAutoSpeed;
+        player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minSpeed;
 
         player.GetComponent<Animator>().Play("Idle");
         player.GetComponent<PlayerController>().live = 1;
         player.GetComponent<PlayerController>().checkDead = false;
         player.GetComponent<PlayerController>().speed += player.GetComponent<PlayerController>().minSpeed;
+        player.GetComponent<PlayerController>().damagedSpeed = 1.0f;
         LiveUp();
     }
 
