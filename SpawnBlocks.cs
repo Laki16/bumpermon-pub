@@ -36,9 +36,16 @@ public class SpawnBlocks : MonoBehaviour
     static public int minDifficulty = 1;
     private int beforeDifficulty;
 
+    [Header("Coin")]
+    public GameObject genCoin;
+    static int maxCoins = 400;
+    int coinIterator = 0;
+    private GameObject[] genCoins = new GameObject[maxCoins];
+
     void Awake()
     {
         InitBlock();
+        InitCoin();
         endSpawn = true;
     }
 
@@ -115,6 +122,7 @@ public class SpawnBlocks : MonoBehaviour
         beforeDifficulty += difficulty + space;
         SetDifficulty();
         SetSpace();
+        SpawnCoin();
 
         //node[nodeIterator] = lane[iterator];
         for (int i = 0; i < difficulty; i++)
@@ -197,6 +205,34 @@ public class SpawnBlocks : MonoBehaviour
         for (int i = 0; i < maxBlocks; i++)
         {
             lane[i] = Instantiate(block, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+        }
+    }
+
+    void InitCoin(){
+        for (int i = 0; i < maxCoins; i++)
+        {
+            genCoins[i] = Instantiate(genCoin, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+        }
+    }
+
+    void SpawnCoin(){
+        Debug.Log("Spawn Coins");
+        int genRandom;
+        if (nowLane == -1) genRandom = Random.Range(0, 2);
+        else if (nowLane == 1) genRandom = Random.Range(-1, 1);
+        else{
+            genRandom = Random.Range(0, 2);
+            if (genRandom == 0) genRandom = -1;
+        }
+        for (int i = 0; i < difficulty + space; i++)
+        {
+            //Debug.Log("coin gen");
+            genCoins[coinIterator].GetComponent<CoinMoving>().moving = false;
+            genCoins[coinIterator].transform.position = new Vector3(beforeDifficulty, .5f, 0);
+            genCoins[coinIterator].transform.position += new Vector3(blockXSize * i, 0, genRandom);
+            genCoins[coinIterator].SetActive(true);
+            coinIterator++;
+            coinIterator %= maxCoins;
         }
     }
 }

@@ -590,6 +590,11 @@ public class PlayerController : MonoBehaviour
                     shieldEffect.SetActive(false);
                 }
             }
+        }else{
+            other.GetComponent<CoinMoving>().target = transform.position + new Vector3(0, 5, 5);
+            other.GetComponent<CoinMoving>().moving = true;
+            if(speed >= 100) other.GetComponent<CoinMoving>().speed = speed / 100;
+            else other.GetComponent<CoinMoving>().speed = 1;
         }
     }
 
