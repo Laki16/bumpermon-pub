@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour {
 
     public GameObject outGamePanel;
     public GameObject optionPanel;
+    public GameObject characterPanel;
+    public GameObject shopPanel;
 
     public GameObject startBtn;
     public GameObject optionBtn;
@@ -72,6 +74,8 @@ public class GameManager : MonoBehaviour {
     Animator myCameraAnimator;
     Animator myMenuAnimator;
     Animator myGameOverAnimator;
+    Animator myCharacterAnimator;
+    Animator myShopAnimator;
 
     [Header("DB")]
     public int coin;
@@ -89,6 +93,8 @@ public class GameManager : MonoBehaviour {
         myCameraAnimator = camera.GetComponent<Animator>();
         myMenuAnimator = optionPanel.GetComponent<Animator>();
         myGameOverAnimator = gameOverPanel.GetComponent<Animator>();
+        myCharacterAnimator = characterPanel.GetComponent<Animator>();
+        myShopAnimator = shopPanel.GetComponent<Animator>();
 
         LoadRecord();
         //LoadSample();
@@ -122,6 +128,9 @@ public class GameManager : MonoBehaviour {
     }
 
     IEnumerator GameStart(){
+        //player의 능력치를 가져옴
+        player.GetComponent<Character>().SetStatus();
+
         for (int i = 3; i > 0; i--){
             countdownText.text = (i + "");
             if (i == 1)
@@ -324,6 +333,21 @@ public class GameManager : MonoBehaviour {
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().GameOver());
         skullFX.SetActive(true);
+    }
+
+    public void BtnOnCharacter()
+    {
+        myCharacterAnimator.SetBool("isOpen", true);
+    }
+
+    public void BtnOnShop()
+    {
+        myShopAnimator.SetBool("isOpen", true);
+    }
+
+    public void BtnOnMain()
+    {
+        myShopAnimator.SetBool("isOpen", false);
     }
 
     public void BtnOnQuit()
