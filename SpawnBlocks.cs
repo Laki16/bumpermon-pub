@@ -122,7 +122,8 @@ public class SpawnBlocks : MonoBehaviour
         beforeDifficulty += difficulty + space;
         SetDifficulty();
         SetSpace();
-        SpawnCoin();
+        //int rand = Random.Range(0, 3);
+        //if(rand == 0) SpawnCoin();
 
         //node[nodeIterator] = lane[iterator];
         for (int i = 0; i < difficulty; i++)
@@ -216,7 +217,7 @@ public class SpawnBlocks : MonoBehaviour
     }
 
     void SpawnCoin(){
-        Debug.Log("Spawn Coins");
+        //Debug.Log("Spawn Coins");
         int genRandom;
         if (nowLane == -1) genRandom = Random.Range(0, 2);
         else if (nowLane == 1) genRandom = Random.Range(-1, 1);
@@ -226,9 +227,8 @@ public class SpawnBlocks : MonoBehaviour
         }
         for (int i = 0; i < difficulty + space; i++)
         {
-            //Debug.Log("coin gen");
-            genCoins[coinIterator].GetComponent<CoinMoving>().moving = false;
-            genCoins[coinIterator].transform.position = new Vector3(beforeDifficulty, .5f, 0);
+            genCoins[coinIterator].GetComponent<Renderer>().enabled = true;
+            genCoins[coinIterator].transform.position = new Vector3(beforeDifficulty, .2f, 0);
             genCoins[coinIterator].transform.position += new Vector3(blockXSize * i, 0, genRandom);
             genCoins[coinIterator].SetActive(true);
             coinIterator++;

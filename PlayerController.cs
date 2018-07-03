@@ -116,6 +116,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 offset;
     float startTime;
     float endTime;
+    bool camMoving = false;
+    private Vector3 velocity = Vector3.zero;
 
     [Header("Attack")]
     private float attackTime;
@@ -202,8 +204,12 @@ public class PlayerController : MonoBehaviour
                             }
                             if (speed < maxSpeed)
                             {
-                                startTime = Time.time;
-                                endTime = startTime + 0.7f;
+                                if(camMoving){
+                                    endTime += 0.1f;
+                                }else{
+                                    endTime = Time.time + 0.5f;
+                                }
+                                camMoving = true;
                                 speed += 10.0f;
                             }
                             nitro += 10.0f;
@@ -387,19 +393,18 @@ public class PlayerController : MonoBehaviour
         //---------------------------------------------
 
         //-------------------Camera--------------------
+        offset.x = Mathf.Clamp(offset.x, -5.0f, -2.0f);
         camera.transform.position = transform.position + offset;
         //if (isBoost && Time.time <= startTime + .5f)
-        if (Time.time <= startTime + .5f)
+        if (Time.time <= endTime)
         {
             offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
         }
-        else if (Time.time >= startTime + .5f && Time.time <= endTime)
-        {
-            offset += new Vector3(2.5f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
-        }
         else
         {
-            offset = new Vector3(-2.0f, 1.5f, 0);
+            camMoving = false;
+            //offset = Vector3.Lerp(offset, new Vector3(-2.0f, 1.5f, 0), Time.deltaTime * 1.5f);
+            offset = Vector3.SmoothDamp(offset, new Vector3(-2.0f, 1.5f, 0), ref velocity, 1.5f);
         }
         //---------------------------------------------
 
@@ -590,11 +595,6 @@ public class PlayerController : MonoBehaviour
                     shieldEffect.SetActive(false);
                 }
             }
-        }else{
-            other.GetComponent<CoinMoving>().target = transform.position + new Vector3(0, 5, 5);
-            other.GetComponent<CoinMoving>().moving = true;
-            if(speed >= 100) other.GetComponent<CoinMoving>().speed = speed / 100;
-            else other.GetComponent<CoinMoving>().speed = 1;
         }
     }
 
