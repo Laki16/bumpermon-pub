@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class FeverUI : MonoBehaviour {
+public class FeverUI : MonoBehaviour
+{
 
     public TextMeshProUGUI comboText;
     public TextMeshProUGUI feverText;
@@ -18,8 +19,9 @@ public class FeverUI : MonoBehaviour {
     public float timeIntervalColor = 0.5f;
     public float speedColor = 2.0f;
     [Header("Fever System")]
-    public float feverTime = 10.0f;
+    public float feverTime = 0.0f;
     public bool isFever = false;
+    public bool isCombo = true;
     // Fever mode : 1.0f, non Fever mode : 0.5f
     private float feverWeight = 0.5f;
 
@@ -29,23 +31,33 @@ public class FeverUI : MonoBehaviour {
     //저스트액션 할때마다 콤보증가(시간(2초쯤 동안 못하면 콤보 실패))
     //20콤보쯤하면 피버모드 발동
 
-    
+    private float velocity = 0.0f;
     private void Start()
     {
-        feverSwitch = FeverOn();
-        colorChangeSwitch = ColorChangeRoutine();
+        //feverSwitch = FeverOn();
+        //colorChangeSwitch = ColorChangeRoutine();
+        ComboOff();
+        FeverOff();
+
     }
 
     private void Update()
     {
-        if(feverTime >= 10)
+        if(feverTime <=0 && isCombo)
         {
-            StartCoroutine(feverSwitch);
+            ComboOff();
         }
-        if(feverTime > 0 && isFever)
+        if (feverTime >= 10)
+        {
+            //StartCoroutine(feverSwitch);
+            if (!isFever)
+                StartCoroutine(FeverOn());
+        }
+        if (feverTime > 0)
         {
             feverTime -= feverWeight * Time.deltaTime;
-            Mathf.Clamp(feverTime, 0, 10);
+            //feverTime = Mathf.SmoothDamp(feverTime, 0, ref velocity, 4);
+            //Mathf.Clamp(feverTime, 0, 10.2f);
         }
         feverBarL.fillAmount = feverTime / 10.0f;
         feverBarR.fillAmount = feverTime / 10.0f;
@@ -56,31 +68,52 @@ public class FeverUI : MonoBehaviour {
 
     //}
 
+    public void ComboOn()
+    {
+        isCombo = true;
+        comboText.faceColor = new Color32(255, 255, 255, 255);
+    }
+
+    public void ComboOff()
+    {
+        isCombo = false;
+        comboText.faceColor = new Color32(0, 0, 0, 0);
+        //Debug.Log("HI");
+    }
+
     public void FeverExtend()
     {
-        //if (isFever)
-        //{
-            feverTime += 0.5f;
-            Mathf.Clamp(feverTime, 0, 10);
-        //}
+        if(feverTime < 11.0f)
+        feverTime += 1.0f;
+        //Mathf.Clamp(feverTime, 0, 10);
+        //SmoothHighlight();
+        if(!isCombo && !isFever)
+        {
+            ComboOn();
+        }
     }
 
     public IEnumerator FeverOn()
     {
-        if(!isFever)
+        //Debug.Log("YOU");
+        if (!isFever)
         {
+            //Debug.Log("aasdfasdf");
+            ComboOff();
             isFever = true;
             feverWeight = 1.0f;
-            StartCoroutine(colorChangeSwitch);
+            //StartCoroutine(colorChangeSwitch);
+            StartCoroutine(ColorChangeRoutine());
             //feverTime = 10.0f;
-            feverBarL.fillAmount = 1;
-            feverBarR.fillAmount = 1;
-            while (feverTime < 0)
+            //feverBarL.fillAmount = 1;
+            //feverBarR.fillAmount = 1;
+            while (feverTime > 0)
             {
-                feverTime -= Time.deltaTime;
+                //feverTime -= Time.deltaTime;
                 yield return null;
             }
-            StopCoroutine(colorChangeSwitch);
+            //StopCoroutine(colorChangeSwitch);
+            StopAllCoroutines();
             FeverOff();
         }
     }
@@ -108,14 +141,29 @@ public class FeverUI : MonoBehaviour {
         StartCoroutine(ColorChangeRoutine());
     }
 
-    private IEnumerator SizeChangeRoutine()
+    //private IEnumerator SizeChangeRoutine()
+    //{
+    //    float timer = 0.0f;
+    //    float bumpSize = 170;
+
+    //    while (timer < timeIntervalSize)
+    //    {
+    //        comboText.fontSize = Mathf.Lerp(140, )                                      
+    //    }
+    //}
+
+    public IEnumerator SmoothHighlight()
     {
         float timer = 0.0f;
-        float bumpSize = 170;
 
-        while (timer < timeIntervalSize)
+        while (timer < 1.0f)
         {
-            comboText.fontSize = Mathf.Lerp(140, )                                      
+            timer += 1.5f * Time.deltaTime;
+            float temp = 30*Mathf.Sin(Mathf.PI * (Mathf.Pow(timer - 1, 4)));
+            comboText.GetComponent<RectTransform>().sizeDelta = new Vector2(temp, temp);
+            //comboText.transform.localScale = 140 + 30.0f*Mathf.Sin(Mathf.PI * (Mathf.Pow(timer - 1, 4)));
+            feverText.fontSize = 140 + 30.0f*Mathf.Sin(Mathf.PI * (Mathf.Pow(timer - 1, 4)));
+            yield return null;
         }
     }
 }

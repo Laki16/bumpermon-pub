@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject feverUI;
+
     [Header("Control")]
     public GameObject groundController;
     public GameObject blockController;
@@ -364,6 +366,18 @@ public class PlayerController : MonoBehaviour
         {
             isKeyPressed = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) && !isKeyPressed)
+        {
+            isKeyPressed = true;
+
+            feverUI.GetComponent<FeverUI>().FeverExtend();
+        }
+        if (Input.GetKeyUp(KeyCode.UpArrow) && isKeyPressed)
+        {
+            isKeyPressed = false;
+        }
+
         //---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
