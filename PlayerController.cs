@@ -202,16 +202,23 @@ public class PlayerController : MonoBehaviour
                             {
                                 StartCoroutine(RightFX());
                             }
-                            if (speed < maxSpeed)
+                            //if (speed < maxSpeed)
+                            //{
+                            //    if(camMoving){
+                            //        //endTime += 0.1f;
+                            //    }else{
+                            //        endTime = Time.time + 0.3f;
+                            //    }
+                            //    camMoving = true;
+                            //    speed += 5.0f;
+                            //}
+                            //밸런스를 위해 부스트를 사용할 때 항상 5만큼 속도를 늘려주는 대신 기본적으로 줄어드는 속도를 증가시켰음
+                            if (!camMoving)
                             {
-                                if(camMoving){
-                                    endTime += 0.1f;
-                                }else{
-                                    endTime = Time.time + 0.5f;
-                                }
-                                camMoving = true;
-                                speed += 10.0f;
+                                endTime = Time.time + 0.5f;
                             }
+                            camMoving = true;
+                            speed += 5.0f;
                             nitro += 10.0f;
                         }
                         //버그(부딪히고 저스트액션 했을때, 노부스트되어야함)
@@ -257,7 +264,9 @@ public class PlayerController : MonoBehaviour
                 myAnimator.SetBool("Sprint", false);
                 if (speed >= minAutoSpeed)
                 {
-                    speed -= Mathf.Pow(speed, 0.25f) * Time.deltaTime;
+                    //속도를 더 빠르게 감소시킨다. 누르고 있지 않으면 답답하게끔
+                    speed -= Mathf.Pow(speed, 0.6f) * Time.deltaTime;
+                    //speed -= Mathf.Pow(speed, 0.25f) * Time.deltaTime;
                 }
             }
         }
@@ -393,18 +402,17 @@ public class PlayerController : MonoBehaviour
         //---------------------------------------------
 
         //-------------------Camera--------------------
-        offset.x = Mathf.Clamp(offset.x, -5.0f, -2.0f);
+        offset.x = Mathf.Clamp(offset.x, -3.0f, -2.0f);
         camera.transform.position = transform.position + offset;
-        //if (isBoost && Time.time <= startTime + .5f)
         if (Time.time <= endTime)
         {
-            offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
+            offset -= new Vector3(1.5f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
+            //offset = Vector3.SmoothDamp(offset, new Vector3(-3.5f, 1.5f, 0), ref velocity, 1.0f);
         }
         else
         {
             camMoving = false;
-            //offset = Vector3.Lerp(offset, new Vector3(-2.0f, 1.5f, 0), Time.deltaTime * 1.5f);
-            offset = Vector3.SmoothDamp(offset, new Vector3(-2.0f, 1.5f, 0), ref velocity, 1.5f);
+            offset = Vector3.SmoothDamp(offset, new Vector3(-2.0f, 1.5f, 0), ref velocity, 0.2f);
         }
         //---------------------------------------------
 
