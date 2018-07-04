@@ -406,13 +406,14 @@ public class PlayerController : MonoBehaviour
         camera.transform.position = transform.position + offset;
         if (Time.time <= endTime)
         {
-            offset -= new Vector3(1.5f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
+            offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
             //offset = Vector3.SmoothDamp(offset, new Vector3(-3.5f, 1.5f, 0), ref velocity, 1.0f);
         }
         else
         {
             camMoving = false;
-            offset = Vector3.SmoothDamp(offset, new Vector3(-2.0f, 1.5f, 0), ref velocity, 0.2f);
+            //offset = Vector3.Slerp(offset, new Vector3(-2.0f, 1.5f, 0), 0.15f);
+            offset = Vector3.SmoothDamp(offset, new Vector3(-2.0f, 1.5f, 0), ref velocity, 0.15f);
         }
         //---------------------------------------------
 
@@ -654,12 +655,13 @@ public class PlayerController : MonoBehaviour
 
     void SideRayCast()
     {
+        int layerMask = 1 << LayerMask.NameToLayer("Block");
         Ray rayLeft = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
         Ray rayRight = new Ray(transform.position + new Vector3(0, 0.3f, 0), -transform.forward);
         RaycastHit hitLeft;
         RaycastHit hitRight;
 
-        if (Physics.Raycast(rayLeft, out hitLeft, 1.0f))
+        if (Physics.Raycast(rayLeft, out hitLeft, 1.0f, layerMask))
         {
             isBlockLeft = true;
         }
@@ -667,7 +669,7 @@ public class PlayerController : MonoBehaviour
         {
             isBlockLeft = false;
         }
-        if (Physics.Raycast(rayRight, out hitRight, 1.0f))
+        if (Physics.Raycast(rayRight, out hitRight, 1.0f, layerMask))
         {
             isBLockRIght = true;
         }

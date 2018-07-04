@@ -122,8 +122,8 @@ public class SpawnBlocks : MonoBehaviour
         beforeDifficulty += difficulty + space;
         SetDifficulty();
         SetSpace();
-        //int rand = Random.Range(0, 3);
-        //if(rand == 0) SpawnCoin();
+        int rand = Random.Range(0, 3);
+        if (rand == 0) SpawnCoin();
 
         //node[nodeIterator] = lane[iterator];
         for (int i = 0; i < difficulty; i++)

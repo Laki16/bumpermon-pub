@@ -26,7 +26,7 @@ public class CameraShake : MonoBehaviour {
 
     public IEnumerator Smash(float duration, float magnitude)
     {
-        Debug.Log("Smash");
+        //Debug.Log("Smash");
         Vector3 originPos = transform.localPosition;
 
         float elapsed = 0.0f;
