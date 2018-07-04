@@ -5,6 +5,7 @@ using UnityEngine;
 public class CoinMoving : MonoBehaviour {
 
     public GameObject effect;
+    public GameManager gameManager;
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -12,6 +13,7 @@ public class CoinMoving : MonoBehaviour {
             effect.SetActive(true);
             effect.GetComponent<ParticleSystem>().Play();
             GetComponent<Renderer>().enabled = false;
+            gameManager.coin++;
         }
 	}
 }
