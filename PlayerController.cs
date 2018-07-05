@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Animation")]
     public float sprintMultiplier;
-    Animator myAnimator;
+    public Animator myAnimator;
 
     [Header("Camera")]
     public GameObject camera;
@@ -134,8 +134,13 @@ public class PlayerController : MonoBehaviour
         minAutoSpeed = minSpeed;
 
         isChangeColor = false;
-
+        
         myAnimator = GetComponent<Animator>();
+        if(myAnimator == null)
+        {
+            Debug.Log("Find to child anim");
+            myAnimator = GetComponentInChildren<Animator>();
+        }
         //bloomsettings = profile.bloom.settings;
         //bloomsettings.bloom.intensity = 0;
         GameObject shield;
@@ -282,7 +287,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (!isNitroShockwave)
                 {
-                    StartCoroutine(NitroShockwave(false));
+                    //StartCoroutine(NitroShockwave(false));
                 }
             }
         }
@@ -546,6 +551,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //golem roll animation event
+    public void NitroAnimEvent()
+    {
+        StartCoroutine(NitroShockwave(false));
+        float magnitude = speed / 2100.0f;
+        StartCoroutine(cameraShake.Smash(.4f, magnitude));
+    }
+
+
     public void Attack()
     {
         if (!isAttack)
@@ -700,8 +714,6 @@ public class PlayerController : MonoBehaviour
 
     void SmashCameraEffect()
     {
-        float magnitude = speed / 1500.0f;
-        StartCoroutine(cameraShake.Smash(.5f, magnitude));
     }
 
     IEnumerator LeftFX()
@@ -723,4 +735,14 @@ public class PlayerController : MonoBehaviour
     //    float startTime = Time.time;
     //    float runningTime = 0;
     //}
+
+    public void Restart()
+    {
+        preSpeed = minSpeed;
+        myAnimator.Play("Spawn");
+        live = 1;
+        checkDead = false;
+        speed += minSpeed;
+        damagedSpeed = 1.0f;
+    }
 }

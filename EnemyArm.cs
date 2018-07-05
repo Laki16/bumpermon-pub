@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class EnemyArm : MonoBehaviour
 {
-
     [Header("SYSTEM")]
     public float changedPosition;
-    public GameObject player;
     public float speed;
     private float movingTime;
     public int randomSeed;
     public GameObject child;
     public GameObject EnemyController;
     public bool isLobby = true;
+    public GameObject player;
 
     public float xOffset;
     public float zOffset;

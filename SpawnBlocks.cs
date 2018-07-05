@@ -8,13 +8,14 @@ public class SpawnBlocks : MonoBehaviour
     public GameObject enemyController;
 
     [Header("System")]
-    public GameObject player;
+    public GameManager gameManager;
     private int beforeLane = 0;
     private int nowLane = 0;
     private int iterator = 0;
     private int nodeIterator = 0;
     private int delNodeIterator = 0;
     private bool endSpawn = true;
+    private GameObject player;
 
     [Header("Block")]
     public GameObject block;
@@ -51,6 +52,7 @@ public class SpawnBlocks : MonoBehaviour
 
     void Start()
     {
+        player = gameManager.player;
         for (int i = 0; i < 10; i++) SpawnBlock();
     }
 

@@ -174,6 +174,8 @@ public class GameManager : MonoBehaviour {
         //팔 로비 애니메이션으로 대체할것
         //lArm.GetComponent<EnemyArm>().StopArm();
         //rArm.GetComponent<EnemyArm>().StopArm();
+        lArm.GetComponent<EnemyArm>().player = player;
+        rArm.GetComponent<EnemyArm>().player = player;
         SoundManager.GetComponent<SoundManager>().isLobbyEnd = true;
     }
 
@@ -275,13 +277,14 @@ public class GameManager : MonoBehaviour {
         //주변 블럭 날리기
         StartCoroutine(player.GetComponent<PlayerController>().NitroShockwave(true));
         //player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minAutoSpeed;
-        player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minSpeed;
+        //player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minSpeed;
 
-        player.GetComponent<Animator>().Play("Idle");
-        player.GetComponent<PlayerController>().live = 1;
-        player.GetComponent<PlayerController>().checkDead = false;
-        player.GetComponent<PlayerController>().speed += player.GetComponent<PlayerController>().minSpeed;
-        player.GetComponent<PlayerController>().damagedSpeed = 1.0f;
+        //player.GetComponent<Animator>().Play("Idle");
+        //player.GetComponent<PlayerController>().live = 1;
+        //player.GetComponent<PlayerController>().checkDead = false;
+        //player.GetComponent<PlayerController>().speed += player.GetComponent<PlayerController>().minSpeed;
+        //player.GetComponent<PlayerController>().damagedSpeed = 1.0f;
+        player.GetComponent<PlayerController>().Restart();
         LiveUp();
     }
 
