@@ -110,7 +110,7 @@ public class FeverUI : MonoBehaviour
             while (feverTime > 0)
             {
                 //feverTime -= Time.deltaTime;
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
             //StopCoroutine(colorChangeSwitch);
             StopAllCoroutines();
