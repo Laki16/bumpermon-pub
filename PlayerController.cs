@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     [Header("Score")]
-    private int nowCombo = 0;
+    public int nowCombo = 0;
     private static float comboResetTime = 3.0f;
     private float comboTime = comboResetTime;
 
@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
     public GameObject feverUI;
     public GameObject comboL;
     public GameObject comboR;
+    public GameObject scoreUI;
 
     [Header("Animation")]
     public float sprintMultiplier;
@@ -400,7 +401,7 @@ public class PlayerController : MonoBehaviour
         {
             speedText.text = ((int)speed + "km");
         }
-        distanceText.text = (((int)transform.position.x + 20) + "");
+        //distanceText.text = (((int)transform.position.x + 20) + "");
         //---------------------------------------------
 
         //-----------------Animations------------------
@@ -554,6 +555,7 @@ public class PlayerController : MonoBehaviour
             //preGear = currentGear;
             damagedSpeed = 1.0f;
             useNitro = true;
+            StartCoroutine(scoreUI.GetComponent<Score>().FeverOn());
             soundManager.GetComponent<SoundManager>().PlayNitro();
             myAnimator.Play("Roll");
             nitroFX.SetActive(true);

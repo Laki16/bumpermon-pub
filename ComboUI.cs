@@ -8,6 +8,7 @@ public class ComboUI : MonoBehaviour {
     private static int comboTextsArraySize = 3;
     public GameObject comboText;
     public GameObject[] comboTexts = new GameObject[comboTextsArraySize];
+    public GameObject scoreCombo;
     //public Animation a;
 
     public AnimationClip comboAnimatationClip;
@@ -30,6 +31,8 @@ public class ComboUI : MonoBehaviour {
         int nowIterator = iterator;
         iterator++;
         iterator %= comboTextsArraySize;
+        //scoreCombo.GetComponent<Animator>().SetTrigger("Combo");
+        scoreCombo.GetComponent<Animator>().Play("Score_Combo", -1, 0);
 
         comboTexts[nowIterator].SetActive(true);
         comboTexts[nowIterator].GetComponent<TextMeshProUGUI>().SetText(combo);
