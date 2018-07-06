@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject feverUI;
+    [Header("Score")]
+    private int nowCombo = 0;
+    private static float comboResetTime = 3.0f;
+    private float comboTime = comboResetTime;
 
     [Header("Control")]
     public GameObject groundController;
@@ -107,6 +110,9 @@ public class PlayerController : MonoBehaviour
     public GameObject orb;
     //public Button startBtn;
     //public Button optionBtn;
+    public GameObject feverUI;
+    public GameObject comboL;
+    public GameObject comboR;
 
     [Header("Animation")]
     public float sprintMultiplier;
@@ -197,10 +203,12 @@ public class PlayerController : MonoBehaviour
                             if (moveLeft)
                             {
                                 StartCoroutine(LeftFX());
+                                StartCoroutine(ComboUp());
                             }
                             else
                             {
                                 StartCoroutine(RightFX());
+                                StartCoroutine(ComboUp());
                             }
                             if (speed < maxSpeed)
                             {
@@ -370,8 +378,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow) && !isKeyPressed)
         {
             isKeyPressed = true;
-
-            feverUI.GetComponent<FeverUI>().FeverExtend();
+            //StartCoroutine(comboL.GetComponent<ComboUI>().ComboUp("18X"));
+            //feverUI.GetComponent<FeverUI>().FeverExtend();
         }
         if (Input.GetKeyUp(KeyCode.UpArrow) && isKeyPressed)
         {
@@ -427,6 +435,16 @@ public class PlayerController : MonoBehaviour
         {
             orb.GetComponent<OrbColor>().AccentColor = new Color32((byte)255, (byte)215, (byte)0, (byte)255);
         }
+        //--------------Combo---------------------------
+        if(comboTime > 0)
+        {
+            comboTime -= Time.deltaTime;
+        }
+        else
+        {
+            nowCombo = 0;
+        }
+        //----------------------------------------------
     }
 
     public bool isNitroShockwave = false;
@@ -585,6 +603,7 @@ public class PlayerController : MonoBehaviour
                     myAnimator.Play("Damage");
                     preSpeed = speed;
                     speed = 0.0f;
+                    nowCombo = 0;
                     if (live > 0)
                     {
                         live--;
@@ -717,9 +736,18 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
         justActionRightFX.SetActive(false);
     }
-    //IEnumerator IncreaseMinAutoSpeed()
-    //{
-    //    float startTime = Time.time;
-    //    float runningTime = 0;
-    //}
+    IEnumerator ComboUp()
+    {
+        comboTime = comboResetTime;
+        nowCombo++;
+        if (moveLeft)
+        {
+            StartCoroutine(comboR.GetComponent<ComboUI>().ComboUp(nowCombo));
+        }
+        else
+        {
+            StartCoroutine(comboL.GetComponent<ComboUI>().ComboUp(nowCombo));
+        }
+        yield return null;
+    }
 }
