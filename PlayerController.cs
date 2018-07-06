@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
     public bool isBlockChange = true;
     //경직 시간
     public float stunTime = 0.8f;
+    public bool ghostMode = false;
 
     [Header("UI")]
     //public Scrollbar nitroBar;
@@ -589,7 +590,7 @@ public class PlayerController : MonoBehaviour
     //----------------충돌------------------------
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer != LayerMask.NameToLayer("Item"))
+        if (other.gameObject.layer != LayerMask.NameToLayer("Item") && !ghostMode)
         {
             soundManager.GetComponent<SoundManager>().PlayBox();
             if (!useNitro)
@@ -655,7 +656,7 @@ public class PlayerController : MonoBehaviour
             damagedSpeed = 1.0f;
             speed += minSpeed;
         }
-        while(speed > minAutoSpeed)
+        while(speed < minAutoSpeed)
         {
             speed += 10 * Time.deltaTime;
             yield return null;

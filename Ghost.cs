@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class Ghost : Character {
 
-	// Use this for initialization
-	void Start () {
-		
+    public ParticleSystem particleSystem;
+    private float speed;
+
+	private void Start()
+    {
+        speed = GetComponent<PlayerController>().speed;
+	}
+
+	private void Update()
+    {
+        speed = GetComponent<PlayerController>().speed;
+        var main = particleSystem.main;
+        main.simulationSpeed = speed / 100.0f;
 	}
 }

@@ -9,8 +9,11 @@ public class Block : MonoBehaviour {
 
     public void OnTriggerEnter(Collider other)
     {
-        //StartCoroutine(cameraShake.Shake(.1f, .1f));
-        StartCoroutine(SplitMesh(true));
+        if (!other.GetComponent<PlayerController>().ghostMode)
+        {
+            //StartCoroutine(cameraShake.Shake(.1f, .1f));
+            StartCoroutine(SplitMesh(true));
+        }
     }
 
     public IEnumerator SplitMesh(bool destroy)

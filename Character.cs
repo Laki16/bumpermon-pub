@@ -18,8 +18,11 @@ public class Character : MonoBehaviour{
     public int STR;
     public int LUK;
 
+    [HideInInspector]
     public int[] golemGold = { 10, 50, 100, 300, 500, 1000, 2000, 3500, 5000};
+    [HideInInspector]
     public int[] ghostGold = { 2500, 200, 500, 1000, 2500, 5000, 10000, 20000};
+    [HideInInspector]
     public int[] dragonGold = { 6000, 1000, 5000, 10000, 20000, 30000};
 
     public void InitStatus(){

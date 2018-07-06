@@ -5,7 +5,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     [Header("System")]
-    public GameObject player;
+    //public GameObject player;
     public GameObject gameManager;
 
     [Header("Type")]
@@ -34,17 +34,18 @@ public class Item : MonoBehaviour
     public GameObject getShield;
     public GameObject shieldFX;
 
-    //void Start()
-    //{
-    //    soundManager = GameObject.FindGameObjectWithTag("SoundManager");
-    //}
-    void Update()
+    void Start()
     {
-        if(player.transform.position.x > transform.position.x + 20.0f)
-        {
-            Destroy(gameObject);
-        }
+        //soundManager = GameObject.FindGameObjectWithTag("SoundManager");
+        Destroy(gameObject, 30.0f);
     }
+    //void Update()
+    //{
+    //    if(player.transform.position.x > transform.position.x + 20.0f)
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     private void OnEnable()
     {
@@ -76,25 +77,37 @@ public class Item : MonoBehaviour
         {
             case ItemType.MINE:
                 myEffect = Instantiate(mineBoom, transform.position, transform.rotation);
+                Destroy(gameObject);
                 break;
             case ItemType.LIFE:
                 soundManager.GetComponent<SoundManager>().PlayItemLife();
                 myEffect = Instantiate(getLife, transform.position, transform.rotation);
-                GetLife();
+                if (other.GetComponent<PlayerController>().live < 3)
+                {
+                    other.GetComponent<PlayerController>().live++;
+                    gameManager.GetComponent<GameManager>().LiveUp();
+                }
+                //GetLife();
                 break;
             case ItemType.COIN:
                 soundManager.GetComponent<SoundManager>().PlayItemCoin();
                 myEffect = Instantiate(getCoin, transform.position, transform.rotation);
-                GetCoin();
+                gameManager.GetComponent<GameManager>().coin++;
+                Destroy(gameObject);
+                //GetCoin();
                 break;
             case ItemType.NITRO:
                 soundManager.GetComponent<SoundManager>().PlayItemNitro();
-                UseNitro();
+                StartCoroutine(other.GetComponent<PlayerController>().GetNitro());
+                Destroy(gameObject);
+                //UseNitro();
                 break;
             case ItemType.SHIELD:
                 soundManager.GetComponent<SoundManager>().PlayItemShield();
                 myEffect = Instantiate(getShield, transform.position, transform.rotation);
-                GetShield();
+                other.GetComponent<PlayerController>().GetShield();
+                Destroy(gameObject);
+                //GetShield();
                 break;
         }
     }
@@ -125,31 +138,19 @@ public class Item : MonoBehaviour
 
     ////}
 
-    private void GetLife()
-    {
-        if (player.GetComponent<PlayerController>().live < 3)
-        {
-            player.GetComponent<PlayerController>().live++;
-            gameManager.GetComponent<GameManager>().LiveUp();
-        }
-        Destroy(gameObject);
-    }
+    //private void GetLife()
+    //{
+    //}
 
-    private void GetCoin()
-    {
-        gameManager.GetComponent<GameManager>().coin++;
-        Destroy(gameObject);
-    }
+    //private void GetCoin()
+    //{ 
+    //}
 
-    private void UseNitro()
-    {
-        StartCoroutine(player.GetComponent<PlayerController>().GetNitro());
-        Destroy(gameObject);
-    }
+    //private void UseNitro()
+    //{ 
+    //}
 
-    private void GetShield()
-    {
-        player.GetComponent<PlayerController>().GetShield();
-        Destroy(gameObject);
-    }
+    //private void GetShield()
+    //{
+    //}
 }
