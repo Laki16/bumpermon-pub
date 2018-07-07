@@ -27,7 +27,7 @@ public class ComboUI : MonoBehaviour {
     //니트로 때 ComboUp(원래콤보? 아니면 10정도?)
     public IEnumerator ComboUp(int nowCombo)
     {
-        string combo = nowCombo + "x";
+        string combo = (nowCombo+1) + "x";
         int nowIterator = iterator;
         iterator++;
         iterator %= comboTextsArraySize;

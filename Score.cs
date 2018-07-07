@@ -8,6 +8,7 @@ public class Score : MonoBehaviour {
     public PlayerController player;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI comboText;
+    public GameManager gameManager;
     public Color32 originColor = new Color32((byte)0, (byte)0, (byte)0, (byte)255);
 
     //public float timeIntervalColor = 0.5f;
@@ -17,6 +18,7 @@ public class Score : MonoBehaviour {
 
     private void Start()
     {
+        player = gameManager.player.GetComponent<PlayerController>();
         score = 0;
         playerPos = player.transform.position.x;
     }

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 
 public class ComboNitro : MonoBehaviour {
-    public PlayerController player;
     private static int comboTextsArraySize = 15;
     public GameObject comboText;
     public GameObject[] comboTexts = new GameObject[comboTextsArraySize];
@@ -20,6 +19,7 @@ public class ComboNitro : MonoBehaviour {
     public int nowIterator;
     // Use this for initialization
     void Start () {
+       
         for (int i = 0; i < comboTextsArraySize; i++)
         {
             comboTexts[i] = Instantiate(comboText, transform.parent);

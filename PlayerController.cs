@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
     public GameObject orb;
     //public Button startBtn;
     //public Button optionBtn;
-    public GameObject feverUI;
+    //public GameObject feverUI;
     public GameObject comboL;
     public GameObject comboR;
     public GameObject scoreUI;
@@ -663,6 +663,11 @@ public class PlayerController : MonoBehaviour
                 combo++;
                 StartCoroutine(comboM.GetComponent<ComboNitro>().NitroCombo(combo));
             }
+        }
+        else if(ghostMode)
+        {
+            combo++;
+            StartCoroutine(comboM.GetComponent<ComboNitro>().NitroCombo(combo));
         }
     }
 
