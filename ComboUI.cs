@@ -25,29 +25,31 @@ public class ComboUI : MonoBehaviour {
         comboAnimationLength = comboAnimatationClip.length;
     }
     //니트로 때 ComboUp(원래콤보? 아니면 10정도?)
+    float redColorChange;
+    float colorChange;
     public IEnumerator ComboUp(int nowCombo)
     {
         string combo = "x" + (nowCombo + 1);
         int nowIterator = iterator;
         iterator++;
         iterator %= comboTextsArraySize;
-        //scoreCombo.GetComponent<Animator>().SetTrigger("Combo");
+        redColorChange = nowCombo;
+        colorChange = Mathf.Pow(nowCombo, 1.5f);
+        redColorChange = Mathf.Clamp(redColorChange, 0, 150);
+        colorChange = Mathf.Clamp(colorChange, 0, 240);
+        scoreCombo.GetComponent<TextMeshProUGUI>().faceColor = new Color32((byte)(255 - redColorChange), (byte)(255 - colorChange), (byte)(255 - colorChange), (byte)255);
         scoreCombo.GetComponent<Animator>().Play("Score_Combo", -1, 0);
 
         comboTexts[nowIterator].SetActive(true);
         comboTexts[nowIterator].GetComponent<TextMeshProUGUI>().SetText(combo);
-        switch (nowCombo / 2)
-        {
-            case 1:
-                comboTexts[nowIterator].GetComponent<TextMeshProUGUI>().faceColor = new Color32((byte)255, (byte)255, (byte)255, (byte)255);
-                break;
-            case 2:
-                comboTexts[nowIterator].GetComponent<TextMeshProUGUI>().faceColor = new Color32((byte)100, (byte)100, (byte)255, (byte)255);
-                break;
-            case 3:
-                comboTexts[nowIterator].GetComponent<TextMeshProUGUI>().faceColor = new Color32((byte)255, (byte)100, (byte)255, (byte)255);
-                break;
-        }
+
+        redColorChange = nowCombo;
+        colorChange = Mathf.Pow(nowCombo, 1.5f);
+        redColorChange = Mathf.Clamp(redColorChange, 0, 150);
+        colorChange = Mathf.Clamp(colorChange, 0, 240);
+
+        comboTexts[nowIterator].GetComponent<TextMeshProUGUI>().faceColor = new Color32((byte)(255 - redColorChange), (byte)(255 - colorChange), (byte)(255 - colorChange), (byte)255);
+
         yield return new WaitForSeconds(comboAnimationLength - 0.1f);
         comboTexts[nowIterator].SetActive(false);
     }

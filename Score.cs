@@ -60,13 +60,10 @@ public class Score : MonoBehaviour {
     {
         float timer = 0.0f;
         float timeIntervalColor = 0.5f;
-        //Debug.Log("AAAA");
         Color32 color = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
         while (timer < timeIntervalColor)
         {
-            //Debug.Log("HI");
             timer += Time.deltaTime * speedColor;
-            //timer += .1f;
             scoreText.GetComponent<TextMeshProUGUI>().color = Color32.Lerp(scoreText.GetComponent<TextMeshProUGUI>().color, color, timer);
             yield return null;
         }

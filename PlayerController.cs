@@ -405,6 +405,7 @@ public class PlayerController : MonoBehaviour
             isKeyPressed = true;
             //StartCoroutine(comboL.GetComponent<ComboUI>().ComboUp("18X"));
             //feverUI.GetComponent<FeverUI>().FeverExtend();
+            StartCoroutine(ComboUp());
         }
         if (Input.GetKeyUp(KeyCode.UpArrow) && isKeyPressed)
         {
