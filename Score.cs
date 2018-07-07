@@ -9,7 +9,7 @@ public class Score : MonoBehaviour {
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI comboText;
     public GameManager gameManager;
-    public Color32 originColor = new Color32((byte)0, (byte)0, (byte)0, (byte)255);
+    public Color32 originColor;
 
     //public float timeIntervalColor = 0.5f;
     public float speedColor = 2.0f;
@@ -36,7 +36,7 @@ public class Score : MonoBehaviour {
             comboText.GetComponent<TextMeshProUGUI>().margin = new Vector4(
                 190 + scoreText.GetComponent<TextMeshProUGUI>().bounds.extents.x, 0, 0, 0);
             comboText.ForceMeshUpdate();
-            comboText.SetText(" X" + (player.nowCombo + 1));
+            comboText.SetText(" x" + (player.nowCombo + 1));
         }
         else
         {
@@ -52,7 +52,7 @@ public class Score : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
         StopCoroutine(colorCoroutine);
-        scoreText.faceColor = originColor;
+        scoreText.GetComponent<TextMeshProUGUI>().color = originColor;
     }
 
     Coroutine colorCoroutine;
