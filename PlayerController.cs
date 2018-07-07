@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Score")]
+    public int nowCombo = 0;
+    private static float comboResetTime = 3.0f;
+    private float comboTime = comboResetTime;
+
     [Header("Control")]
     public GameObject groundController;
     public GameObject blockController;
@@ -106,6 +111,13 @@ public class PlayerController : MonoBehaviour
     public GameObject orb;
     //public Button startBtn;
     //public Button optionBtn;
+    public GameObject feverUI;
+    public GameObject comboL;
+    public GameObject comboR;
+    public GameObject scoreUI;
+    public GameObject comboM;
+
+    public int combo = 0;
 
     [Header("Animation")]
     public float sprintMultiplier;
@@ -203,10 +215,12 @@ public class PlayerController : MonoBehaviour
                             if (moveLeft)
                             {
                                 StartCoroutine(LeftFX());
+                                StartCoroutine(ComboUp());
                             }
                             else
                             {
                                 StartCoroutine(RightFX());
+                                StartCoroutine(ComboUp());
                             }
                             //if (speed < maxSpeed)
                             //{
@@ -385,6 +399,18 @@ public class PlayerController : MonoBehaviour
         {
             isKeyPressed = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) && !isKeyPressed)
+        {
+            isKeyPressed = true;
+            //StartCoroutine(comboL.GetComponent<ComboUI>().ComboUp("18X"));
+            //feverUI.GetComponent<FeverUI>().FeverExtend();
+        }
+        if (Input.GetKeyUp(KeyCode.UpArrow) && isKeyPressed)
+        {
+            isKeyPressed = false;
+        }
+
         //---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
@@ -399,7 +425,7 @@ public class PlayerController : MonoBehaviour
         {
             speedText.text = ((int)speed + "km");
         }
-        distanceText.text = (((int)transform.position.x + 20) + "");
+        //distanceText.text = (((int)transform.position.x + 20) + "");
         //---------------------------------------------
 
         //-----------------Animations------------------
@@ -433,6 +459,16 @@ public class PlayerController : MonoBehaviour
         {
             orb.GetComponent<OrbColor>().AccentColor = new Color32((byte)255, (byte)215, (byte)0, (byte)255);
         }
+        //--------------Combo---------------------------
+        if(comboTime > 0)
+        {
+            comboTime -= Time.deltaTime;
+        }
+        else
+        {
+            nowCombo = 0;
+        }
+        //----------------------------------------------
     }
 
     public bool isNitroShockwave = false;
@@ -534,6 +570,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isNitro)
         {
+            combo = 0;
             if (speedRecovery != null)
             {
                 StopCoroutine(speedRecovery);
@@ -542,6 +579,7 @@ public class PlayerController : MonoBehaviour
             //preGear = currentGear;
             damagedSpeed = 1.0f;
             useNitro = true;
+            StartCoroutine(scoreUI.GetComponent<Score>().FeverOn());
             soundManager.GetComponent<SoundManager>().PlayNitro();
             myAnimator.Play("Roll");
             nitroFX.SetActive(true);
@@ -600,6 +638,7 @@ public class PlayerController : MonoBehaviour
                     myAnimator.Play("Damage");
                     preSpeed = speed;
                     speed = 0.0f;
+                    nowCombo = 0;
                     if (live > 0)
                     {
                         live--;
@@ -618,6 +657,11 @@ public class PlayerController : MonoBehaviour
                     isShield = false;
                     shieldEffect.SetActive(false);
                 }
+            }
+            else
+            {
+                combo++;
+                StartCoroutine(comboM.GetComponent<ComboNitro>().NitroCombo(combo));
             }
         }
     }
@@ -711,6 +755,7 @@ public class PlayerController : MonoBehaviour
         nitroTime = 4.3f;
         useNitro = false;
         orb.GetComponent<OrbColor>().AccentColor = new Color32((byte)165, (byte)0, (byte)0, (byte)255);
+        //StartCoroutine(comboM.GetComponent<ComboNitro>().ComboNitroEnd());
     }
 
     void SmashCameraEffect()
@@ -745,5 +790,19 @@ public class PlayerController : MonoBehaviour
         checkDead = false;
         speed += minSpeed;
         damagedSpeed = 1.0f;
+    }
+    IEnumerator ComboUp()
+    {
+        comboTime = comboResetTime;
+        nowCombo++;
+        if (moveLeft)
+        {
+            StartCoroutine(comboR.GetComponent<ComboUI>().ComboUp(nowCombo));
+        }
+        else
+        {
+            StartCoroutine(comboL.GetComponent<ComboUI>().ComboUp(nowCombo));
+        }
+        yield return null;
     }
 }

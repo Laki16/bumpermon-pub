@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour {
     public GameObject SoundManager;
     public GameObject lArm;
     public GameObject rArm;
+    public int brokenBoxes;
 
     [Header("Animation")]
     Animator myCameraAnimator;
@@ -145,6 +146,7 @@ public class GameManager : MonoBehaviour {
         //enemy.SetActive(true);
         meterBetBlock = player.transform.position.x;
         myCameraAnimator.enabled = false;
+        brokenBoxes = 0;
     }
 
     public void BtnOnStart()
