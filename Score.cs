@@ -10,15 +10,31 @@ public class Score : MonoBehaviour {
     public TextMeshProUGUI comboText;
     public Color32 originColor = new Color32((byte)0, (byte)0, (byte)0, (byte)255);
 
-    public float timeIntervalColor = 0.5f;
-    public float speedColor;
+    //public float timeIntervalColor = 0.5f;
+    public float speedColor = 2.0f;
+    public int score;
+    public float playerPos;
 
+    private void Start()
+    {
+        score = 0;
+        playerPos = player.transform.position.x;
+    }
     private void Update()
     {
-        scoreText.SetText(((int)player.transform.position.x + 20) + "");
+       
+        if (player.transform.position.x > playerPos + 1)
+        {
+            score += (player.nowCombo + 1);
+            playerPos = player.transform.position.x;
+            scoreText.SetText(score + "");
+        }
         if (player.nowCombo > 0)
         {
-            comboText.SetText(" X" + player.nowCombo);
+            comboText.GetComponent<TextMeshProUGUI>().margin = new Vector4(
+                190 + scoreText.GetComponent<TextMeshProUGUI>().bounds.extents.x, 0, 0, 0);
+            comboText.ForceMeshUpdate();
+            comboText.SetText(" X" + (player.nowCombo + 1));
         }
         else
         {

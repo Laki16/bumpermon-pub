@@ -114,6 +114,9 @@ public class PlayerController : MonoBehaviour
     public GameObject comboL;
     public GameObject comboR;
     public GameObject scoreUI;
+    public GameObject comboM;
+
+    public int combo = 0;
 
     [Header("Animation")]
     public float sprintMultiplier;
@@ -547,6 +550,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isNitro)
         {
+            combo = 0;
             if (speedRecovery != null)
             {
                 StopCoroutine(speedRecovery);
@@ -624,6 +628,11 @@ public class PlayerController : MonoBehaviour
                     isShield = false;
                     shieldEffect.SetActive(false);
                 }
+            }
+            else
+            {
+                combo++;
+                StartCoroutine(comboM.GetComponent<ComboNitro>().NitroCombo(combo));
             }
         }
     }
@@ -716,6 +725,7 @@ public class PlayerController : MonoBehaviour
         nitroTime = 4.3f;
         useNitro = false;
         orb.GetComponent<OrbColor>().AccentColor = new Color32((byte)165, (byte)0, (byte)0, (byte)255);
+        //StartCoroutine(comboM.GetComponent<ComboNitro>().ComboNitroEnd());
     }
 
     void SmashCameraEffect()

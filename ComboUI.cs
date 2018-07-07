@@ -24,10 +24,10 @@ public class ComboUI : MonoBehaviour {
         }
         comboAnimationLength = comboAnimatationClip.length;
     }
-
+    //니트로 때 ComboUp(원래콤보? 아니면 10정도?)
     public IEnumerator ComboUp(int nowCombo)
     {
-        string combo = nowCombo + "X";
+        string combo = nowCombo + "x";
         int nowIterator = iterator;
         iterator++;
         iterator %= comboTextsArraySize;
