@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     [Header("Score")]
-    public int nowCombo = 0;
+    public int nowCombo;
     private static float comboResetTime = 3.0f;
     private float comboTime = comboResetTime;
 
@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public GameObject blockController;
     private Vector2 initialPos;
     private int lane;
-    public float swipeSpeed = 10.0f;
+    public float swipeSpeed;
     private bool isKeyPressed = false;
     private bool isBlockLeft = false;
     private bool isBLockRIght = false;
@@ -28,17 +28,18 @@ public class PlayerController : MonoBehaviour
     //최소 속도
     public float minSpeed;
     //최고속도
-    public float maxSpeed = 240.0f;
+    public float maxSpeed;
     //최소 자동전진 속도
     public float minAutoSpeed;
     //맵의 끝 지점(가정)
     public long endDistance;
     //목숨 : 벽에 부딪힐 때와 지뢰를 밟았을 때 줄어든다.
-    public int live = 3;
+    //public int live;
     public bool checkDead = false;
-    public bool isShield = false;
+    private bool isShield = false;
     //부딪혔을때 속도 제어용 변수
-    public float damagedSpeed = 1.0f;
+    private float damagedSpeed = 1.0f;
+    public float curHP;
 
     [Header("FX")]
     private bool moveLeft = false;
@@ -73,12 +74,12 @@ public class PlayerController : MonoBehaviour
     //public float decreaseWeight;
 
     [Header("Nitro System")]
-    public float nitro = 0;
-    public bool isNitro = false;
-    public bool useNitro = false;
-    public float preSpeed;
+    public float nitro;
+    private bool isNitro;
+    public bool useNitro;
+    private float preSpeed;
     //int preGear;
-    public float nitroTime = 0.0f;
+    public float nitroTime;
     bool isBoost = false;
 
     [Header("System")]
@@ -90,14 +91,14 @@ public class PlayerController : MonoBehaviour
 
     [Header("Collision")]
     //앞에 블럭
-    public GameObject forwardBlock;
+    private GameObject forwardBlock;
     //앞에 블럭이 있는지
-    public bool isBlockForward = true;
+    private bool isBlockForward;
     //블럭이 바뀌었는지 확인용 변수
-    public bool isBlockChange = true;
+    private bool isBlockChange;
     //경직 시간
-    public float stunTime = 0.8f;
-    public bool ghostMode = false;
+    public float stunTime;
+    public bool ghostMode;
 
     [Header("UI")]
     //public Scrollbar nitroBar;
@@ -116,11 +117,11 @@ public class PlayerController : MonoBehaviour
     public GameObject comboR;
     public GameObject scoreUI;
     public GameObject comboM;
-
-    public int combo = 0;
+    public GameObject hpBar;
+    public int combo;
 
     [Header("Animation")]
-    public float sprintMultiplier;
+    private float sprintMultiplier;
     public Animator myAnimator;
 
     [Header("Camera")]
@@ -135,16 +136,23 @@ public class PlayerController : MonoBehaviour
     [Header("Attack")]
     private float attackTime;
 
-    //[Header("PostProcessing")]
-    //public PostProcessingProfile profile;
-    //BloomModel.Settings bloomsettings;
+    //Character
+    Character character;
+    private float tm = 1; //give life per 1000m 
 
     void Start()
     {
-        lane = 0;
-        groundCount = 0.0f;
+        //Character Initial Settings
+        character = GetComponent<Character>();
+        minSpeed = character.SPD;
+        maxSpeed = minSpeed + 200;
         speed = minSpeed;
         minAutoSpeed = minSpeed;
+        curHP = character.HP;
+        StartCoroutine(HPSetting());
+
+        lane = 0;
+        groundCount = 0.0f;
 
         isChangeColor = false;
         
@@ -164,7 +172,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!checkDead && live <= 0)
+        if (!checkDead && curHP <= 0)
         {
             checkDead = true;
             speed = 0.0f;
@@ -172,11 +180,10 @@ public class PlayerController : MonoBehaviour
             myAnimator.Play("Die");
             leftEnemyArm.Laugh();
             rightEnemyArm.Laugh();
-            if (gameManager != null)
-                gameManager.GameOver();
+            if (gameManager != null) gameManager.GameOver();
         }
 
-        if (live > 0)
+        if (curHP > 0)
         {
             if(speed < minAutoSpeed)
             {
@@ -424,9 +431,29 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            speedText.text = ((int)speed + "km");
+            speedText.text = ((int)speed+1 + "km");
         }
+        hpBar.GetComponent<Image>().fillAmount = curHP / Character.maxHP;
         //distanceText.text = (((int)transform.position.x + 20) + "");
+        //---------------------------------------------
+
+        //---------------------HP---------------------- 
+        curHP = Mathf.Clamp(curHP, 0, character.HP);
+        if (!useNitro)
+        {
+            if (transform.position.x < 1000)
+            { //나중에 아이템 값만큼 곱하기
+                curHP -= Time.deltaTime * (1 - character.DEF / 100);
+            }
+            else
+            {
+                curHP -= (transform.position.x / 1000) * Time.deltaTime * (1 - character.DEF / 100);
+            }
+        }
+        if (transform.position.x > tm * 1000){
+            StartCoroutine(LifeUp(tm * 20));
+            tm++;
+        }
         //---------------------------------------------
 
         //-----------------Animations------------------
@@ -470,6 +497,7 @@ public class PlayerController : MonoBehaviour
             nowCombo = 0;
         }
         //----------------------------------------------
+
     }
 
     public bool isNitroShockwave = false;
@@ -599,7 +627,6 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(cameraShake.Smash(.4f, magnitude));
     }
 
-
     public void Attack()
     {
         if (!isAttack)
@@ -609,6 +636,7 @@ public class PlayerController : MonoBehaviour
             myAnimator.SetTrigger("Attack");
         }
     }
+
     IEnumerator BlingSpeedColor()
     {
         isCoroutineRunning = true;
@@ -626,6 +654,7 @@ public class PlayerController : MonoBehaviour
 
         isCoroutineRunning = false;
     }
+
     //----------------충돌------------------------
     private void OnTriggerEnter(Collider other)
     {
@@ -640,12 +669,14 @@ public class PlayerController : MonoBehaviour
                     preSpeed = speed;
                     speed = 0.0f;
                     nowCombo = 0;
-                    if (live > 0)
-                    {
-                        live--;
-                        if (gameManager != null)
-                            gameManager.LiveDown();
-                    }
+                    //if (live > 0)
+                    //{
+                    //    live--;
+                    //    if (gameManager != null)
+                    //        gameManager.LiveDown();
+                    //}
+                    float damage = (int)(transform.position.x / 100) * (1 - character.DEF / 100);
+                    LifeDown(damage);
 
                     speedRecovery = StartCoroutine(SpeedRecovery());
                 }
@@ -692,6 +723,29 @@ public class PlayerController : MonoBehaviour
             }
             nitro += nowNitro;
         }
+    }
+
+    public IEnumerator LifeUp(float num)
+    {
+        float temp = curHP + num;
+        if (temp < character.HP)
+        {
+            while (curHP < temp)
+            {
+                Debug.Log(curHP + "up!");
+                curHP += num * Time.deltaTime;
+                yield return null;
+            }
+        }else{
+            while(curHP+1 < character.HP){
+                curHP += num * Time.deltaTime;
+                yield return null;
+            }
+        }
+    }
+
+    public void LifeDown(float num){
+        curHP -= num;
     }
     //---------------------------------------------
 
@@ -775,6 +829,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
         justActionLeftFX.SetActive(false);
     }
+
     IEnumerator RightFX()
     {
         justActionRightFX.SetActive(true);
@@ -792,11 +847,13 @@ public class PlayerController : MonoBehaviour
     {
         preSpeed = minSpeed;
         myAnimator.Play("Spawn");
-        live = 1;
+        //live = 1;
+        curHP = character.HP / 3;
         checkDead = false;
         speed += minSpeed;
         damagedSpeed = 1.0f;
     }
+
     IEnumerator ComboUp()
     {
         comboTime = comboResetTime;
@@ -810,5 +867,14 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(comboL.GetComponent<ComboUI>().ComboUp(nowCombo));
         }
         yield return null;
+    }
+
+    IEnumerator HPSetting(){
+        float temp = 0.0f;
+        while(temp <= character.HP){
+            temp++;
+            hpBar.GetComponent<Image>().fillAmount = temp / Character.maxHP;
+            yield return null;
+        }
     }
 }

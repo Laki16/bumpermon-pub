@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     public GameObject homeBtn;
     public GameObject coinUI;
-    public GameObject lives;
+    //public GameObject lives;
 
     public Sprite livingheart;
     public Sprite deadHeart;
@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour {
 
     [Header("System")]
     public GameObject blockController;
+    public SpawnGrounds spawnGrounds;
     public GameObject player;
     //public GameObject enemy;
     public Camera camera;
@@ -131,7 +132,7 @@ public class GameManager : MonoBehaviour {
     IEnumerator GameStart(){
         //player의 능력치를 가져옴
         player.GetComponent<Character>().SetStatus();
-
+        spawnGrounds.playerController = player.GetComponent<PlayerController>();
         for (int i = 3; i > 0; i--){
             countdownText.text = (i + "");
             if (i == 1)
@@ -166,7 +167,7 @@ public class GameManager : MonoBehaviour {
         introduceText.enabled = false;
 
         coinUI.SetActive(false);
-        lives.SetActive(true);
+        //lives.SetActive(true);
 
         checkPanel.SetActive(true);
         inGamePanel.SetActive(true);
@@ -297,18 +298,18 @@ public class GameManager : MonoBehaviour {
 
     public void LiveUp()
     {
-        int heartNum = player.GetComponent<PlayerController>().live;
-        string temp = "Live" + heartNum.ToString();
-        GameObject heart = GameObject.Find(temp);
-        heart.GetComponent<Image>().sprite = livingheart;
+        //int heartNum = player.GetComponent<PlayerController>().live;
+        //string temp = "Live" + heartNum.ToString();
+        //GameObject heart = GameObject.Find(temp);
+        //heart.GetComponent<Image>().sprite = livingheart;
     }
 
     public void LiveDown()
     {
-        int heartNum = player.GetComponent<PlayerController>().live;
-        string temp = "Live" + (heartNum + 1).ToString();
-        GameObject heart = GameObject.Find(temp);
-        heart.GetComponent<Image>().sprite = deadHeart;
+        //int heartNum = player.GetComponent<PlayerController>().live;
+        //string temp = "Live" + (heartNum + 1).ToString();
+        //GameObject heart = GameObject.Find(temp);
+        //heart.GetComponent<Image>().sprite = deadHeart;
     }
 
     public void GameOver()

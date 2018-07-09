@@ -53,7 +53,7 @@ public class TutorialController : MonoBehaviour
         tutorialCount = Time.time;
         StartCoroutine(Tutorial());
 
-        player.GetComponent<PlayerController>().live = 10000;
+        //player.GetComponent<PlayerController>().live = 10000;
     }
 
     public IEnumerator Tutorial()

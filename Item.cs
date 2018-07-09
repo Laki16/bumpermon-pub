@@ -82,11 +82,13 @@ public class Item : MonoBehaviour
             case ItemType.LIFE:
                 soundManager.GetComponent<SoundManager>().PlayItemLife();
                 myEffect = Instantiate(getLife, transform.position, transform.rotation);
-                if (other.GetComponent<PlayerController>().live < 3)
-                {
-                    other.GetComponent<PlayerController>().live++;
-                    gameManager.GetComponent<GameManager>().LiveUp();
-                }
+                //if (other.GetComponent<PlayerController>().live < 3)
+                //{
+                //    other.GetComponent<PlayerController>().live++;
+                //    gameManager.GetComponent<GameManager>().LiveUp();
+                //}
+                //float lifeMux = gameManager.GetComponent<GameManager>().player.GetComponent<Accessory>().lifeMux;
+                StartCoroutine(other.GetComponent<PlayerController>().LifeUp(30.0f));
                 //GetLife();
                 break;
             case ItemType.COIN:

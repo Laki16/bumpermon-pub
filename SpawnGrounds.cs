@@ -31,6 +31,9 @@ public class SpawnGrounds : MonoBehaviour
     //진행상황 (스테이지 길이를 늘리려면 +)
     public int progressCount = 0;
 
+    [HideInInspector]
+    public PlayerController playerController;
+
     void Start()
     {
         localPostion = new Vector3(0, 0, 0);
