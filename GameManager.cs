@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour {
     public GameObject optionPanel;
     public GameObject characterPanel;
     public GameObject shopPanel;
+    public GameObject btmPanel;
 
     public GameObject startBtn;
     public GameObject optionBtn;
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour {
 
     [Header("GameOverUI")]
     public GameObject gameOverPanel;
+    public GameObject starPanel;
     public GameObject highScore;
     public Text coinText;
     public Button continueBtn;
@@ -78,6 +80,7 @@ public class GameManager : MonoBehaviour {
     Animator myGameOverAnimator;
     Animator myCharacterAnimator;
     Animator myShopAnimator;
+    Animator myStarAnimator;
 
     [Header("DB")]
     public int coin;
@@ -97,6 +100,7 @@ public class GameManager : MonoBehaviour {
         myGameOverAnimator = gameOverPanel.GetComponent<Animator>();
         myCharacterAnimator = characterPanel.GetComponent<Animator>();
         myShopAnimator = shopPanel.GetComponent<Animator>();
+        myStarAnimator = starPanel.GetComponent<Animator>();
 
         LoadRecord();
         //LoadSample();
@@ -160,6 +164,7 @@ public class GameManager : MonoBehaviour {
 
         startBtn.SetActive(false);
         recordText.enabled = false;
+        btmPanel.SetActive(false);
         devBtn.SetActive(false);
         quitBtn.SetActive(false);
         homeBtn.SetActive(true);
@@ -266,11 +271,13 @@ public class GameManager : MonoBehaviour {
     public void BtnOnContinue()
     {
         isContinueAvailable = false;
+        myStarAnimator.SetBool("GameOver", false);
         myGameOverAnimator.SetBool("GameOver", false);
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().Continue());
         optionBtn.GetComponent<Button>().interactable = true;
         skullFX.SetActive(false);
+
         //광고시스템 추가
 
         leftEnemyArm.Idle();
@@ -335,6 +342,7 @@ public class GameManager : MonoBehaviour {
         }
         PlayerPrefs.Save();
 
+        myStarAnimator.SetBool("GameOver", true);
         myGameOverAnimator.SetBool("GameOver", true);
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().GameOver());

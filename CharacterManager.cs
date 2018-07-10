@@ -10,6 +10,7 @@ public class CharacterManager : MonoBehaviour {
     public GameObject currentCharacter;
     Character character;
     public GameObject characterPanel;
+    public GameObject infoPanel;
 
     [Header("UI")]
     public Button golemBtn;
@@ -78,17 +79,25 @@ public class CharacterManager : MonoBehaviour {
     public void BtnOnLvUp(){
         if (curCoin >= levelGold)
         {
+            if(currentCharacter.GetComponent<Character>().Level > 0){
+                infoPanel.GetComponent<Animator>().Play("UI_LvUp");
+            }
             Debug.Log("Lv Up!");
             currentCharacter.GetComponent<Character>().LevelUp();
             curCoin -= levelGold;
             PlayerPrefs.SetInt("Coin", curCoin);
             PlayerPrefs.Save();
             isBuy = true;
+            //Lv Up Animation Play!
             UpdateUI();
         }else Debug.Log("Need more golds!");
     }
 
     public void BtnOnMain(){
+        if(currentCharacter.GetComponent<Character>().Level < 1){
+            currentCharacter = golemPlayer;
+        }
+        gameManager.player = currentCharacter;
         characterPanel.GetComponent<Animator>().SetBool("isOpen", false);
     }
 
@@ -97,7 +106,6 @@ public class CharacterManager : MonoBehaviour {
         curCoin = PlayerPrefs.GetInt("Coin");
         currentGold.text = "" + curCoin;
 
-        gameManager.player = currentCharacter;
         character = currentCharacter.GetComponent<Character>();
         string name;
         switch(character.MonsterIndex){
@@ -150,7 +158,7 @@ public class CharacterManager : MonoBehaviour {
             requireGold.text = "  Buy\n" + levelGold;
             coinImg.SetActive(true);
         }else if(maxLevel <= character.Level){
-            requireGold.text = "  Max";
+            requireGold.text = "  MAX";
             lvUpBtn.GetComponent<Button>().interactable = false;
             lvUpBtn.GetComponent<Image>().sprite = grayBtn;
             coinImg.SetActive(false);

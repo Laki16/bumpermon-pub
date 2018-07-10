@@ -16,6 +16,7 @@ public class SpawnBlocks : MonoBehaviour
     private int delNodeIterator = 0;
     private bool endSpawn = true;
     private GameObject player;
+    private int luk;
 
     [Header("Block")]
     public GameObject block;
@@ -42,6 +43,8 @@ public class SpawnBlocks : MonoBehaviour
     static int maxCoins = 400;
     int coinIterator = 0;
     private GameObject[] genCoins = new GameObject[maxCoins];
+    public Material yellow;
+    public Material red;
 
     void Awake()
     {
@@ -53,6 +56,7 @@ public class SpawnBlocks : MonoBehaviour
     void Start()
     {
         player = gameManager.player;
+        luk = player.GetComponent<Character>().LUK;
         for (int i = 0; i < 10; i++) SpawnBlock();
     }
 
@@ -232,6 +236,19 @@ public class SpawnBlocks : MonoBehaviour
             genCoins[coinIterator].GetComponent<Renderer>().enabled = true;
             genCoins[coinIterator].transform.position = new Vector3(beforeDifficulty, .2f, 0);
             genCoins[coinIterator].transform.position += new Vector3(blockXSize * i, 0, genRandom);
+
+            int collorRand = Random.Range(0, 100);
+            if (collorRand <= luk)
+            {
+                genCoins[coinIterator].GetComponent<Renderer>().material = red;
+                genCoins[coinIterator].GetComponent<CoinMoving>().isRed = false;
+            }
+            else
+            {
+                genCoins[coinIterator].GetComponent<Renderer>().material = yellow;
+                genCoins[coinIterator].GetComponent<CoinMoving>().isRed = true;
+            }
+
             genCoins[coinIterator].SetActive(true);
             coinIterator++;
             coinIterator %= maxCoins;

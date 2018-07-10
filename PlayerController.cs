@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public float swipeSpeed;
     private bool isKeyPressed = false;
     private bool isBlockLeft = false;
-    private bool isBLockRIght = false;
+    private bool isBlockRight = false;
     private bool isAttack = false;
 
     [Header("Status")]
@@ -139,6 +139,7 @@ public class PlayerController : MonoBehaviour
     //Character
     Character character;
     private float tm = 1; //give life per 1000m 
+    bool isStun = false;
 
     void Start()
     {
@@ -172,6 +173,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(speed <= minAutoSpeed && !isStun){
+            speed = Mathf.Lerp(speed, minAutoSpeed, minAutoSpeed/100 * Time.deltaTime);
+        }
+
         if (!checkDead && curHP <= 0)
         {
             checkDead = true;
@@ -191,9 +196,6 @@ public class PlayerController : MonoBehaviour
             }
             transform.Translate(new Vector3(0.1f, 0, 0) * Time.deltaTime * speed * damagedSpeed);
         }
-        //-----------------Ray-----------------------
-        SideRayCast();
-        //-------------------------------------------
         //-----------------spawnGround---------------
         if (transform.position.x - groundCount >= 0)
         {
@@ -395,7 +397,7 @@ public class PlayerController : MonoBehaviour
             isKeyPressed = true;
             if (lane > -1)
             {
-                if (!isBLockRIght)
+                if (!isBlockRight)
                 {
                     //Debug.Log("Right");
                     lane--;
@@ -449,6 +451,9 @@ public class PlayerController : MonoBehaviour
             {
                 curHP -= (transform.position.x / 1000) * Time.deltaTime * (1 - character.DEF / 100);
             }
+            //-----------------Ray-----------------------
+            SideRayCast();
+            //-------------------------------------------
         }
         if (transform.position.x > tm * 1000){
             StartCoroutine(LifeUp(tm * 20));
@@ -565,7 +570,7 @@ public class PlayerController : MonoBehaviour
                         if (lane > -1)
                         {
                             //Debug.Log("Right");
-                            if (!isBLockRIght)
+                            if (!isBlockRight)
                             {
                                 lane--;
                                 moveLeft = false;
@@ -616,6 +621,9 @@ public class PlayerController : MonoBehaviour
                 leftEnemyArm.Surprise();
             if (rightEnemyArm != null)
                 rightEnemyArm.Surprise();
+
+            isBlockRight = false;
+            isBlockLeft = false;
         }
     }
 
@@ -675,9 +683,11 @@ public class PlayerController : MonoBehaviour
                     //    if (gameManager != null)
                     //        gameManager.LiveDown();
                     //}
-                    float damage = (int)(transform.position.x / 100) * (1 - character.DEF / 100);
+                    float damage;
+                    if (transform.position.x < 100) damage = 5 * (1 - character.DEF / 100);
+                    else damage = (int)(transform.position.x / 100) * (1 - character.DEF / 100);
                     LifeDown(damage);
-
+                    isStun = true;
                     speedRecovery = StartCoroutine(SpeedRecovery());
                 }
                 else
@@ -752,24 +762,22 @@ public class PlayerController : MonoBehaviour
     Coroutine speedRecovery;
     IEnumerator SpeedRecovery()
     {
+        //Debug.Log("Recovery!");
         damagedSpeed = -8.0f;
         //경직 시간만큼 기다림
-        yield return new WaitForSeconds(stunTime);
+        yield return new WaitForSeconds(0.8f);
+
         if (!checkDead)
         {
             damagedSpeed = 1.0f;
             speed += minSpeed;
-        }
-        while(speed < minAutoSpeed)
-        {
-            speed += 10 * Time.deltaTime;
-            yield return null;
         }
         //while (speed < preSpeed / 2)
         //{
         //    speed += preSpeed / 10 * Time.deltaTime;
         //    yield return null;
         //}
+        isStun = true;
     }
 
     void SideRayCast()
@@ -790,11 +798,11 @@ public class PlayerController : MonoBehaviour
         }
         if (Physics.Raycast(rayRight, out hitRight, 1.0f, layerMask))
         {
-            isBLockRIght = true;
+            isBlockRight = true;
         }
         else
         {
-            isBLockRIght = false;
+            isBlockRight = false;
         }
     }
 
@@ -848,7 +856,7 @@ public class PlayerController : MonoBehaviour
         preSpeed = minSpeed;
         myAnimator.Play("Spawn");
         //live = 1;
-        curHP = character.HP / 3;
+        curHP = character.HP / 2;
         checkDead = false;
         speed += minSpeed;
         damagedSpeed = 1.0f;
