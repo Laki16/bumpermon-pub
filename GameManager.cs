@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
     public Text titleText;
     public Text recordText;
     public Text totalCoins;
+    public Text totalBoxes; 
 
     public GameObject outGamePanel;
     public GameObject optionPanel;
@@ -57,6 +58,8 @@ public class GameManager : MonoBehaviour {
     public Button homeBtn2;
     public GameObject skullFX;
     bool isContinueAvailable = true;
+    public Text boxText;
+    public Text timeText;
     
 
     [Header("System")]
@@ -84,6 +87,9 @@ public class GameManager : MonoBehaviour {
 
     [Header("DB")]
     public int coin;
+    int prevCoins;
+    int prevBoxes;
+    float playTime;
 
     // Use this for initialization
     void Start()
@@ -109,18 +115,22 @@ public class GameManager : MonoBehaviour {
     void LoadRecord(){
         int score = 0;
         int loadCoin = 0;
+        int loadBox = 0;
 
         if(PlayerPrefs.HasKey("Score")){
             score = PlayerPrefs.GetInt("Score");
             loadCoin = PlayerPrefs.GetInt("Coin");
+            loadBox = PlayerPrefs.GetInt("Box");
         }else{
-            PlayerPrefs.SetInt("Score", score);
-            PlayerPrefs.SetInt("Coin", loadCoin);
+            PlayerPrefs.SetInt("Score", 0);
+            PlayerPrefs.SetInt("Coin", 0);
+            PlayerPrefs.SetInt("Box", 0);
             //load tutorial
             SceneManager.LoadScene(1);
         }
         recordText.text = ("HIGH SCORE : " + score);
         totalCoins.text = ("" + loadCoin);
+        totalBoxes.text = ("" + loadBox);
     }
 
     //void LoadSample(){
@@ -330,9 +340,55 @@ public class GameManager : MonoBehaviour {
         int prevScore = PlayerPrefs.GetInt("Score");
 
         coinText.text = ("" + coin);
-        int prevCoins = PlayerPrefs.GetInt("Coin");
-        prevCoins += coin;
-        PlayerPrefs.SetInt("Coin", prevCoins);
+        boxText.text = ("" + (brokenBoxes + prevBoxes));
+        playTime = Time.time;
+        int min = (int)playTime / 60;
+        int sec = (int)playTime - min * 60;
+        float res = playTime - min*60 - sec;
+        res = (int)(res * 100);
+        Debug.Log(min +", "+sec+", "+res);
+
+        string m, s, r;
+        if (min < 10)
+        {
+            m = "0";
+            m += min.ToString();
+        } else m = min.ToString();
+        if (sec < 10)
+        {
+            s = "0";
+            s += sec.ToString();
+        } else s = sec.ToString();
+        if (res < 10)
+        {
+            r = "0";
+            r += res.ToString();
+        }
+        else r = res.ToString();
+        timeText.text = ("" + m + "' " + s + "'' " + r);
+
+        if (isContinueAvailable)
+        {
+            int prevC = PlayerPrefs.GetInt("Coin");
+            prevC += coin;
+            PlayerPrefs.SetInt("Coin", prevC);
+            prevCoins = coin;
+
+            int prevB = PlayerPrefs.GetInt("Box");
+            prevB += brokenBoxes;
+            PlayerPrefs.SetInt("Box", prevB);
+            prevBoxes = brokenBoxes;
+        }
+        else
+        {
+            int prevC = PlayerPrefs.GetInt("Coin");
+            prevC += (coin - prevCoins);
+            PlayerPrefs.SetInt("Coin", prevC);
+
+            int prevB = PlayerPrefs.GetInt("Box");
+            prevB += brokenBoxes;
+            PlayerPrefs.SetInt("Box", prevB);
+        }
 
         if(curScore >= prevScore){
             PlayerPrefs.SetInt("Score", curScore);
