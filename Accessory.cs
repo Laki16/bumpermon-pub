@@ -7,9 +7,10 @@ public class Accessory : ShopManager {
     [Header("Accessory Info")]
     public int itemNumber;
     protected bool isUnlock = false;
-    protected int enhance;
+    public int enhance;
     protected int maxEnhance = 9;
 
     [Header("State Info")]
     public bool isEquip;
+
 }
