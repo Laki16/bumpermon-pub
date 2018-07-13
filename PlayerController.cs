@@ -742,7 +742,7 @@ public class PlayerController : MonoBehaviour
         {
             while (curHP < temp)
             {
-                Debug.Log(curHP + "up!");
+                //Debug.Log(curHP + "up!");
                 curHP += num * Time.deltaTime;
                 yield return null;
             }
