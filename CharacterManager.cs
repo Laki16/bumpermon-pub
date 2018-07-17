@@ -16,24 +16,39 @@ public class CharacterManager : MonoBehaviour {
     public Button golemBtn;
     public Button ghostBtn;
     public Button dragonBtn;
+    public Button santaBtn;
+    public Button skeletonBtn;
     public GameObject lvUpBtn;
     [Space(10)]
     public Image characterImage;
     public Sprite golemImage;
     public Sprite ghostImage;
     public Sprite dragonImage;
+    public Sprite santaImage;
+    public Sprite skeletonImage;
     public Sprite grayBtn;
     public Sprite greenBtn;
     [Space(10)]
     public GameObject golemPlayer;
     public GameObject ghostPlayer;
     public GameObject dragonPlayer;
+    public GameObject santaPlayer;
+    public GameObject skeletonPlayer;
     [Space(10)]
     public Image hpBar;
     public Image spdBar;
     public Image defBar;
     public Image strBar;
     public Image lukBar;
+    //Frame Image
+    [Space(10)]
+    public Image golemFrame;
+    public Image ghostFrame;
+    public Image dragonFrame;
+    public Image santaFrame;
+    public Image skeletonFrame;
+    public GameObject LockImage;
+    Image selectedFrame;
     [Space(10)]
     public Text currentGold;
     public Text monsterName;
@@ -50,14 +65,17 @@ public class CharacterManager : MonoBehaviour {
     float luk;
     bool isBuy;
 
-	private void OnEnable()
+    private void OnEnable()
     {
+        selectedFrame = golemFrame;
         UpdateUI();
 	}
 
     public void BtnOnGolem(){
         characterImage.sprite = golemImage;
         currentCharacter = golemPlayer;
+        selectedFrame.color = new Color32(255, 255, 255, 255);
+        selectedFrame = golemFrame;
         isBuy = false;
         UpdateUI();
     }
@@ -65,6 +83,8 @@ public class CharacterManager : MonoBehaviour {
     public void BtnOnGhost(){
         characterImage.sprite = ghostImage;
         currentCharacter = ghostPlayer;
+        selectedFrame.color = new Color32(255, 255, 255, 255);
+        selectedFrame = ghostFrame;
         isBuy = false;
         UpdateUI();
     }
@@ -72,6 +92,28 @@ public class CharacterManager : MonoBehaviour {
     public void BtnOnDragon(){
         characterImage.sprite = dragonImage;
         currentCharacter = dragonPlayer;
+        selectedFrame.color = new Color32(255, 255, 255, 255);
+        selectedFrame = dragonFrame;
+        isBuy = false;
+        UpdateUI();
+    }
+
+    public void BtnOnSanta()
+    {
+        characterImage.sprite = santaImage;
+        currentCharacter = santaPlayer;
+        selectedFrame.color = new Color32(255, 255, 255, 255);
+        selectedFrame = santaFrame;
+        isBuy = false;
+        UpdateUI();
+    }
+
+    public void BtnOnSkeleton()
+    {
+        characterImage.sprite = skeletonImage;
+        currentCharacter = skeletonPlayer;
+        selectedFrame.color = new Color32(255, 255, 255, 255);
+        selectedFrame = skeletonFrame;
         isBuy = false;
         UpdateUI();
     }
@@ -102,6 +144,7 @@ public class CharacterManager : MonoBehaviour {
     }
 
     void UpdateUI(){
+
         //골드 DB에서 가져올 것
         curCoin = PlayerPrefs.GetInt("Coin");
         currentGold.text = "" + curCoin;
@@ -121,6 +164,14 @@ public class CharacterManager : MonoBehaviour {
                 name = "Dragon";
                 maxLevel = 5;
                 break;
+            case 4:
+                name = "Santa";
+                maxLevel = 7;
+                break;
+            case 5:
+                name = "Skeleton";
+                maxLevel = 9;
+                break;
             default:
                 name = "";
                 break;
@@ -128,7 +179,20 @@ public class CharacterManager : MonoBehaviour {
         character.SetStatus();
         monsterName.text = "LV." + character.Level + " " + name;
 
-        if(!isBuy){
+        //Change Frame Color
+        if (character.Level > 0)
+        {
+            selectedFrame.color = new Color32(255, 50, 0, 255);
+            LockImage.SetActive(false);
+            characterImage.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            LockImage.SetActive(true);
+            characterImage.color = new Color32(100, 100, 100, 255);
+        }
+
+        if (!isBuy){
             StopAllCoroutines();
             hp = 0;
             spd = 0;
@@ -167,6 +231,7 @@ public class CharacterManager : MonoBehaviour {
             requireGold.text = "  Upgrade\n" + levelGold;
             coinImg.SetActive(true);
         }
+        
     }
 
     IEnumerator BarProgress(){
@@ -207,7 +272,8 @@ public class CharacterManager : MonoBehaviour {
 
             yield return null;
         }
-
     }
+
+
 
 }
