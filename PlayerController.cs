@@ -631,6 +631,10 @@ public class PlayerController : MonoBehaviour
     public void NitroAnimEvent()
     {
         StartCoroutine(NitroShockwave(false));
+    }
+
+    public void SmashEvent()
+    {
         float magnitude = speed / 2100.0f;
         StartCoroutine(cameraShake.Smash(.4f, magnitude));
     }
