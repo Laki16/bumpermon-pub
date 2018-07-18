@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour {
 
     public GameObject homeBtn;
     public GameObject coinUI;
+    public GameObject starUI;
+    public GameObject scoreUI;
     //public GameObject lives;
 
     public Sprite livingheart;
@@ -182,6 +184,7 @@ public class GameManager : MonoBehaviour {
         introduceText.enabled = false;
 
         coinUI.SetActive(false);
+        starUI.SetActive(false);
         //lives.SetActive(true);
 
         checkPanel.SetActive(true);
@@ -205,6 +208,7 @@ public class GameManager : MonoBehaviour {
             {
                 Time.timeScale = 1;
             }
+            scoreUI.SetActive(true);
             myMenuAnimator.SetBool("Down", false);
             myMenuAnimator.SetBool("Dev", false);
             myMenuAnimator.SetBool("Restart", false);
@@ -259,6 +263,7 @@ public class GameManager : MonoBehaviour {
     
     public void BtnOnHome()
     {
+        scoreUI.SetActive(false);
         myMenuAnimator.SetBool("Restart", true);
     }
 
@@ -275,6 +280,7 @@ public class GameManager : MonoBehaviour {
     
     public void BtnOnNo()
     {
+        scoreUI.SetActive(true);
         myMenuAnimator.SetBool("Restart", false);
     }
 
