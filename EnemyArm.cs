@@ -64,30 +64,30 @@ public class EnemyArm : MonoBehaviour
         changedPosition = 0.0f;
         int itemType;
         itemType = Random.Range(1, 100);
-        if (itemType < 30)
+        if (itemType < 5) //5%
         {
-            //코인
+            //코인 -> gem
             itemType = 3;
         }
-        else if (30 <= itemType && itemType < 60)
+        else if (itemType < 15) //10%
         {
-            //마인
-            itemType = 1;
+            //쉴드
+            itemType = 5;
         }
-        else if (60 <= itemType && itemType < 80)
+        else if (itemType < 22) //7%
         {
             //니트로
             itemType = 4;
         }
-        else if (80 <= itemType && itemType < 90)
+        else if (itemType < 30) //8%
         {
             //하트
             itemType = 2;
         }
         else
         {
-            //쉴드
-            itemType = 5;
+            //nothing
+            itemType = 1;
         }
         StartCoroutine(Mine(minePosition, itemType));
     }
@@ -144,9 +144,9 @@ public class EnemyArm : MonoBehaviour
         {
             myAnimator.SetTrigger("Lane1");
         }
-        GameObject newMineFX;
-        newMineFX = Instantiate(mineFX, minePosition, mineFX.transform.rotation);
-        newMineFX.SetActive(true);
+        //GameObject newMineFX;
+        //newMineFX = Instantiate(mineFX, minePosition, mineFX.transform.rotation);
+        //newMineFX.SetActive(true);
         //3초 카운트 (애니메이션 이벤트로 대체 고려)
         float timeCount = 0;
         bool endCountAnimationTime = false;
@@ -160,7 +160,7 @@ public class EnemyArm : MonoBehaviour
             }
             yield return null;
         }
-        Destroy(newMineFX);
+        //Destroy(newMineFX);
         //마인 생성
         GameObject newMine;
         newMine = Instantiate(item, minePosition, new Quaternion(0, 0, 0, 0));

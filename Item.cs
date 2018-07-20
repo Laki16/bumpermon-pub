@@ -52,7 +52,7 @@ public class Item : MonoBehaviour
         switch (myType)
         {
             case ItemType.MINE:
-                myEffect = Instantiate(mineFX, transform.position, transform.rotation);
+                //myEffect = Instantiate(mineFX, transform.position, transform.rotation);
                 break;
             case ItemType.LIFE:
                 myEffect = Instantiate(lifeFX, transform.position, transform.rotation);
@@ -94,7 +94,7 @@ public class Item : MonoBehaviour
             case ItemType.COIN:
                 soundManager.GetComponent<SoundManager>().PlayItemCoin();
                 myEffect = Instantiate(getCoin, transform.position, transform.rotation);
-                gameManager.GetComponent<GameManager>().coin++;
+                gameManager.GetComponent<GameManager>().gem++;
                 Destroy(gameObject);
                 //GetCoin();
                 break;

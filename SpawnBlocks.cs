@@ -134,10 +134,10 @@ public class SpawnBlocks : MonoBehaviour
         //node[nodeIterator] = lane[iterator];
         for (int i = 0; i < difficulty; i++)
         {
-            lane[iterator].transform.position = new Vector3(beforeDifficulty, 0, 0);
+            lane[iterator].transform.position = new Vector3(beforeDifficulty, -1, -0.5f);
             lane[iterator].transform.position += new Vector3(blockXSize * i, 0, nowLane);
             lane[iterator].SetActive(true);
-            lane[iterator].GetComponent<Renderer>().enabled = true;
+            lane[iterator].GetComponent<SkinnedMeshRenderer>().enabled = true;
             lane[iterator].GetComponent<Collider>().enabled = true;
             if (i == difficulty - 1)
             {

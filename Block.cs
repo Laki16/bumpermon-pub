@@ -24,7 +24,7 @@ public class Block : MonoBehaviour {
         }
 
         boomFX.SetActive(true);
-        GetComponent<Renderer>().enabled = false;
+        GetComponent<SkinnedMeshRenderer>().enabled = false;
 
         yield return new WaitForSeconds(0.2f);
         if (destroy == true)

@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     public GameObject homeBtn;
     public GameObject coinUI;
-    public GameObject starUI;
+    public GameObject gemUI;
     public GameObject scoreUI;
     //public GameObject lives;
 
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour {
     public Text titleText;
     public Text recordText;
     public Text totalCoins;
-    public Text totalBoxes; 
+    public Text totalGems; 
 
     public GameObject outGamePanel;
     public GameObject optionPanel;
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour {
 
     [Header("GameOverUI")]
     public GameObject gameOverPanel;
-    public GameObject starPanel;
+    public GameObject boxPanel;
     public GameObject highScore;
     public Text coinText;
     public Button continueBtn;
@@ -85,10 +85,11 @@ public class GameManager : MonoBehaviour {
     Animator myGameOverAnimator;
     Animator myCharacterAnimator;
     Animator myShopAnimator;
-    Animator myStarAnimator;
+    Animator myBoxAnimator;
 
     [Header("DB")]
     public int coin;
+    public int gem;
     int prevCoins;
     int prevBoxes;
     float playTime;
@@ -108,7 +109,7 @@ public class GameManager : MonoBehaviour {
         myGameOverAnimator = gameOverPanel.GetComponent<Animator>();
         myCharacterAnimator = characterPanel.GetComponent<Animator>();
         myShopAnimator = shopPanel.GetComponent<Animator>();
-        myStarAnimator = starPanel.GetComponent<Animator>();
+        myBoxAnimator = boxPanel.GetComponent<Animator>();
 
         LoadRecord();
         //LoadSample();
@@ -118,21 +119,25 @@ public class GameManager : MonoBehaviour {
         int score = 0;
         int loadCoin = 0;
         int loadBox = 0;
+        int loadGem = 0;
 
         if(PlayerPrefs.HasKey("Score")){
             score = PlayerPrefs.GetInt("Score");
             loadCoin = PlayerPrefs.GetInt("Coin");
             loadBox = PlayerPrefs.GetInt("Box");
-        }else{
+            loadGem = PlayerPrefs.GetInt("Gem");
+        }
+        else{
             PlayerPrefs.SetInt("Score", 0);
             PlayerPrefs.SetInt("Coin", 0);
             PlayerPrefs.SetInt("Box", 0);
+            PlayerPrefs.SetInt("Gem", 0);
             //load tutorial
             SceneManager.LoadScene(1);
         }
         recordText.text = ("HIGH SCORE : " + score);
         totalCoins.text = ("" + loadCoin);
-        totalBoxes.text = ("" + loadBox);
+        totalGems.text = ("" + loadGem);
     }
 
     //void LoadSample(){
@@ -184,7 +189,7 @@ public class GameManager : MonoBehaviour {
         introduceText.enabled = false;
 
         coinUI.SetActive(false);
-        starUI.SetActive(false);
+        gemUI.SetActive(false);
         //lives.SetActive(true);
 
         checkPanel.SetActive(true);
@@ -287,7 +292,7 @@ public class GameManager : MonoBehaviour {
     public void BtnOnContinue()
     {
         isContinueAvailable = false;
-        myStarAnimator.SetBool("GameOver", false);
+        myBoxAnimator.SetBool("GameOver", false);
         myGameOverAnimator.SetBool("GameOver", false);
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().Continue());
@@ -342,8 +347,13 @@ public class GameManager : MonoBehaviour {
             continueBtn.interactable = false;
         }
         optionBtn.GetComponent<Button>().interactable = false;
-        int curScore = (int)player.transform.position.x + 20;
+        //int curScore = (int)player.transform.position.x + 20;
+        int curScore = scoreUI.GetComponent<Score>().score;
         int prevScore = PlayerPrefs.GetInt("Score");
+
+        int prevGem = PlayerPrefs.GetInt("Gem");
+        int curGem = prevGem + gem;
+        PlayerPrefs.SetInt("Gem", curGem);
 
         coinText.text = ("" + coin);
         boxText.text = ("" + (brokenBoxes + prevBoxes));
@@ -404,7 +414,7 @@ public class GameManager : MonoBehaviour {
         }
         PlayerPrefs.Save();
 
-        myStarAnimator.SetBool("GameOver", true);
+        myBoxAnimator.SetBool("GameOver", true);
         myGameOverAnimator.SetBool("GameOver", true);
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().GameOver());
