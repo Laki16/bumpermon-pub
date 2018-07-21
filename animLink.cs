@@ -8,4 +8,9 @@ public class animLink : MonoBehaviour {
     {
         GetComponentInParent<PlayerController>().NitroAnimEvent();
     }
+
+    public void CameraSmash()
+    {
+        GetComponentInParent<PlayerController>().SmashEvent();
+    }
 }
