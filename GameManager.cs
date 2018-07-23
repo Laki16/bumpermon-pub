@@ -362,7 +362,7 @@ public class GameManager : MonoBehaviour {
         int sec = (int)playTime - min * 60;
         float res = playTime - min*60 - sec;
         res = (int)(res * 100);
-        Debug.Log(min +", "+sec+", "+res);
+        //Debug.Log(min +", "+sec+", "+res);
 
         string m, s, r;
         if (min < 10)
