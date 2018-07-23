@@ -13,7 +13,7 @@ public class SpawnGrounds : MonoBehaviour
     public GameObject[] groundArray = new GameObject[3];
     private int groundIterator = 0;
     private int backGroundIterator = 0;
-    public GameObject[] backGround = new GameObject[3];
+    public GameObject[] backGround = new GameObject[4];
     public GameObject[] backGroundArray = new GameObject[3];
 
     [Header("Position")]
@@ -81,7 +81,7 @@ public class SpawnGrounds : MonoBehaviour
         {
             SpawnGround();
         }
-        if(!betweenStage)
+        if(!betweenStage && nowStage < 3)
         progressCount++;
     }
 
