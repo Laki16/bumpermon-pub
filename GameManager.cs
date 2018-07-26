@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+//using GooglePlayGames;
 
 public class GameManager : MonoBehaviour {
 
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour {
     public GameObject highScore;
     public Text coinText;
     public Button continueBtn;
-    public Button rankingBtn;
+    //public Button rankingBtn;
     public Button homeBtn2;
     public GameObject skullFX;
     bool isContinueAvailable = true;
@@ -317,11 +318,6 @@ public class GameManager : MonoBehaviour {
         //player.GetComponent<PlayerController>().damagedSpeed = 1.0f;
         player.GetComponent<PlayerController>().Restart();
         LiveUp();
-    }
-
-    public void BtnOnRanking()
-    {
-        //랭킹시스템 추가
     }
 
     public void LiveUp()
