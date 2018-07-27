@@ -95,6 +95,9 @@ public class GameManager : MonoBehaviour {
     int prevBoxes;
     float playTime;
 
+    [Header("Ads")]
+    public UnityAdsHelper UnityAdsHelper;
+
     // Use this for initialization
     void Start()
     {
@@ -301,6 +304,8 @@ public class GameManager : MonoBehaviour {
         skullFX.SetActive(false);
 
         //광고시스템 추가
+        Time.timeScale = 0;
+        UnityAdsHelper.ShowAd();
 
         leftEnemyArm.Idle();
         rightEnemyArm.Idle();

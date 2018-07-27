@@ -37,7 +37,7 @@ public class Item : MonoBehaviour
     void Start()
     {
         //soundManager = GameObject.FindGameObjectWithTag("SoundManager");
-        Destroy(gameObject, 30.0f);
+        //Destroy(gameObject, 30.0f);
     }
     //void Update()
     //{

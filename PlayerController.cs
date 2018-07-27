@@ -860,7 +860,8 @@ public class PlayerController : MonoBehaviour
         preSpeed = minSpeed;
         myAnimator.Play("Spawn");
         //live = 1;
-        curHP = character.HP / 2;
+        //curHP = character.HP / 2;
+        curHP = character.HP;
         checkDead = false;
         speed += minSpeed;
         damagedSpeed = 1.0f;
