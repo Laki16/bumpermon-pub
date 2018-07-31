@@ -13,4 +13,14 @@ public class Accessory : ShopManager {
     [Header("State Info")]
     public bool isEquip;
 
+    [Header("Accessory Effect")]
+    public int HP;
+    public int SPD;
+    public int DEF;
+    public int STR;
+    public int LUK;
+
+    public float nitroRange;
+    public float nitroTime;
+
 }
