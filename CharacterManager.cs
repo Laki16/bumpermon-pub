@@ -11,6 +11,7 @@ public class CharacterManager : MonoBehaviour {
     Character character;
     public GameObject characterPanel;
     public GameObject infoPanel;
+    public ShopManager shopManager;
 
     [Header("UI")]
     public Button golemBtn;
@@ -150,6 +151,10 @@ public class CharacterManager : MonoBehaviour {
         currentGold.text = "" + curCoin;
 
         character = currentCharacter.GetComponent<Character>();
+        shopManager.currentCharacter = character;
+        shopManager.UpdateUI();
+        shopManager.UpdateStatus();
+
         string name;
         switch(character.MonsterIndex){
             case 1:
