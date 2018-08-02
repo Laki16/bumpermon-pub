@@ -17,6 +17,9 @@ public class Character : MonoBehaviour{
     public int DEF;
     public int STR;
     public int LUK;
+    public float nitroSize;
+    public float bombSize;
+    public float nitroLength;
 
     [HideInInspector]
     public int[] golemGold = { 10, 50, 100, 300, 500, 1000, 2000, 3500, 5000};

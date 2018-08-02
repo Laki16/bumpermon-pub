@@ -152,8 +152,6 @@ public class CharacterManager : MonoBehaviour {
 
         character = currentCharacter.GetComponent<Character>();
         shopManager.currentCharacter = character;
-        shopManager.UpdateUI();
-        shopManager.UpdateStatus();
 
         string name;
         switch(character.MonsterIndex){
@@ -236,7 +234,10 @@ public class CharacterManager : MonoBehaviour {
             requireGold.text = "  Upgrade\n" + levelGold;
             coinImg.SetActive(true);
         }
-        
+
+        shopManager.UpdateUI();
+        shopManager.UpdateStatus();
+
     }
 
     IEnumerator BarProgress(){

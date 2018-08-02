@@ -13,8 +13,11 @@ public class GPGSManager : MonoBehaviour
     public Text stateText;  //상태 메세지
     private Action<bool> signInCallback; //로그인 성공 여부 확인을 위한 콜백함수
 
+    public Text debugM;
+
     private void Awake()
     {
+        debugM.text = "awaking..";
         //안드로이드 빌더 초기화
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
         PlayGamesPlatform.InitializeInstance(config);
@@ -36,6 +39,7 @@ public class GPGSManager : MonoBehaviour
     //로그인
     public void SignIn()
     {
+        debugM.text = "clicked..";
         //로그아웃 상태면 호출
         if (PlayGamesPlatform.Instance.IsAuthenticated() == false)
             PlayGamesPlatform.Instance.Authenticate(signInCallback);
@@ -54,6 +58,7 @@ public class GPGSManager : MonoBehaviour
 
     public void BtnOnRanking()
     {
+        debugM.text = "ranking..";
         //랭킹시스템 추가
         PlayGamesPlatform.Activate();
         Social.localUser.Authenticate(AuthenticateHandler);

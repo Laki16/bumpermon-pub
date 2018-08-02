@@ -19,6 +19,8 @@ public class ShopManager : MonoBehaviour
     [Header("Equipment")]
     public List<Accessory> equipment = new List<Accessory>();
     private int maxEquipment = 3;
+    public GameObject contentPanel;
+    public GameObject item;
 
     [Header("UI")]
     public GameObject accessoryPanel;
@@ -64,9 +66,18 @@ public class ShopManager : MonoBehaviour
 
     }
 
+    public void LoadItem()
+    {
+
+    }
+
     public void AddItem(int itemNumber)
     {
-        
+        var newItem = Instantiate(item);
+        //newItem.transform.parent = contentPanel.transform;
+        newItem.transform.SetParent(contentPanel.transform, false);
+        newItem.GetComponent<Equipment>().equipNumber = itemNumber;
+        newItem.GetComponentInChildren<Image>().sprite = golemCircleImage;
     }
 
     public void ApplyAccessory()
@@ -96,31 +107,26 @@ public class ShopManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        int idx = currentCharacter.MonsterIndex;
-        Debug.Log(idx);
-        switch (idx)
+        int command = currentCharacter.MonsterIndex;
+        switch (command)
         {
             case 1: //golem
-                introText.text = "";
+                introText.text = "Smash everything ahead of you!\nGolem doll looks like rock,\nbut made up with sponges!";
                 characterImage.GetComponent<Image>().sprite = golemCircleImage;
-                //UpdateStatus();
                 break;
             case 2: //ghost
                 introText.text = "Ready to surprise?\nThis smooth ghost doll going to scary\nall the other dolls!";
                 characterImage.GetComponent<Image>().sprite = ghostCircleImage;
-                //UpdateStatus();
                 break;
             case 3: //dragon
                 break;
             case 4: //santa
-                introText.text = "";
+                introText.text = "Santa keeps running and running...\nfor delivering your present!";
                 characterImage.GetComponent<Image>().sprite = santaCircleImage;
-                //UpdateStatus();
                 break;
             case 5: //skeleton
-                introText.text = "";
+                introText.text = "Oh cute skeleton, sadly he think\nhe's in the dungeon now.\nLook at that serious face!";
                 characterImage.GetComponent<Image>().sprite = skeletonCircleImage;
-                //UpdateStatus();
                 break;
             default:
                 break;
