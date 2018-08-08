@@ -409,6 +409,10 @@ public class GameManager : MonoBehaviour {
 
         if(curScore >= prevScore){
             PlayerPrefs.SetInt("Score", curScore);
+
+            CloudVariables.Highscore = curScore;
+            PlayGamesScript.Instance.SaveData();
+
             highScore.SetActive(true);
         }else{
             highScore.SetActive(false);
