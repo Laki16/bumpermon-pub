@@ -125,7 +125,8 @@ public class GameManager : MonoBehaviour {
         int loadBox = 0;
         int loadGem = 0;
 
-        if(PlayerPrefs.HasKey("Score")){
+        if (PlayerPrefs.HasKey("Score"))
+        {
             score = PlayerPrefs.GetInt("Score");
             loadCoin = PlayerPrefs.GetInt("Coin");
             loadBox = PlayerPrefs.GetInt("Box");
