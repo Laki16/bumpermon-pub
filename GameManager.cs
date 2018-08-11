@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour {
     public GameObject musicBtn;
     public GameObject devBtn;
     public GameObject quitBtn;
+    public GameObject rankingBtn;
 
     public Sprite optionDown;
     public Sprite optionUp;
@@ -57,7 +58,6 @@ public class GameManager : MonoBehaviour {
     public GameObject highScore;
     public Text coinText;
     public Button continueBtn;
-    //public Button rankingBtn;
     public Button homeBtn2;
     public GameObject skullFX;
     bool isContinueAvailable = true;
@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
 
     [Header("System")]
     public GameObject blockController;
+    public PlayGamesScript playGamesScript;
     public SpawnGrounds spawnGrounds;
     public GameObject player;
     //public GameObject enemy;
@@ -92,6 +93,7 @@ public class GameManager : MonoBehaviour {
     public int coin;
     public int gem;
     int prevCoins;
+    int prevGems;
     int prevBoxes;
     float playTime;
 
@@ -117,6 +119,7 @@ public class GameManager : MonoBehaviour {
 
         LoadRecord();
         //LoadSample();
+        Invoke("UpdateUI", 0.5f);
     }
 
     void LoadRecord(){
@@ -143,11 +146,20 @@ public class GameManager : MonoBehaviour {
         recordText.text = ("HIGH SCORE : " + score);
         totalCoins.text = ("" + loadCoin);
         totalGems.text = ("" + loadGem);
-    }
 
-    //void LoadSample(){
-        
-    //}
+        //Game Data Cloud Save
+        CloudVariables.SystemValues[0] = loadCoin;
+        CloudVariables.SystemValues[1] = loadGem;
+        CloudVariables.SystemValues[2] = score;
+        PlayGamesScript.Instance.SaveData();
+    }
+    
+    void UpdateUI()
+    {
+        totalCoins.text = CloudVariables.SystemValues[0].ToString();
+        totalGems.text = CloudVariables.SystemValues[1].ToString();
+        recordText.text = "HIGH SCORE : " + CloudVariables.SystemValues[2].ToString();
+    }
 
     void LateUpdate()
     {
@@ -190,6 +202,7 @@ public class GameManager : MonoBehaviour {
         devBtn.SetActive(false);
         quitBtn.SetActive(false);
         homeBtn.SetActive(true);
+        rankingBtn.SetActive(false);
         titleText.gameObject.SetActive(false);
         introduceText.enabled = false;
 
@@ -353,9 +366,9 @@ public class GameManager : MonoBehaviour {
         int curScore = scoreUI.GetComponent<Score>().score;
         int prevScore = PlayerPrefs.GetInt("Score");
 
-        int prevGem = PlayerPrefs.GetInt("Gem");
-        int curGem = prevGem + gem;
-        PlayerPrefs.SetInt("Gem", curGem);
+        //int prevGem = PlayerPrefs.GetInt("Gem");
+        //int curGem = prevGem + gem;
+        //PlayerPrefs.SetInt("Gem", curGem);
 
         coinText.text = ("" + coin);
         boxText.text = ("" + (brokenBoxes + prevBoxes));
@@ -396,6 +409,15 @@ public class GameManager : MonoBehaviour {
             prevB += brokenBoxes;
             PlayerPrefs.SetInt("Box", prevB);
             prevBoxes = brokenBoxes;
+
+            int prevG = PlayerPrefs.GetInt("Gem");
+            prevG += gem;
+            PlayerPrefs.SetInt("Gem", prevG);
+            prevGems = gem;
+
+            //Cloud Save
+            CloudVariables.SystemValues[0] = coin;
+            CloudVariables.SystemValues[1] = gem;
         }
         else
         {
@@ -404,21 +426,27 @@ public class GameManager : MonoBehaviour {
             PlayerPrefs.SetInt("Coin", prevC);
 
             int prevB = PlayerPrefs.GetInt("Box");
-            prevB += brokenBoxes;
+            prevB += (brokenBoxes - prevBoxes);
             PlayerPrefs.SetInt("Box", prevB);
+
+            int prevG = PlayerPrefs.GetInt("Gem");
+            prevG += (gem - prevGems);
+            PlayerPrefs.SetInt("Gem", prevG);
+
+            //Cloud Save
+            CloudVariables.SystemValues[0] = prevC;
+            CloudVariables.SystemValues[1] = prevG;
         }
 
         if(curScore >= prevScore){
             PlayerPrefs.SetInt("Score", curScore);
-
-            CloudVariables.Highscore = curScore;
-            PlayGamesScript.Instance.SaveData();
-
+            CloudVariables.SystemValues[2] = curScore;
             highScore.SetActive(true);
         }else{
             highScore.SetActive(false);
         }
         PlayerPrefs.Save();
+        playGamesScript.UpdateLeaderBoard();
 
         myBoxAnimator.SetBool("GameOver", true);
         myGameOverAnimator.SetBool("GameOver", true);

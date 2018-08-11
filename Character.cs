@@ -46,6 +46,7 @@ public class Character : MonoBehaviour{
             case 1: //Golem
                 if(!PlayerPrefs.HasKey("GolemLevel")){
                     PlayerPrefs.SetInt("GolemLevel", 1);
+                    //CloudVariables.SystemValues[3] = 1;
                 }
                 Level = PlayerPrefs.GetInt("GolemLevel");
                 HP = 80 + Level * 5;
@@ -57,6 +58,7 @@ public class Character : MonoBehaviour{
             case 2: //Ghost
                 if (!PlayerPrefs.HasKey("GhostLevel")){
                     PlayerPrefs.SetInt("GhostLevel", 0);
+                    //CloudVariables.SystemValues[4] = 0;
                 }
                 Level = PlayerPrefs.GetInt("GhostLevel");
                 HP = 30 + Level * 10;
@@ -80,6 +82,7 @@ public class Character : MonoBehaviour{
                 if (!PlayerPrefs.HasKey("SantaLevel"))
                 {
                     PlayerPrefs.SetInt("SantaLevel", 0);
+                    //CloudVariables.SystemValues[5] = 0;
                 }
                 Level = PlayerPrefs.GetInt("SantaLevel");
                 HP = 40 + Level * 12;
@@ -92,6 +95,7 @@ public class Character : MonoBehaviour{
                 if (!PlayerPrefs.HasKey("SkeletonLevel"))
                 {
                     PlayerPrefs.SetInt("SkeletonLevel", 0);
+                    //CloudVariables.SystemValues[6] = 0;
                 }
                 Level = PlayerPrefs.GetInt("SkeletonLevel");
                 HP = 50 + Level * 8;
@@ -124,11 +128,13 @@ public class Character : MonoBehaviour{
                 curLevel = PlayerPrefs.GetInt("GolemLevel");
                 curLevel++;
                 PlayerPrefs.SetInt("GolemLevel", curLevel);
+                CloudVariables.SystemValues[3] = curLevel;
                 break;
             case 2:
                 curLevel = PlayerPrefs.GetInt("GhostLevel");
                 curLevel++;
                 PlayerPrefs.SetInt("GhostLevel", curLevel);
+                CloudVariables.SystemValues[4] = curLevel;
                 break;
             case 3:
                 curLevel = PlayerPrefs.GetInt("DragonLevel");
@@ -139,13 +145,18 @@ public class Character : MonoBehaviour{
                 curLevel = PlayerPrefs.GetInt("SantaLevel");
                 curLevel++;
                 PlayerPrefs.SetInt("SantaLevel", curLevel);
+                CloudVariables.SystemValues[5] = curLevel;
                 break;
             case 5:
                 curLevel = PlayerPrefs.GetInt("SkeletonLevel");
                 curLevel++;
                 PlayerPrefs.SetInt("SkeletonLevel", curLevel);
+                CloudVariables.SystemValues[6] = curLevel;
                 break;
         }
         PlayerPrefs.Save();
+        PlayGamesScript.Instance.SaveData();
+
+        //cloud saving
     }
 }

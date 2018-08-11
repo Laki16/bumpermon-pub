@@ -69,7 +69,8 @@ public class CharacterManager : MonoBehaviour {
     private void OnEnable()
     {
         selectedFrame = golemFrame;
-        UpdateUI();
+        Invoke("UpdateUI", 0.5f);
+        //UpdateUI();
 	}
 
     public void BtnOnGolem(){
@@ -130,10 +131,16 @@ public class CharacterManager : MonoBehaviour {
             curCoin -= levelGold;
             PlayerPrefs.SetInt("Coin", curCoin);
             PlayerPrefs.Save();
+
+            //Cloud Saving
+            CloudVariables.SystemValues[0] = curCoin;
+            PlayGamesScript.Instance.SaveData();
+
             isBuy = true;
             //Lv Up Animation Play!
             UpdateUI();
         }else Debug.Log("Need more golds!");
+
     }
 
     public void BtnOnMain(){
@@ -144,11 +151,11 @@ public class CharacterManager : MonoBehaviour {
         characterPanel.GetComponent<Animator>().SetBool("isOpen", false);
     }
 
-    void UpdateUI(){
+    public void UpdateUI(){
 
         //골드 DB에서 가져올 것
         curCoin = PlayerPrefs.GetInt("Coin");
-        currentGold.text = "" + curCoin;
+        currentGold.text = CloudVariables.SystemValues[0].ToString();
 
         character = currentCharacter.GetComponent<Character>();
         shopManager.currentCharacter = character;
@@ -225,7 +232,7 @@ public class CharacterManager : MonoBehaviour {
             requireGold.text = "  Buy\n" + levelGold;
             coinImg.SetActive(true);
         }else if(maxLevel <= character.Level){
-            requireGold.text = "  MAX";
+            requireGold.text = "     MAX";
             lvUpBtn.GetComponent<Button>().interactable = false;
             lvUpBtn.GetComponent<Image>().sprite = grayBtn;
             coinImg.SetActive(false);
