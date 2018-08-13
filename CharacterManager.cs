@@ -12,6 +12,8 @@ public class CharacterManager : MonoBehaviour {
     public GameObject characterPanel;
     public GameObject infoPanel;
     public ShopManager shopManager;
+    public GameObject swapPanel;
+    private bool isStatus;
 
     [Header("UI")]
     public Button golemBtn;
@@ -29,6 +31,8 @@ public class CharacterManager : MonoBehaviour {
     public Sprite skeletonImage;
     public Sprite grayBtn;
     public Sprite greenBtn;
+    public Text transText;
+
     [Space(10)]
     public GameObject golemPlayer;
     public GameObject ghostPlayer;
@@ -118,6 +122,23 @@ public class CharacterManager : MonoBehaviour {
         selectedFrame = skeletonFrame;
         isBuy = false;
         UpdateUI();
+    }
+
+    public void BtnOnTrans()
+    {
+        //스탯창 -> 세부스탯
+        if (!isStatus)
+        {
+            swapPanel.GetComponent<Animator>().Play("Equip");
+            isStatus = true;
+            transText.text = "Status";
+        }
+        else //세부스탯 -> 스탯창
+        {
+            swapPanel.GetComponent<Animator>().Play("Status");
+            isStatus = false;
+            transText.text = "Detail";
+        }
     }
 
     public void BtnOnLvUp(){

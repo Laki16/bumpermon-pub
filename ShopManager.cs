@@ -14,7 +14,6 @@ public class ShopManager : MonoBehaviour
     public List<GameObject> accessories = new List<GameObject>();
     //[HideInInspector]
     public Character currentCharacter;
-    private bool isStatus;
 
     [Header("Equipment")]
     public List<Accessory> equipment = new List<Accessory>();
@@ -28,14 +27,12 @@ public class ShopManager : MonoBehaviour
     public GameObject slot2;
     public GameObject slot3;
     [Space(10)]
-    public GameObject swapPanel;
     public GameObject characterImage;
     public Sprite golemCircleImage;
     public Sprite ghostCircleImage;
     public Sprite santaCircleImage;
     public Sprite skeletonCircleImage;
     [Space(10)]
-    public Text transText;
     public Text introText;
     public Text hpDefault;
     public Text hpUpgraded;
@@ -87,31 +84,14 @@ public class ShopManager : MonoBehaviour
             //스탯 적용
         }
     }
-
-    public void BtnOnTrans()
-    {
-        //스탯창 -> 장비창
-        if (isStatus)
-        {
-            swapPanel.GetComponent<Animator>().Play("Equip");
-            isStatus = false;
-            transText.text = "Status";
-        }
-        else //장비창 -> 스탯창
-        {
-            swapPanel.GetComponent<Animator>().Play("Status");
-            isStatus = true;
-            transText.text = "Equip";
-        }
-    }
-
+    
     public void UpdateUI()
     {
         int command = currentCharacter.MonsterIndex;
         switch (command)
         {
             case 1: //golem
-                introText.text = "Smash everything ahead of you!\nGolem doll looks like rock,\nbut made up with sponges!";
+                introText.text = "앞에 있는 모든 것을 부숴버리세요!\n골렘 인형은 무척 단단하게 생겼지만,\n사실 스펀지로 이루어져 있습니다.";
                 characterImage.GetComponent<Image>().sprite = golemCircleImage;
                 break;
             case 2: //ghost
