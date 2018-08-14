@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour {
     public GameObject characterPanel;
     public GameObject shopPanel;
     public GameObject btmPanel;
+    public GameObject storePanel;
 
     public GameObject startBtn;
     public GameObject optionBtn;
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviour {
     Animator myCharacterAnimator;
     Animator myShopAnimator;
     Animator myBoxAnimator;
+    Animator myStoreAnimator;
 
     [Header("DB")]
     public int coin;
@@ -116,6 +118,7 @@ public class GameManager : MonoBehaviour {
         myCharacterAnimator = characterPanel.GetComponent<Animator>();
         myShopAnimator = shopPanel.GetComponent<Animator>();
         myBoxAnimator = boxPanel.GetComponent<Animator>();
+        myStoreAnimator = storePanel.GetComponent<Animator>();
 
         LoadRecord();
         //LoadSample();
@@ -305,6 +308,16 @@ public class GameManager : MonoBehaviour {
     {
         scoreUI.SetActive(true);
         myMenuAnimator.SetBool("Restart", false);
+    }
+
+    public void BtnOnStore()
+    {
+        myStoreAnimator.SetBool("Up", true);
+    }
+    
+    public void BtnOnStoreToMain()
+    {
+        myStoreAnimator.SetBool("Up", false);
     }
 
     public void BtnOnContinue()
