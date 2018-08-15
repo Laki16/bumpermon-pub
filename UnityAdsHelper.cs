@@ -10,6 +10,7 @@ public class UnityAdsHelper : MonoBehaviour
 
     private const string video_id = "video";
     private const string rewarded_video_id = "rewardedVideo";
+    private const string rewarded_video_15secs_id = "rewardedvideo_15secs";
 
     void Start()
     {
@@ -42,6 +43,16 @@ public class UnityAdsHelper : MonoBehaviour
             var options = new ShowOptions { resultCallback = HandleShowResult };
 
             Advertisement.Show(rewarded_video_id, options);
+        }
+    }
+
+    public void ShowRewardedAd_15secs()
+    {
+        if (Advertisement.IsReady(rewarded_video_15secs_id))
+        {
+            var options = new ShowOptions { resultCallback = HandleShowResult };
+
+            Advertisement.Show(rewarded_video_15secs_id, options);
         }
     }
 
