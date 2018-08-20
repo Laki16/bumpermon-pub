@@ -287,7 +287,7 @@ public class GameManager : MonoBehaviour {
         }
     }
     
-    public void BtnOnHome()
+    public void BtnOnMainScreen()
     {
         scoreUI.SetActive(false);
         myMenuAnimator.SetBool("Restart", true);
