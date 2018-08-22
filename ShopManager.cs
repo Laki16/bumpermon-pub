@@ -14,9 +14,10 @@ public class ShopManager : MonoBehaviour
     public List<GameObject> accessories = new List<GameObject>();
     //[HideInInspector]
     public Character currentCharacter;
+    public Equipment equipmentItem;
 
     [Header("Equipment")]
-    public List<Accessory> equipment = new List<Accessory>();
+    public List<Accessory> equipments = new List<Accessory>();
     private int maxEquipment = 3;
     public GameObject contentPanel;
     public GameObject item;
@@ -68,18 +69,45 @@ public class ShopManager : MonoBehaviour
 
     }
 
-    public void AddItem(int itemNumber)
+    public void AddItem()
+    {
+
+    }
+
+    public void NewItem(int itemNumber, int itemValue)
     {
         var newItem = Instantiate(item);
         //newItem.transform.parent = contentPanel.transform;
         newItem.transform.SetParent(contentPanel.transform, false);
         newItem.GetComponent<Equipment>().equipNumber = itemNumber;
-        newItem.GetComponentInChildren<Image>().sprite = golemCircleImage;
+
+        switch (itemValue)
+        {
+            case 0:
+                newItem.GetComponentInChildren<Image>().sprite
+                    = equipmentItem.GetComponent<Equipment>().normal_item_image[itemNumber];
+                break;
+            case 1:
+                newItem.GetComponentInChildren<Image>().sprite
+                    = equipmentItem.GetComponent<Equipment>().rare_item_image[itemNumber];
+                break;
+            case 2:
+                newItem.GetComponentInChildren<Image>().sprite 
+                    = equipmentItem.GetComponent<Equipment>().epic_item_image[itemNumber];
+                break;
+            case 3:
+                newItem.GetComponentInChildren<Image>().sprite 
+                    = equipmentItem.GetComponent<Equipment>().legend_item_image[itemNumber];
+                break;
+            default:
+                break;
+        }
+
     }
 
     public void ApplyAccessory()
     {
-        for (int i = 0; i < equipment.Count; i++)
+        for (int i = 0; i < equipments.Count; i++)
         {
             //스탯 적용
         }
