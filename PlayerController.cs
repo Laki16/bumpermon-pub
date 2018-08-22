@@ -39,7 +39,6 @@ public class PlayerController : MonoBehaviour
     private bool isShield = false;
     //부딪혔을때 속도 제어용 변수
     private float damagedSpeed = 1.0f;
-    public float curHP;
 
     [Header("FX")]
     private bool moveLeft = false;
@@ -56,29 +55,14 @@ public class PlayerController : MonoBehaviour
     [Header("SFX")]
     public GameObject soundManager;
 
-    //[Header("Gear System")]
-    //[Tooltip("현재 기어")]
-    //public int currentGear;
-    //[Tooltip("기어별 상한속도")]
-    //public float maxGearSpeed;
-    //[Tooltip("기어 풀리는 변수")]
-    //public float unGear;
-    //[Tooltip("max 속도일때 이 시간만큼 유지하면 기어업")]
-    //public float upgradeGear;
-    //[Tooltip("최대 기어")]
-    //[Range(1, 6)]
-    //public int maxGear;
-    //[Tooltip("속도 증가 가중치")]
-    //public float increaseWeight;
-    //[Tooltip("속도 감소 가중치")]
-    //public float decreaseWeight;
-
     [Header("Nitro System")]
     public float nitro;
     private bool isNitro;
     public bool useNitro;
     private float preSpeed;
     //int preGear;
+    public float nitroEarnSize;
+    public float bombSize;
     public float nitroTime;
     bool isBoost = false;
 
@@ -88,6 +72,7 @@ public class PlayerController : MonoBehaviour
     public EnemyArm leftEnemyArm;
     public EnemyArm rightEnemyArm;
     public GameObject enemyController;
+    public ShopManager shopManager;
 
     [Header("Collision")]
     //앞에 블럭
@@ -137,9 +122,15 @@ public class PlayerController : MonoBehaviour
     private float attackTime;
 
     //Character
-    Character character;
+    private Character character;
+    private float curHP;
+    private float curDEF;
+    private float curSTR;
     private float tm = 1; //give life per 1000m 
     bool isStun = false;
+
+    //Equip
+    private Equip equip;
 
     void Start()
     {
@@ -151,6 +142,23 @@ public class PlayerController : MonoBehaviour
         minAutoSpeed = minSpeed;
         curHP = character.HP;
         StartCoroutine(HPSetting());
+        //Character Initial Nitro Settings
+        nitroEarnSize = character.nitroEarnSize;
+        bombSize = character.bombSize;
+        nitroTime = character.nitroTime;
+
+        //Equipment Initial Settings
+        for (int i=0; i<3; i++)
+        {
+            equip = shopManager.equippedItem[i].GetComponent<Equip>();
+
+            curHP += equip.HP;
+            curDEF += equip.DEF;
+
+            nitroEarnSize += equip.nitroSize;
+            bombSize += equip.bombSize;
+            nitroTime += equip.nitroTime;
+        }
 
         lane = 0;
         groundCount = 0.0f;
@@ -248,7 +256,7 @@ public class PlayerController : MonoBehaviour
                             }
                             camMoving = true;
                             speed += 5.0f;
-                            nitro += 10.0f;
+                            nitro += nitroEarnSize;
                         }
                         //버그(부딪히고 저스트액션 했을때, 노부스트되어야함)
                         else if (!isBlockForward && speed < minSpeed)
@@ -424,7 +432,7 @@ public class PlayerController : MonoBehaviour
         //---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
-        orb.GetComponent<OrbFill>().Fill = nitro / 100.0f;
+        orb.GetComponent<OrbFill>().Fill = nitro / 100;
         speedBar.fillAmount = speed / maxSpeed;
         if (speed < 0)
         {
@@ -445,11 +453,11 @@ public class PlayerController : MonoBehaviour
         {
             if (transform.position.x < 1000)
             { //나중에 아이템 값만큼 곱하기
-                curHP -= Time.deltaTime * (1 - character.DEF / 100);
+                curHP -= Time.deltaTime * (1 - curDEF / 100);
             }
             else
             {
-                curHP -= (transform.position.x / 1000) * Time.deltaTime * (1 - character.DEF / 100);
+                curHP -= (transform.position.x / 1000) * Time.deltaTime * (1 - curDEF / 100);
             }
             //-----------------Ray-----------------------
             SideRayCast();
@@ -509,7 +517,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator NitroShockwave(bool isRevival)
     {
         isNitroShockwave = true;
-        Collider[] cols = Physics.OverlapSphere(transform.position, 20.0f + speed / 15, 1 << 12);
+        Collider[] cols = Physics.OverlapSphere(transform.position, bombSize + speed / 15, 1 << 12);
         if (cols != null)
         {
             for (int i = 0; i < cols.Length; i++)
@@ -688,8 +696,8 @@ public class PlayerController : MonoBehaviour
                     //        gameManager.LiveDown();
                     //}
                     float damage;
-                    if (transform.position.x < 100) damage = 5 * (1 - character.DEF / 100);
-                    else damage = (int)(transform.position.x / 100) * (1 - character.DEF / 100);
+                    if (transform.position.x < 100) damage = 5 * (1 - curDEF / 100);
+                    else damage = (int)(transform.position.x / 100) * (1 - curDEF / 100);
                     LifeDown(damage);
                     isStun = true;
                     speedRecovery = StartCoroutine(SpeedRecovery());

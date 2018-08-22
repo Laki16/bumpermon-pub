@@ -12,14 +12,14 @@ public class Character : MonoBehaviour{
     [Header("Status")]
     public int MonsterIndex;
     public int Level;
-    public int HP;
-    public int SPD;
-    public int DEF;
-    public int STR;
-    public int LUK;
-    public float nitroSize;
+    public float HP;
+    public float SPD;
+    public float DEF;
+    public float STR;
+    public float LUK;
+    public float nitroEarnSize;
     public float bombSize;
-    public float nitroLength;
+    public float nitroTime;
 
     [HideInInspector]
     public int[] golemGold = { 10, 50, 100, 300, 500, 1000, 2000, 3500, 5000};
@@ -49,11 +49,13 @@ public class Character : MonoBehaviour{
                     //CloudVariables.SystemValues[3] = 1;
                 }
                 Level = PlayerPrefs.GetInt("GolemLevel");
-                HP = 80 + Level * 5;
-                SPD = 20 + Level * 4;
-                DEF = 20 + Level * 2;
+                HP = 50 + Level * 2.5f;
+                SPD = 20 + Level * 2;
+                DEF = 20 + Level * 1;
                 STR = 20 + Level * 5;
-                LUK = 2 + Level * 2;
+                LUK = 2 + Level * .3f;
+                nitroEarnSize = 8 + Level * 0.5f;
+                bombSize = 15 + Level * 0.3f;
                 break;
             case 2: //Ghost
                 if (!PlayerPrefs.HasKey("GhostLevel")){
@@ -61,11 +63,13 @@ public class Character : MonoBehaviour{
                     //CloudVariables.SystemValues[4] = 0;
                 }
                 Level = PlayerPrefs.GetInt("GhostLevel");
-                HP = 30 + Level * 10;
-                SPD = 40 + Level * 4;
-                DEF = 10 + Level;
-                STR = 10 + Level;
-                LUK = 15 + Level * 5;
+                HP = 30 + Level * 5;
+                SPD = 35 + Level * 2.5f;
+                DEF = 10 + Level * 1;
+                STR = 10 + Level * 1;
+                LUK = 15 + Level * 3;
+                nitroEarnSize = 12 + Level * 1;
+                bombSize = 5 + Level * 1.2f;
                 break;
             case 3: //Dragon
                 if (!PlayerPrefs.HasKey("DragonLevel")){
@@ -85,11 +89,13 @@ public class Character : MonoBehaviour{
                     //CloudVariables.SystemValues[5] = 0;
                 }
                 Level = PlayerPrefs.GetInt("SantaLevel");
-                HP = 40 + Level * 12;
-                SPD = 30 + Level * 3;
+                HP = 40 + Level * 4;
+                SPD = 30 + Level * 2.5f;
                 DEF = 5 + Level * 2;
-                STR = 5 + Level * 3;
-                LUK = 20 + Level * 3;
+                STR = 5 + Level * 1;
+                LUK = 20 + Level * 1.5f;
+                nitroEarnSize = 7 + Level * 0.5f;
+                bombSize = 10 + Level * 1;
                 break;
             case 5: //Skeleton
                 if (!PlayerPrefs.HasKey("SkeletonLevel"))
@@ -98,11 +104,13 @@ public class Character : MonoBehaviour{
                     //CloudVariables.SystemValues[6] = 0;
                 }
                 Level = PlayerPrefs.GetInt("SkeletonLevel");
-                HP = 50 + Level * 8;
+                HP = 50 + Level * 5.5f;
                 SPD = 30 + Level * 3;
                 DEF = 10 + Level * 2;
-                STR = 7 + Level * 4;
-                LUK = 5 + Level * 3;
+                STR = 7 + Level * 2;
+                LUK = 5 + Level * 1.5f;
+                nitroEarnSize = 12 + Level * 0.4f;
+                bombSize = 8 + Level * 1.3f;
                 break;
             default:
                 Debug.Log("Invalid character type");

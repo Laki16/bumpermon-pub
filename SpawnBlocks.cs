@@ -16,7 +16,7 @@ public class SpawnBlocks : MonoBehaviour
     private int delNodeIterator = 0;
     private bool endSpawn = true;
     private GameObject player;
-    private int luk;
+    private float curLUK;
 
     [Header("Block")]
     public GameObject block;
@@ -46,6 +46,10 @@ public class SpawnBlocks : MonoBehaviour
     public Material yellow;
     public Material red;
 
+    //Equip
+    public ShopManager shopManager;
+    private Equip equip;
+
     void Awake()
     {
         InitBlock();
@@ -56,7 +60,13 @@ public class SpawnBlocks : MonoBehaviour
     void Start()
     {
         player = gameManager.player;
-        luk = player.GetComponent<Character>().LUK;
+        curLUK = player.GetComponent<Character>().LUK;
+        for(int i=0; i<3; i++)
+        {
+            equip = shopManager.equippedItem[i].GetComponent<Equip>();
+            curLUK += equip.LUK;
+        }
+
         for (int i = 0; i < 10; i++) SpawnBlock();
     }
 
@@ -237,8 +247,8 @@ public class SpawnBlocks : MonoBehaviour
             genCoins[coinIterator].transform.position = new Vector3(beforeDifficulty, .2f, 0);
             genCoins[coinIterator].transform.position += new Vector3(blockXSize * i, 0, genRandom);
 
-            int collorRand = Random.Range(0, 100);
-            if (collorRand <= luk)
+            float collorRand = Random.Range(0f, 100f);
+            if (collorRand <= curLUK)
             {
                 genCoins[coinIterator].GetComponent<Renderer>().material = red;
                 genCoins[coinIterator].GetComponent<CoinMoving>().isRed = false;

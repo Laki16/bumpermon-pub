@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour {
 
-    public int equipNumber;
-    
     public string[] legend_item_name;
     public string[] epic_item_name;
     public string[] rare_item_name;

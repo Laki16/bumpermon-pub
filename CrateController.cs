@@ -297,7 +297,7 @@ public class CrateController : MonoBehaviour {
         switch (index)
         {
             case 1:
-                magnitude = 0.003f;
+                magnitude = 0.005f;
                 break;
             case 2:
                 magnitude = 0.01f;

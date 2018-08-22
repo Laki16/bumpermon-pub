@@ -9,15 +9,15 @@ public class ShopManager : MonoBehaviour
     //Accessary Index
     //  0001 : 
     //private static int maxAccessorys = 100;
-
-    [Header("System")]
-    public List<GameObject> accessories = new List<GameObject>();
+    
     //[HideInInspector]
     public Character currentCharacter;
-    public Equipment equipmentItem;
+    public Equipment equipment;
 
     [Header("Equipment")]
-    public List<Accessory> equipments = new List<Accessory>();
+    public List<GameObject> totalItemSlot = new List<GameObject>();
+    private int currentItemNumber;
+    public List<Equip> equippedItem = new List<Equip>();
     private int maxEquipment = 3;
     public GameObject contentPanel;
     public GameObject item;
@@ -49,13 +49,31 @@ public class ShopManager : MonoBehaviour
     public Text nSizeUpgraded;
     public Text bSizeDefault;
     public Text bSizeUpgraded;
-    public Text nLengthDefault;
-    public Text nLengthUpgraded;
+    public Text nTimeDefault;
+    public Text nTimeUpgraded;
+
+    //Stats
+    private float equip_hp;
+    private float equip_spd;
+    private float equip_def;
+    private float equip_str;
+    private float equip_luk;
+    private float equip_nitroEarnSize;
+    private float equip_bombSize;
+    private float equip_nitroTime;
+    private Equip equip;
 
     // Use this for initialization
     void Start()
     {
-
+        equip_hp = 0.0f;
+        equip_spd = 0.0f;
+        equip_def = 0.0f;
+        equip_str = 0.0f;
+        equip_luk = 0.0f;
+        equip_nitroEarnSize = 0.0f;
+        equip_bombSize = 0.0f;
+        equip_nitroTime = 0.0f;
     }
 
     // Update is called once per frame
@@ -79,37 +97,50 @@ public class ShopManager : MonoBehaviour
         var newItem = Instantiate(item);
         //newItem.transform.parent = contentPanel.transform;
         newItem.transform.SetParent(contentPanel.transform, false);
-        newItem.GetComponent<Equipment>().equipNumber = itemNumber;
+        newItem.AddComponent<Equip>();
+        newItem.GetComponent<Equip>().EquipIndex = itemNumber;
 
         switch (itemValue)
         {
             case 0:
                 newItem.GetComponentInChildren<Image>().sprite
-                    = equipmentItem.GetComponent<Equipment>().normal_item_image[itemNumber];
+                    = equipment.GetComponent<Equipment>().normal_item_image[itemNumber];
                 break;
             case 1:
                 newItem.GetComponentInChildren<Image>().sprite
-                    = equipmentItem.GetComponent<Equipment>().rare_item_image[itemNumber];
+                    = equipment.GetComponent<Equipment>().rare_item_image[itemNumber];
                 break;
             case 2:
                 newItem.GetComponentInChildren<Image>().sprite 
-                    = equipmentItem.GetComponent<Equipment>().epic_item_image[itemNumber];
+                    = equipment.GetComponent<Equipment>().epic_item_image[itemNumber];
                 break;
             case 3:
                 newItem.GetComponentInChildren<Image>().sprite 
-                    = equipmentItem.GetComponent<Equipment>().legend_item_image[itemNumber];
+                    = equipment.GetComponent<Equipment>().legend_item_image[itemNumber];
                 break;
             default:
                 break;
         }
 
+        totalItemSlot.Add(newItem);
+        //currentItemNumber = totalItemSlot.Count;
     }
 
     public void ApplyAccessory()
     {
-        for (int i = 0; i < equipments.Count; i++)
+        for (int i = 0; i < 3; i++)
         {
-            //스탯 적용
+            equip = equippedItem[i].GetComponent<Equip>();
+
+            equip_hp += equip.HP;
+            equip_spd += equip.SPD;
+            equip_def += equip.DEF;
+            equip_str += equip.STR;
+            equip_luk += equip.LUK;
+
+            equip_nitroEarnSize += equip.nitroSize;
+            equip_bombSize += equip.bombSize;
+            equip_nitroTime += equip.nitroTime;
         }
     }
     
@@ -143,13 +174,24 @@ public class ShopManager : MonoBehaviour
 
     public void UpdateStatus()
     {
+        ApplyAccessory();
         hpDefault.text = currentCharacter.HP.ToString();
         spdDefault.text = currentCharacter.SPD.ToString();
         defDefault.text = currentCharacter.DEF.ToString();
         strDefault.text = currentCharacter.STR.ToString();
         lukDefault.text = currentCharacter.LUK.ToString();
+        nSizeDefault.text = currentCharacter.nitroEarnSize.ToString();
+        bSizeDefault.text = currentCharacter.bombSize.ToString();
+        nTimeDefault.text = currentCharacter.nitroTime.ToString();
 
-
+        hpUpgraded.text = equip_hp.ToString();
+        spdUpgraded.text = equip_spd.ToString();
+        defUpgraded.text = equip_def.ToString();
+        strUpgraded.text = equip_str.ToString();
+        lukUpgraded.text = equip_luk.ToString();
+        nSizeUpgraded.text = equip_nitroEarnSize.ToString();
+        bSizeUpgraded.text = equip_bombSize.ToString();
+        nTimeUpgraded.text = equip_nitroTime.ToString();
     }
 
 
