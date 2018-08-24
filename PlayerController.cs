@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
     public EnemyArm leftEnemyArm;
     public EnemyArm rightEnemyArm;
     public GameObject enemyController;
-    public ShopManager shopManager;
 
     [Header("Collision")]
     //앞에 블럭
@@ -148,9 +147,9 @@ public class PlayerController : MonoBehaviour
         nitroTime = character.nitroTime;
 
         //Equipment Initial Settings
-        for (int i=0; i<3; i++)
+        for (int i=0; i<character.GetComponent<EquippedItem>().equippedItem.Count; i++)
         {
-            equip = shopManager.equippedItem[i].GetComponent<Equip>();
+            equip = character.GetComponent<EquippedItem>().equippedItem[i];
 
             curHP += equip.HP;
             curDEF += equip.DEF;

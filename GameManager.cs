@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
     public Text titleText;
     public Text recordText;
     public Text totalCoins;
-    public Text totalGems; 
+    public Text totalGems;
 
     public GameObject outGamePanel;
     public GameObject optionPanel;
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour {
     public GameObject devBtn;
     public GameObject quitBtn;
     public GameObject rankingBtn;
+    public GameObject SNS;
 
     public Sprite optionDown;
     public Sprite optionUp;
@@ -208,6 +209,7 @@ public class GameManager : MonoBehaviour {
         rankingBtn.SetActive(false);
         titleText.gameObject.SetActive(false);
         introduceText.enabled = false;
+        SNS.SetActive(false);
 
         coinUI.SetActive(false);
         gemUI.SetActive(false);
