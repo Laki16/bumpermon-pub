@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class PlayGamesScript : MonoBehaviour
 {
+    public GameManager gameManager;
+    public ShopManager shopManager;
+    public Character character;
+
     private string leaderboardId = GPGSIds.leaderboard_global_score_ranking;
     public static PlayGamesScript Instance { get; private set; }
 
@@ -33,6 +37,12 @@ public class PlayGamesScript : MonoBehaviour
         PlayGamesPlatform.Activate();
 
         SignIn();
+    }
+
+    public bool Authenticate()
+    {
+        if (Social.localUser.authenticated == true) return true;
+        else return false;
     }
 
     void SignIn()
@@ -119,6 +129,10 @@ public class PlayGamesScript : MonoBehaviour
             isSaving = false;
             ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithManualConflictResolution(SAVE_NAME,
                 DataSource.ReadCacheOrNetwork, true, ResolveConflict, OnSavedGameOpened);
+
+            gameManager.CloudLoadData();
+            shopManager.CloudLoadItem();
+            character.CloudLoadCharacter();
         }
         //this will basically only run in Unity Editor, as on device,
         //localUser will be authenticated even if he's not connected to the internet (if the player is using GPG)

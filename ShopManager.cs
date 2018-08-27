@@ -89,18 +89,18 @@ public class ShopManager : MonoBehaviour
     public void LoadItem()
     {
         string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
-        int number, itemIndex, itemLevel;
+        int itemIndex, itemLevel;
 
         for(int i=0; i<_inventory.Length-1; i++)
         {
             var newItem = Instantiate(item);
             newItem.transform.SetParent(contentPanel.transform, false);
 
-            number = System.Convert.ToInt32(_inventory[i].Substring(0,3));
-            itemIndex = System.Convert.ToInt32(_inventory[i].Substring(3, 4));
-            itemLevel = System.Convert.ToInt32(_inventory[i].Substring(7, 1));
+            //number = System.Convert.ToInt32(_inventory[i].Substring(0,3));
+            itemIndex = System.Convert.ToInt32(_inventory[i].Substring(0, 4));
+            itemLevel = System.Convert.ToInt32(_inventory[i].Substring(4, 1));
 
-            Debug.Log(number + ", " + itemIndex + ", " + itemLevel);
+            Debug.Log(i + ", " + itemIndex + ", " + itemLevel);
 
             newItem.GetComponent<Equip>().EquipIndex = itemIndex;
             newItem.GetComponent<Equip>().Level = itemLevel;
@@ -129,6 +129,33 @@ public class ShopManager : MonoBehaviour
             }
         }
 
+    }
+
+    public void CloudLoadItem()
+    {
+        string _inventory = string.Empty;
+        int item;
+        for(int i=0; i<100; i++)
+        {
+            item = CloudVariables.SystemValues[21 + i];
+            if (item == 0) break;
+
+            _inventory += item.ToString() + ",";
+        }
+        PlayerPrefs.SetString("Inventory", _inventory);
+    }
+
+    public void CloudSaveItem()
+    {
+        string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
+
+        for (int i = 0; i < _inventory.Length - 1; i++)
+        {
+            int item = System.Convert.ToInt32(_inventory[i]);
+            CloudVariables.SystemValues[21 + i] = item;
+        }
+
+        PlayGamesScript.Instance.SaveData();
     }
 
     public void AddItem(int size)
@@ -247,9 +274,9 @@ public class ShopManager : MonoBehaviour
         if(inventoryCount < 100)
         {
             totalItemSlot.Add(newItem);
-
             //save
-            string temp = inventoryCount.ToString("000") + itemNum.ToString("0000") + "1,";
+            //string temp = inventoryCount.ToString("000") + itemNum.ToString("0000") + "1,";
+            string temp = itemNum.ToString("0000") + "1,";
             string _inventory = PlayerPrefs.GetString("Inventory");
             _inventory += temp;
             PlayerPrefs.SetString("Inventory", _inventory);

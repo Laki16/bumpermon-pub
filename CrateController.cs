@@ -366,6 +366,9 @@ public class CrateController : MonoBehaviour {
                 StartCoroutine("FadeOut");
             }
         }
+
+        //상자 까고난 뒤에 세이브
+        shopManager.CloudSaveItem();
     }
 
     public void DisplayItem(int _level)

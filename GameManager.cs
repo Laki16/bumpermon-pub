@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour {
     [Header("DB")]
     public int coin;
     public int gem;
+    public int score;
     int prevCoins;
     int prevGems;
     int prevBoxes;
@@ -123,42 +124,70 @@ public class GameManager : MonoBehaviour {
 
         LoadRecord();
         //LoadSample();
-        Invoke("UpdateUI", 0.5f);
+        //Invoke("UpdateUI", 0.5f);
+    }
+
+    public void CloudLoadData()
+    {
+        coin = CloudVariables.SystemValues[0];
+        gem = CloudVariables.SystemValues[1];
+        score = CloudVariables.SystemValues[2];
+
+        PlayerPrefs.SetInt("Coin", coin);
+        PlayerPrefs.SetInt("Gem", gem);
+        PlayerPrefs.SetInt("Score", score);
+
+        LoadRecord();
+    }
+
+    public void CloudSaveData()
+    {
+        score = PlayerPrefs.GetInt("Score");
+        coin = PlayerPrefs.GetInt("Coin");
+        gem = PlayerPrefs.GetInt("Gem");
+
+        CloudVariables.SystemValues[0] = coin;
+        CloudVariables.SystemValues[1] = gem;
+        CloudVariables.SystemValues[2] = score;
+
+        PlayGamesScript.Instance.SaveData();
     }
 
     void LoadRecord(){
-        int score = 0;
-        int loadCoin = 0;
-        int loadBox = 0;
-        int loadGem = 0;
+        //int loadScore = 0;
+        //int loadCoin = 0;
+        ////int loadBox = 0;
+        //int loadGem = 0;
 
         if (PlayerPrefs.HasKey("Score"))
         {
             score = PlayerPrefs.GetInt("Score");
-            loadCoin = PlayerPrefs.GetInt("Coin");
-            loadBox = PlayerPrefs.GetInt("Box");
-            loadGem = PlayerPrefs.GetInt("Gem");
+            coin = PlayerPrefs.GetInt("Coin");
+            //loadBox = PlayerPrefs.GetInt("Box");
+            gem = PlayerPrefs.GetInt("Gem");
         }
-        else{
+        else
+        {
             PlayerPrefs.SetInt("Score", 0);
             PlayerPrefs.SetInt("Coin", 0);
-            PlayerPrefs.SetInt("Box", 0);
+            //PlayerPrefs.SetInt("Box", 0);
             PlayerPrefs.SetInt("Gem", 0);
             //load tutorial
-            SceneManager.LoadScene(1);
+            //SceneManager.LoadScene(1);
         }
+
         recordText.text = ("HIGH SCORE : " + score);
-        totalCoins.text = ("" + loadCoin);
-        totalGems.text = ("" + loadGem);
+        totalCoins.text = ("" + coin);
+        totalGems.text = ("" + gem);
 
         //Game Data Cloud Save
-        CloudVariables.SystemValues[0] = loadCoin;
-        CloudVariables.SystemValues[1] = loadGem;
-        CloudVariables.SystemValues[2] = score;
-        PlayGamesScript.Instance.SaveData();
+        //CloudVariables.SystemValues[0] = loadCoin;
+        //CloudVariables.SystemValues[1] = loadGem;
+        //CloudVariables.SystemValues[2] = score;
+        //PlayGamesScript.Instance.SaveData();
     }
     
-    void UpdateUI()
+    void UpdateUI() //사용x
     {
         totalCoins.text = CloudVariables.SystemValues[0].ToString();
         totalGems.text = CloudVariables.SystemValues[1].ToString();
@@ -172,6 +201,13 @@ public class GameManager : MonoBehaviour {
     }
 
     IEnumerator GameStart(){
+
+        if (!PlayerPrefs.HasKey("Tutorial"))
+        {
+            PlayerPrefs.SetInt("Tutorial", 1);
+            SceneManager.LoadScene(1);
+        }
+
         //player의 능력치를 가져옴
         player.GetComponent<Character>().SetStatus();
         spawnGrounds.playerController = player.GetComponent<PlayerController>();
@@ -430,9 +466,6 @@ public class GameManager : MonoBehaviour {
             PlayerPrefs.SetInt("Gem", prevG);
             prevGems = gem;
 
-            //Cloud Save
-            CloudVariables.SystemValues[0] = coin;
-            CloudVariables.SystemValues[1] = gem;
         }
         else
         {
@@ -447,21 +480,18 @@ public class GameManager : MonoBehaviour {
             int prevG = PlayerPrefs.GetInt("Gem");
             prevG += (gem - prevGems);
             PlayerPrefs.SetInt("Gem", prevG);
-
-            //Cloud Save
-            CloudVariables.SystemValues[0] = prevC;
-            CloudVariables.SystemValues[1] = prevG;
         }
 
         if(curScore >= prevScore){
             PlayerPrefs.SetInt("Score", curScore);
-            CloudVariables.SystemValues[2] = curScore;
             highScore.SetActive(true);
         }else{
             highScore.SetActive(false);
         }
+
         PlayerPrefs.Save();
-        playGamesScript.UpdateLeaderBoard();
+        CloudSaveData();
+        //playGamesScript.UpdateLeaderBoard();
 
         myBoxAnimator.SetBool("GameOver", true);
         myGameOverAnimator.SetBool("GameOver", true);

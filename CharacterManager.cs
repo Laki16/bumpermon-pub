@@ -176,7 +176,7 @@ public class CharacterManager : MonoBehaviour {
 
         //골드 DB에서 가져올 것
         curCoin = PlayerPrefs.GetInt("Coin");
-        currentGold.text = CloudVariables.SystemValues[0].ToString();
+        currentGold.text = curCoin.ToString();
 
         character = currentCharacter.GetComponent<Character>();
         shopManager.currentCharacter = character;
