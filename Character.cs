@@ -40,6 +40,9 @@ public class Character : MonoBehaviour{
         santa = CloudVariables.SystemValues[3];
         skeleton = CloudVariables.SystemValues[3];
 
+        if (golem == 0) {
+            PlayerPrefs.SetInt("GolemLevel", 1);
+        }
         PlayerPrefs.SetInt("GolemLevel", golem);
         PlayerPrefs.SetInt("GhostLevel", ghost);
         PlayerPrefs.SetInt("SantaLevel", santa);
@@ -56,13 +59,13 @@ public class Character : MonoBehaviour{
         PlayGamesScript.Instance.SaveData();
     }
 
-    public void InitStatus(){
-        PlayerPrefs.SetInt("GolemLevel", 1);
-        PlayerPrefs.SetInt("GhostLevel", 0);
-        PlayerPrefs.SetInt("DragonLevel", 0);
-        PlayerPrefs.SetInt("SantaLevel", 0);
-        PlayerPrefs.SetInt("SkeletonLevel", 0);
-    }
+    //public void InitStatus(){
+    //    PlayerPrefs.SetInt("GolemLevel", 1);
+    //    PlayerPrefs.SetInt("GhostLevel", 0);
+    //    PlayerPrefs.SetInt("DragonLevel", 0);
+    //    PlayerPrefs.SetInt("SantaLevel", 0);
+    //    PlayerPrefs.SetInt("SkeletonLevel", 0);
+    //}
 
     public void SetStatus(){
         switch(MonsterIndex){
@@ -177,8 +180,8 @@ public class Character : MonoBehaviour{
                 PlayerPrefs.SetInt("SkeletonLevel", curLevel);
                 break;
         }
-        PlayerPrefs.Save();
 
+        PlayerPrefs.Save();
         //cloud saving
         //PlayGamesScript.Instance.SaveData();
         CloudSaveCharacter();

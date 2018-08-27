@@ -136,8 +136,17 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.SetInt("Coin", coin);
         PlayerPrefs.SetInt("Gem", gem);
         PlayerPrefs.SetInt("Score", score);
+        if (score == 0)
+        {
+            if (!PlayerPrefs.HasKey("Tutorial"))
+            {
+                PlayerPrefs.SetInt("Tutorial", 1);
+                SceneManager.LoadScene(1);
+            }
+        }
 
         LoadRecord();
+        UpdateUI();
     }
 
     public void CloudSaveData()
@@ -201,12 +210,6 @@ public class GameManager : MonoBehaviour {
     }
 
     IEnumerator GameStart(){
-
-        if (!PlayerPrefs.HasKey("Tutorial"))
-        {
-            PlayerPrefs.SetInt("Tutorial", 1);
-            SceneManager.LoadScene(1);
-        }
 
         //player의 능력치를 가져옴
         player.GetComponent<Character>().SetStatus();

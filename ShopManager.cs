@@ -100,7 +100,7 @@ public class ShopManager : MonoBehaviour
             itemIndex = System.Convert.ToInt32(_inventory[i].Substring(0, 4));
             itemLevel = System.Convert.ToInt32(_inventory[i].Substring(4, 1));
 
-            Debug.Log(i + ", " + itemIndex + ", " + itemLevel);
+            //Debug.Log(i + ", " + itemIndex + ", " + itemLevel);
 
             newItem.GetComponent<Equip>().EquipIndex = itemIndex;
             newItem.GetComponent<Equip>().Level = itemLevel;
@@ -143,6 +143,8 @@ public class ShopManager : MonoBehaviour
             _inventory += item.ToString() + ",";
         }
         PlayerPrefs.SetString("Inventory", _inventory);
+
+        LoadItem();
     }
 
     public void CloudSaveItem()
