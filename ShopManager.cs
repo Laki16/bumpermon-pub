@@ -65,6 +65,7 @@ public class ShopManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        LoadItem();
         equipment = GetComponent<Equipment>();
         changeSlotNum = -1;
 
@@ -87,6 +88,46 @@ public class ShopManager : MonoBehaviour
 
     public void LoadItem()
     {
+        string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
+        int number, itemIndex, itemLevel;
+
+        for(int i=0; i<_inventory.Length-1; i++)
+        {
+            var newItem = Instantiate(item);
+            newItem.transform.SetParent(contentPanel.transform, false);
+
+            number = System.Convert.ToInt32(_inventory[i].Substring(0,3));
+            itemIndex = System.Convert.ToInt32(_inventory[i].Substring(3, 4));
+            itemLevel = System.Convert.ToInt32(_inventory[i].Substring(7, 1));
+
+            Debug.Log(number + ", " + itemIndex + ", " + itemLevel);
+
+            newItem.GetComponent<Equip>().EquipIndex = itemIndex;
+            newItem.GetComponent<Equip>().Level = itemLevel;
+
+            totalItemSlot.Add(newItem);
+
+            switch (itemIndex / 100)
+            {
+                case 10:
+                    newItem.GetComponentInChildren<Image>().sprite
+                        = equipment.normal_item_image[itemIndex%100];
+                    break;
+                case 11:
+                    newItem.GetComponentInChildren<Image>().sprite
+                        = equipment.rare_item_image[itemIndex % 100];
+                    break;
+                case 12:
+                    newItem.GetComponentInChildren<Image>().sprite
+                        = equipment.epic_item_image[itemIndex % 100];
+                    break;
+                case 13:
+                    newItem.GetComponentInChildren<Image>().sprite
+                        = equipment.legend_item_image[itemIndex % 100];
+                    break;
+                default: Debug.Log("index error!"); break;
+            }
+        }
 
     }
 
@@ -103,6 +144,7 @@ public class ShopManager : MonoBehaviour
         slot.SetActive(true);
         slot.GetComponent<Equip>().EquipIndex = currentEquip.EquipIndex;
         slot.GetComponentInChildren<Image>().sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
+
         //장착한 아이템 테두리 변경
 
     }
@@ -128,6 +170,8 @@ public class ShopManager : MonoBehaviour
         }
         changeSlotNum = -1;
         changeBtn.SetActive(false);
+
+        //중복장착 체크
     }
 
     public void BtnOnChange(int number)
@@ -167,6 +211,7 @@ public class ShopManager : MonoBehaviour
         //newItem.transform.parent = contentPanel.transform;
         newItem.transform.SetParent(contentPanel.transform, false);
         //newItem.AddComponent<Equip>();
+        int itemNum = 0;
 
         switch (itemValue)
         {
@@ -174,27 +219,46 @@ public class ShopManager : MonoBehaviour
                 newItem.GetComponentInChildren<Image>().sprite
                     = equipment.normal_item_image[itemNumber];
                 newItem.GetComponent<Equip>().EquipIndex = itemNumber + 1000;
+                itemNum = itemNumber + 1000;
                 break;
             case 1:
                 newItem.GetComponentInChildren<Image>().sprite
                     = equipment.rare_item_image[itemNumber];
                 newItem.GetComponent<Equip>().EquipIndex = itemNumber + 1100;
+                itemNum = itemNumber + 1100;
                 break;
             case 2:
                 newItem.GetComponentInChildren<Image>().sprite 
                     = equipment.epic_item_image[itemNumber];
                 newItem.GetComponent<Equip>().EquipIndex = itemNumber + 1200;
+                itemNum = itemNumber + 1200;
                 break;
             case 3:
                 newItem.GetComponentInChildren<Image>().sprite 
                     = equipment.legend_item_image[itemNumber];
                 newItem.GetComponent<Equip>().EquipIndex = itemNumber + 1300;
+                itemNum = itemNumber + 1300;
                 break;
             default:
                 break;
         }
 
-        totalItemSlot.Add(newItem);
+        int inventoryCount = totalItemSlot.Count;
+        if(inventoryCount < 100)
+        {
+            totalItemSlot.Add(newItem);
+
+            //save
+            string temp = inventoryCount.ToString("000") + itemNum.ToString("0000") + "1,";
+            string _inventory = PlayerPrefs.GetString("Inventory");
+            _inventory += temp;
+            PlayerPrefs.SetString("Inventory", _inventory);
+        }
+        else
+        {
+            Debug.Log("Inventory full!");
+        }
+
         //currentItemNumber = totalItemSlot.Count;
     }
 
