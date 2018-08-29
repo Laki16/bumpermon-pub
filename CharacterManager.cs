@@ -79,6 +79,7 @@ public class CharacterManager : MonoBehaviour {
 
     public void BtnOnGolem(){
         characterImage.sprite = golemImage;
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.Clear();
         currentCharacter = golemPlayer;
         selectedFrame.color = new Color32(255, 255, 255, 255);
         selectedFrame = golemFrame;
@@ -88,6 +89,7 @@ public class CharacterManager : MonoBehaviour {
 
     public void BtnOnGhost(){
         characterImage.sprite = ghostImage;
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.Clear();
         currentCharacter = ghostPlayer;
         selectedFrame.color = new Color32(255, 255, 255, 255);
         selectedFrame = ghostFrame;
@@ -97,6 +99,7 @@ public class CharacterManager : MonoBehaviour {
 
     public void BtnOnDragon(){
         characterImage.sprite = dragonImage;
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.Clear();
         currentCharacter = dragonPlayer;
         selectedFrame.color = new Color32(255, 255, 255, 255);
         selectedFrame = dragonFrame;
@@ -107,6 +110,7 @@ public class CharacterManager : MonoBehaviour {
     public void BtnOnSanta()
     {
         characterImage.sprite = santaImage;
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.Clear();
         currentCharacter = santaPlayer;
         selectedFrame.color = new Color32(255, 255, 255, 255);
         selectedFrame = santaFrame;
@@ -117,6 +121,7 @@ public class CharacterManager : MonoBehaviour {
     public void BtnOnSkeleton()
     {
         characterImage.sprite = skeletonImage;
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.Clear();
         currentCharacter = skeletonPlayer;
         selectedFrame.color = new Color32(255, 255, 255, 255);
         selectedFrame = skeletonFrame;

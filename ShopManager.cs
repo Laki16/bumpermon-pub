@@ -89,7 +89,8 @@ public class ShopManager : MonoBehaviour
     public void LoadItem()
     {
         string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
-        int itemIndex, itemLevel;
+        string _equipped = PlayerPrefs.GetString("Equipped");
+        int itemIndex, itemLevel, itemCharacter;
 
         for(int i=0; i<_inventory.Length-1; i++)
         {
@@ -99,11 +100,12 @@ public class ShopManager : MonoBehaviour
             //number = System.Convert.ToInt32(_inventory[i].Substring(0,3));
             itemIndex = System.Convert.ToInt32(_inventory[i].Substring(0, 4));
             itemLevel = System.Convert.ToInt32(_inventory[i].Substring(4, 1));
+            itemCharacter = _equipped[i]-48;
 
-            //Debug.Log(i + ", " + itemIndex + ", " + itemLevel);
-
+            //Debug.Log(i + ", " + itemIndex + ", " + itemLevel + ", " + itemCharacter);
             newItem.GetComponent<Equip>().EquipIndex = itemIndex;
             newItem.GetComponent<Equip>().Level = itemLevel;
+            newItem.GetComponent<Equip>().equippedCharacter = itemCharacter;
 
             totalItemSlot.Add(newItem);
 
@@ -129,6 +131,7 @@ public class ShopManager : MonoBehaviour
             }
         }
 
+        UpdateEquipUI();
     }
 
     public void CloudLoadItem()
@@ -144,7 +147,7 @@ public class ShopManager : MonoBehaviour
         }
         PlayerPrefs.SetString("Inventory", _inventory);
 
-        LoadItem();
+        //LoadItem();
     }
 
     public void CloudSaveItem()
@@ -173,15 +176,118 @@ public class ShopManager : MonoBehaviour
         slot.SetActive(true);
         slot.GetComponent<Equip>().EquipIndex = currentEquip.EquipIndex;
         slot.GetComponentInChildren<Image>().sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
+        //slot.GetComponent<Equip>().equippedCharacter = currentCharacter.MonsterIndex;
+        for (int i=0; i<totalItemSlot.Count; i++)
+        {
+            if (totalItemSlot[i].GetComponent<Equip>() == currentEquip)
+            {
+                slot.GetComponent<Equip>().equippedCharacter = i;
+                break;
+            }
+        }
 
-        //장착한 아이템 테두리 변경
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.Insert(size, currentEquip);
+        //currentCharacter.GetComponent<EquippedItem>().size++;
 
+        currentEquip.UpdateFrame(currentCharacter.MonsterIndex);
+
+        string _equipped = string.Empty;
+        for(int i=0; i<totalItemSlot.Count; i++)
+        {
+            _equipped += totalItemSlot[i].GetComponent<Equip>().equippedCharacter.ToString();
+        }
+        PlayerPrefs.SetString("Equipped", _equipped);
+    }
+
+    public void ReplaceItem(int size, int _resetItem)
+    {
+        GameObject slot;
+        switch (size)
+        {
+            case 0: slot = slot1; break;
+            case 1: slot = slot2; break;
+            case 2: slot = slot3; break;
+            default: slot = null; break;
+        }
+        slot.SetActive(true);
+        slot.GetComponent<Equip>().EquipIndex = currentEquip.EquipIndex;
+        slot.GetComponentInChildren<Image>().sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
+        //slot.GetComponent<Equip>().equippedCharacter = currentCharacter.MonsterIndex;
+        for(int i=0; i<totalItemSlot.Count; i++)
+        {
+            if(totalItemSlot[i].GetComponent<Equip>() == currentEquip)
+            {
+                slot.GetComponent<Equip>().equippedCharacter = i;
+                break;
+            }
+        }
+
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.RemoveAt(size);
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.Insert(size, currentEquip);
+
+        currentEquip.UpdateFrame(currentCharacter.MonsterIndex);
+
+        string _equipped = string.Empty;
+        for (int i = 0; i < totalItemSlot.Count; i++)
+        {
+            if(i == _resetItem)
+            {
+                totalItemSlot[_resetItem].GetComponent<Equip>().equippedCharacter = 0;
+            }
+            _equipped += totalItemSlot[i].GetComponent<Equip>().equippedCharacter.ToString();
+        }
+        PlayerPrefs.SetString("Equipped", _equipped);
+    }
+
+    public void UpdateEquipUI()
+    {
+        int count = 1;
+        GameObject slot;
+
+        slot1.SetActive(false);
+        slot2.SetActive(false);
+        slot3.SetActive(false);
+
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.Clear();
+
+        for(int i=0; i<totalItemSlot.Count; i++)
+        {
+            if(currentCharacter.MonsterIndex == totalItemSlot[i].GetComponent<Equip>().equippedCharacter)
+            {
+                switch (count)
+                {
+                    case 1: slot = slot1; break;
+                    case 2: slot = slot2; break;
+                    case 3: slot = slot3; break;
+                    default: slot = null; break;
+                }
+                if(slot != null)
+                {
+                    slot.GetComponent<Equip>().equippedCharacter = i;
+                    count++;
+                }
+
+                Debug.Log("equip!");
+                
+                totalItemSlot[i].GetComponent<Equip>().UpdateFrame(currentCharacter.MonsterIndex);
+                currentEquip = totalItemSlot[i].GetComponent<Equip>();
+                AddItem(count-2);
+            }
+            else
+            {
+                totalItemSlot[i].GetComponent<Equip>().ResetFrame();
+            }
+        }
     }
 
     IEnumerator ChangeItem()
     {
+        int resetItem = 0;
+
+        changeSlotNum = -1;
         changeAnimator.Play("Change");
         changeBtn.SetActive(true);
+        
         while(changeSlotNum == -1)
         {
             yield return null;
@@ -190,17 +296,30 @@ public class ShopManager : MonoBehaviour
         changeAnimator.Play("Idle");
         switch (changeSlotNum)
         {
-            case 0: AddItem(0);
+            case 0:
+                resetItem = slot1.GetComponent<Equip>().equippedCharacter;
+                ReplaceItem(0, resetItem);
                 break;
-            case 1: AddItem(1);
+            case 1:
+                resetItem = slot2.GetComponent<Equip>().equippedCharacter;
+                ReplaceItem(1, resetItem);
                 break;
-            case 2: AddItem(2);
+            case 2:
+                resetItem = slot3.GetComponent<Equip>().equippedCharacter;
+                ReplaceItem(2, resetItem);
                 break;
         }
+
+        currentCharacter.GetComponent<EquippedItem>().equippedItem[changeSlotNum] = currentEquip;
+
         changeSlotNum = -1;
         changeBtn.SetActive(false);
 
-        //중복장착 체크
+        //빠진 아이템 리셋
+        Debug.Log("Reset "+resetItem);
+        totalItemSlot[resetItem].GetComponent<Equip>().ResetFrame();
+
+        //UpdateEquipUI();
     }
 
     public void BtnOnChange(int number)
@@ -210,17 +329,29 @@ public class ShopManager : MonoBehaviour
 
     public void BtnOnEquip()
     {
-        int size = currentCharacter.GetComponent<EquippedItem>().size;
-        Debug.Log(size);
-        if (size < 3)
+        EquippedItem _equippedItem = currentCharacter.GetComponent<EquippedItem>();
+        bool isDuplicate = false;
+        for(int i=0; i< _equippedItem.equippedItem.Count; i++)
         {
-            currentCharacter.GetComponent<EquippedItem>().equippedItem.Insert(size, currentEquip);
-            currentCharacter.GetComponent<EquippedItem>().size++;
-            AddItem(size);
+            if (_equippedItem.equippedItem[i] == currentEquip)
+            {
+                Debug.Log(currentEquip.name + " Same Item");
+                isDuplicate = true;
+            }
         }
-        else //full
+
+        if(!isDuplicate)
         {
-            StartCoroutine("ChangeItem");
+            int size = _equippedItem.equippedItem.Count;
+            Debug.Log(size);
+            if (size < 3)
+            {
+                AddItem(size);
+            }
+            else //full
+            {
+                StartCoroutine("ChangeItem");
+            }
         }
     }
 
@@ -278,7 +409,7 @@ public class ShopManager : MonoBehaviour
             totalItemSlot.Add(newItem);
             //save
             //string temp = inventoryCount.ToString("000") + itemNum.ToString("0000") + "1,";
-            string temp = itemNum.ToString("0000") + "1,";
+            string temp = itemNum.ToString("0000") + "1,"; //item index, level
             string _inventory = PlayerPrefs.GetString("Inventory");
             _inventory += temp;
             PlayerPrefs.SetString("Inventory", _inventory);
@@ -315,6 +446,7 @@ public class ShopManager : MonoBehaviour
     public void UpdateUI()
     {
         int command = currentCharacter.MonsterIndex;
+
         switch (command)
         {
             case 1: //golem
@@ -338,6 +470,8 @@ public class ShopManager : MonoBehaviour
             default:
                 break;
         }
+
+        UpdateEquipUI();
     }
 
     public void UpdateStatus()

@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Equip : MonoBehaviour {
 
     [Header("System")]
     public int equippedCharacter;
+    //public int index;
     private GameObject shopManager;
 
     [Header("Stats")]
@@ -32,6 +34,16 @@ public class Equip : MonoBehaviour {
         //Debug.Log(EquipIndex);
         shopManager.GetComponent<ShopManager>().currentEquip = transform.GetComponent<Equip>();
     }
+
+    public void UpdateFrame(int index)
+    {
+        transform.Find("Frame").GetComponent<Image>().color = new Color32(0, 0, 0, 255);
+        equippedCharacter = index;
+    }
     
+    public void ResetFrame()
+    {
+        transform.Find("Frame").GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+    }
 
 }

@@ -43,7 +43,10 @@ public class Character : MonoBehaviour{
         if (golem == 0) {
             PlayerPrefs.SetInt("GolemLevel", 1);
         }
-        PlayerPrefs.SetInt("GolemLevel", golem);
+        else
+        {
+            PlayerPrefs.SetInt("GolemLevel", golem);
+        }
         PlayerPrefs.SetInt("GhostLevel", ghost);
         PlayerPrefs.SetInt("SantaLevel", santa);
         PlayerPrefs.SetInt("SkeletonLevel", skeleton);
