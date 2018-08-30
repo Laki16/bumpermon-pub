@@ -62,6 +62,16 @@ public class ShopManager : MonoBehaviour
     private Equip equip;
     public Equip currentEquip;
 
+    //Equip UI
+    [HideInInspector]
+    public GameObject beforeInfoBtn;
+    [HideInInspector]
+    public GameObject beforeEquipBtn;
+    public GameObject infoPanel;
+    public GameObject escPanel;
+    public EquipDisplay equipDisplay;
+    public Image infoImage;
+
     // Use this for initialization
     void Start()
     {
@@ -327,8 +337,28 @@ public class ShopManager : MonoBehaviour
         changeSlotNum = number;
     }
 
+    public void BtnOnInfo()
+    {
+        Destroy(beforeEquipBtn);
+        Destroy(beforeInfoBtn);
+
+        equipDisplay.UpdateUI(currentEquip.EquipIndex);
+        infoPanel.SetActive(true);
+        infoImage.sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
+        escPanel.SetActive(true);
+    }
+
+    public void BtnOnEsc()
+    {
+        infoPanel.SetActive(false);
+        escPanel.SetActive(false);
+    }
+
     public void BtnOnEquip()
     {
+        Destroy(beforeEquipBtn);
+        Destroy(beforeInfoBtn);
+
         EquippedItem _equippedItem = currentCharacter.GetComponent<EquippedItem>();
         bool isDuplicate = false;
         for(int i=0; i< _equippedItem.equippedItem.Count; i++)
@@ -413,6 +443,11 @@ public class ShopManager : MonoBehaviour
             string _inventory = PlayerPrefs.GetString("Inventory");
             _inventory += temp;
             PlayerPrefs.SetString("Inventory", _inventory);
+
+            temp = "0";
+            string _equipped = PlayerPrefs.GetString("Equipped");
+            _equipped += temp;
+            PlayerPrefs.SetString("Equipped", _equipped);
         }
         else
         {

@@ -59,6 +59,7 @@ public class PlayGamesScript : MonoBehaviour
     {
         gameManager.CloudLoadData();
         shopManager.CloudLoadItem();
+        shopManager.UpdateUI();
         character.CloudLoadCharacter();
     }
 
