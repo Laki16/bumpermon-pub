@@ -369,6 +369,7 @@ public class CrateController : MonoBehaviour {
 
         //상자 까고난 뒤에 세이브
         shopManager.CloudSaveItem();
+        shopManager.UpdateInventoryText();
     }
 
     public void DisplayItem(int _level)

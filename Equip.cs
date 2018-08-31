@@ -22,6 +22,7 @@ public class Equip : MonoBehaviour {
     public float nitroSize;
     public float bombSize;
     public float nitroTime;
+    public bool isEquipped = false;
 
     [Header("Button")]
     public GameObject infoBtn;
@@ -65,9 +66,12 @@ public class Equip : MonoBehaviour {
         newInfoBtn.transform.SetParent(EventSystem.current.currentSelectedGameObject.transform, false);
         shopManager.beforeInfoBtn = newInfoBtn;
 
-        var newEquipItem = Instantiate(equipBtn);
-        newEquipItem.transform.SetParent(EventSystem.current.currentSelectedGameObject.transform, false);
-        shopManager.beforeEquipBtn = newEquipItem;
+        if (!isEquipped)
+        {
+            var newEquipItem = Instantiate(equipBtn);
+            newEquipItem.transform.SetParent(EventSystem.current.currentSelectedGameObject.transform, false);
+            shopManager.beforeEquipBtn = newEquipItem;
+        }
     }
 
 }

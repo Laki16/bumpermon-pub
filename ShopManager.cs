@@ -62,15 +62,21 @@ public class ShopManager : MonoBehaviour
     private Equip equip;
     public Equip currentEquip;
 
-    //Equip UI
-    [HideInInspector]
-    public GameObject beforeInfoBtn;
-    [HideInInspector]
-    public GameObject beforeEquipBtn;
+    [Header("Equip Information")]
     public GameObject infoPanel;
     public GameObject escPanel;
     public EquipDisplay equipDisplay;
     public Image infoImage;
+
+    [Header("Inventory")]
+    [HideInInspector]
+    public GameObject beforeInfoBtn;
+    [HideInInspector]
+    public GameObject beforeEquipBtn;
+    public Text foundItemText;
+    public Text storageText;
+    //public int foundItem = 0;
+    //public int storage;
 
     // Use this for initialization
     void Start()
@@ -200,6 +206,7 @@ public class ShopManager : MonoBehaviour
         //currentCharacter.GetComponent<EquippedItem>().size++;
 
         currentEquip.UpdateFrame(currentCharacter.MonsterIndex);
+        currentEquip.isEquipped = true;
 
         string _equipped = string.Empty;
         for(int i=0; i<totalItemSlot.Count; i++)
@@ -288,6 +295,22 @@ public class ShopManager : MonoBehaviour
                 totalItemSlot[i].GetComponent<Equip>().ResetFrame();
             }
         }
+
+        UpdateInventoryText();
+    }
+
+    public void UpdateInventoryText()
+    {
+        storageText.text = totalItemSlot.Count.ToString() + "/100";
+
+        int[] indexArray = new int[totalItemSlot.Count];
+        for (int i = 0; i < totalItemSlot.Count; i++)
+        {
+            indexArray[i] = totalItemSlot[i].GetComponent<Equip>().EquipIndex;
+        }
+        List<int> temp = indexArray.Distinct().ToList();
+
+        foundItemText.text = "발견한 아이템 " + temp.Count.ToString() + "/40";
     }
 
     IEnumerator ChangeItem()
