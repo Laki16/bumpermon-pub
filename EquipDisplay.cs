@@ -57,28 +57,28 @@ public class EquipDisplay : MonoBehaviour {
                 //title.color = new Color32(150, 255, 0, 255);
                 itemTitle.text = "솜사탕";
                 itemDesc.text = "달콤한 솜사탕이네요.\n놀이공원에서 뛰는 느낌이 들어요.";
-                itemStat1.text = "체력 +1.5";
-                itemStat2.text = "폭발 반경 +2m";
+                itemStat1.text = "체력 +0.5";
+                itemStat2.text = "폭발 반경 +0.7m";
                 break;
             case 1002: //아메리카노(N)
                 //title.color = new Color32(150, 255, 0, 255);
                 itemTitle.text = "아메리카노";
                 itemDesc.text = "시원한 아메리카노와 함께라면\n더 멀리 갈 수 있을까요?";
-                itemStat1.text = "부스트 획득량 +2.5";
-                itemStat2.text = "부스트 속도 +7%";
+                itemStat1.text = "부스트 획득량 +0.5";
+                itemStat2.text = "부스트 속도 +3%";
                 break;
             case 1003: //안경(N)
                 //title.color = new Color32(150, 255, 0, 255);
                 itemTitle.text = "안경";
                 itemDesc.text = "아쉽게도 최첨단 기능은\n들어있지 않답니다.";
-                itemStat1.text = "폭발 반경 +2.5m";
+                itemStat1.text = "폭발 반경 +1.5m";
                 break;
             case 1004: //항아리(N)
                 //title.color = new Color32(150, 255, 0, 255);
                 itemTitle.text = "항아리";
                 itemDesc.text = "망치와 함께 쓴다면...\n끝없이 올라가야 할지도 모릅니다.";
                 itemStat1.text = "속도 -2";
-                itemStat2.text = "방어력 +1";
+                itemStat2.text = "방어력 +0.5";
                 itemStat3.text = "힘 +1";
                 break;
             case 1005: //양말(N)
@@ -99,24 +99,23 @@ public class EquipDisplay : MonoBehaviour {
                 //title.color = new Color32(150, 255, 0, 255);
                 itemTitle.text = "배낭";
                 itemDesc.text = "여행을 떠날 때 든든한 조력자가 되줄\n겁니다.";
-                itemStat1.text = "체력 -3";
-                itemStat2.text = "속도 -1.5";
-                itemStat3.text = "부스트 획득량 +5";
-                itemStat4.text = "부스트 속도 +5%";
+                itemStat1.text = "체력 -2";
+                itemStat2.text = "부스트 획득량 +3";
+                itemStat3.text = "부스트 속도 +2%";
                 break;
             case 1008: //래쉬가드(N)
                 //title.color = new Color32(150, 255, 0, 255);
                 itemTitle.text = "래쉬가드";
                 itemDesc.text = "여기는 워터파크가 아닌데 말입니다.";
                 itemStat1.text = "속도 +2";
-                itemStat2.text = "부스트 속도 -5%";
+                itemStat2.text = "부스트 속도 +1.5%";
                 break;
             case 1009: //박스테이프(N)
                 //title.color = new Color32(150, 255, 0, 255);
                 itemTitle.text = "박스테이프";
                 itemDesc.text = "인형 상자들을 포장하는데 쓰인 걸까요?";
                 itemStat1.text = "방어력 +1.5";
-                itemStat2.text = "행운 -2";
+                itemStat2.text = "행운 +0.5";
                 break;
             case 1010: //선인장(N)
                 //title.color = new Color32(150, 255, 0, 255);
@@ -151,7 +150,7 @@ public class EquipDisplay : MonoBehaviour {
                 //title.color = new Color32(0, 150, 255, 255);
                 itemTitle.text = "덤벨";
                 itemDesc.text = "이 무거운걸 들고 뛰신다구요?\n떨어트리지 않게 조심하세요.";
-                itemStat1.text = "속도 -2";
+                itemStat1.text = "속도 -1";
                 itemStat2.text = "힘 +1";
                 itemStat3.text = "방어력 +1.5";
                 break;
@@ -160,8 +159,8 @@ public class EquipDisplay : MonoBehaviour {
                 itemTitle.text = "개발자의 티셔츠";
                 itemDesc.text = "킁킁. 앗 이게 무슨 냄새죠?\n좀 씻고 다니셔야겠어요.";
                 itemStat1.text = "체력 -2";
-                itemStat2.text = "방어력 +5";
-                itemStat3.text = "행운 +2";
+                itemStat2.text = "방어력 +1";
+                itemStat3.text = "행운 +4";
                 break;
             case 1102: //나뭇잎(R)
                 //title.color = new Color32(0, 150, 255, 255);
@@ -169,33 +168,29 @@ public class EquipDisplay : MonoBehaviour {
                 itemDesc.text = "나뭇잎이 쓸모가 없다구요?\n작은 것이 강할 때가 있답니다.";
                 itemStat1.text = "속도 +1.5";
                 itemStat2.text = "방어력 -1.5";
-                itemStat3.text = "부스트 속도 +15%";
+                itemStat3.text = "부스트 속도 +6%";
                 break;
             case 1103: //화분(R)
                 //title.color = new Color32(0, 150, 255, 255);
                 itemTitle.text = "화분";
                 itemDesc.text = "아이 엠 그루트";
                 itemStat1.text = "체력 +1";
-                itemStat2.text = "방어력 +0.5";
-                itemStat3.text = "행운 +2.5";
-                itemStat4.text = "부스트 획득량 -2";
+                itemStat2.text = "행운 +2.5";
                 break;
             case 1104: //후라이팬(R)
                 //title.color = new Color32(0, 150, 255, 255);
                 itemTitle.text = "후라이팬";
                 itemDesc.text = "어딘지 모르게 단단해 보입니다.\n총알도 막을 수 있을 것 같은데요?";
-                itemStat1.text = "속도 -1.5";
-                itemStat2.text = "방어력 +3";
-                itemStat3.text = "행운 +2.5";
+                itemStat1.text = "방어력 +3";
+                itemStat2.text = "행운 +2.5";
                 break;
             case 1105: //갑옷(R)
                 //title.color = new Color32(0, 150, 255, 255);
                 itemTitle.text = "갑옷";
                 itemDesc.text = "좋은 재질로 만들어진 걸까요?\n가볍고 튼튼해 보이는 갑옷입니다.";
-                itemStat1.text = "체력 -1.5";
-                itemStat2.text = "속도 -2";
-                itemStat3.text = "방어력 +5";
-                itemStat4.text = "폭발 반경 +5m";
+                itemStat1.text = "속도 -2";
+                itemStat2.text = "방어력 +3";
+                itemStat3.text = "폭발 반경 +2m";
                 break;
             case 1106: //축구공(R)
                 //title.color = new Color32(0, 150, 255, 255);
@@ -211,7 +206,6 @@ public class EquipDisplay : MonoBehaviour {
                 itemDesc.text = "까악 까악\n반짝반짝한거 좋아.";
                 itemStat1.text = "속도 +1.5";
                 itemStat2.text = "행운 +3.5";
-                itemStat3.text = "부스트 획득량 -2";
                 break;
             case 1108: //안전모(R)
                 //title.color = new Color32(0, 150, 255, 255);
@@ -224,16 +218,15 @@ public class EquipDisplay : MonoBehaviour {
                 //title.color = new Color32(0, 150, 255, 255);
                 itemTitle.text = "검";
                 itemDesc.text = "아직 탈출하지 못한 인형들을 위해\n박스를 베려고 하시는 당신은...";
-                itemStat1.text = "체력 -2";
-                itemStat2.text = "힘 +5";
+                itemStat1.text = "체력 +1";
+                itemStat2.text = "힘 +4";
                 break;
             case 1110: //소화기(R)
                 //title.color = new Color32(0, 150, 255, 255);
                 itemTitle.text = "소화기";
                 itemDesc.text = "빨리 달리면 불이 붙을 수도 있어요!\n그럴 때 유용하답니다.";
-                itemStat1.text = "체력 -1.5";
-                itemStat2.text = "방어력 +2";
-                itemStat3.text = "힘 +1";
+                itemStat1.text = "방어력 +2";
+                itemStat2.text = "힘 +1";
                 break;
 
 
@@ -242,7 +235,7 @@ public class EquipDisplay : MonoBehaviour {
                 //title.color = new Color32(200, 0, 255, 255);
                 itemTitle.text = "부적";
                 itemDesc.text = "간혹 유령 인형이 출몰한다는 소문이\n있습니다.\n이 부적을 지니고 다니세요!";
-                itemStat1.text = "행운 +3";
+                itemStat1.text = "행운 +5";
                 break;
             case 1201: //드레스(E)
                 //title.color = new Color32(200, 0, 255, 255);
@@ -250,37 +243,37 @@ public class EquipDisplay : MonoBehaviour {
                 itemDesc.text = "아주 아름다운 장식들로 가득합니다.\n하지만 여기 친구들에게는 영..";
                 itemStat1.text = "체력 +3";
                 itemStat2.text = "속도 +6";
-                itemStat3.text = "방어력 -3";
+                itemStat3.text = "방어력 -2";
                 break;
             case 1202: //키보드(E)
                 //title.color = new Color32(200, 0, 255, 255);
                 itemTitle.text = "키보드";
                 itemDesc.text = "잠시만요!\n샷건은 치지 말아주세요.";
-                itemStat1.text = "힘 +4";
-                itemStat2.text = "부스트 속도 +10%";
-                itemStat3.text = "폭발 반경 +4m";
+                itemStat1.text = "힘 +3";
+                itemStat2.text = "부스트 속도 +8%";
+                itemStat3.text = "폭발 반경 +2m";
                 break;
             case 1203: //오리발(E)
                 //title.color = new Color32(200, 0, 255, 255);
                 itemTitle.text = "오리발";
                 itemDesc.text = "오리발을 신고 뛰어보셨나요?\n아주 빠르다고 합니다.";
                 itemStat1.text = "속도 +4";
-                itemStat2.text = "부스트 속도 +15%";
+                itemStat2.text = "부스트 속도 +13%";
                 break;
             case 1204: //망치(E)
                 //title.color = new Color32(200, 0, 255, 255);
                 itemTitle.text = "망치";
                 itemDesc.text = "항아리와 같이 사용하면...\n높은 곳으로 갈 수 있을까요?";
-                itemStat1.text = "부스트 획득량 +3";
-                itemStat2.text = "부스트 속도 +5%";
-                itemStat3.text = "폭발 반경 +3m";
+                itemStat1.text = "부스트 획득량 +2";
+                itemStat2.text = "부스트 속도 +7%";
+                itemStat3.text = "폭발 반경 +2m";
                 break;
             case 1205: //선물상자(E)
                 //title.color = new Color32(200, 0, 255, 255);
                 itemTitle.text = "선물상자";
                 itemDesc.text = "산타가 준 선물상자로군요!\n어떤 스탯이 오를지 궁금한데요?";
                 itemStat1.text = "랜덤 스탯 +5";
-                itemStat2.text = "부스트 속도 +10%";
+                itemStat2.text = "랜덤 부스트 +10%";
                 break;
             case 1206: //틀니(E)
                 //title.color = new Color32(200, 0, 255, 255);
@@ -296,34 +289,28 @@ public class EquipDisplay : MonoBehaviour {
                 //title.color = new Color32(255, 255, 0, 255);
                 itemTitle.text = "절대반지";
                 itemDesc.text = "용암에서 건져올린 반지입니다.\n어디선가 말소리가 들리는 듯 하는데..\n착용하면 어떻게 될까요?";
-                itemStat1.text = "체력 +5";
-                itemStat2.text = "속도 +10";
-                itemStat3.text = "방어력 +3";
-                itemStat4.text = "부스트 획득량 +6";
-                itemStat5.text = "부스트 속도 +20%";
-                itemStat6.text = "폭발 반경 +7m";
+                itemStat1.text = "체력 +15";
+                itemStat2.text = "방어력 +3";
+                itemStat3.text = "부스트 속도 +20%";
+                itemStat4.text = "폭발 반경 +7m";
                 break;
             case 1301: //왕관(L)
                 //title.color = new Color32(255, 255, 0, 255);
                 itemTitle.text = "왕관";
                 itemDesc.text = "컨테이너 벨트 끝에는 궁전이\n있다고 합니다.\n그곳에 사는 왕이 쓰는 걸까요?";
-                itemStat1.text = "체력 +10";
-                itemStat2.text = "속도 +6";
-                itemStat3.text = "방어력 +5";
-                itemStat4.text = "행운 +16";
-                itemStat5.text = "부스트 획득량 +3";
-                itemStat6.text = "부스트 속도 +30%";
+                itemStat1.text = "속도 +9";
+                itemStat2.text = "행운 +16";
+                itemStat3.text = "힘 +5";
+                itemStat4.text = "부스트 획득량 +4";
                 break;
             case 1302: //모래시계(L)
                 //title.color = new Color32(255, 255, 0, 255);
                 itemTitle.text = "모래시계";
                 itemDesc.text = "새로운 도전을 위해 모래시계를\n뒤집어보세요.";
-                itemStat1.text = "체력 +7";
-                itemStat2.text = "속도 +12";
-                itemStat3.text = "힘 +7";
+                itemStat1.text = "체력 +17";
+                itemStat2.text = "행운 +13";
+                itemStat3.text = "방어력 +4";
                 itemStat4.text = "부스트 획득량 +6";
-                itemStat5.text = "부스트 속도 +20%";
-                itemStat6.text = "폭발 반경 +8m";
                 break;
             case 1303: //산삼(L)
                 //title.color = new Color32(255, 255, 0, 255);
@@ -332,9 +319,7 @@ public class EquipDisplay : MonoBehaviour {
                 itemStat1.text = "체력 +20";
                 itemStat2.text = "힘 +9";
                 itemStat3.text = "방어력 +5";
-                itemStat4.text = "행운 +10";
-                itemStat5.text = "부스트 속도 15%";
-                itemStat6.text = "폭발 반경 +15m";
+                itemStat4.text = "폭발 반경 +15m";
                 break;
 
             ////////////////////////////////SPECIAL/////////////////////////////////////

@@ -154,9 +154,9 @@ public class PlayerController : MonoBehaviour
             curHP += equip.HP;
             curDEF += equip.DEF;
 
-            nitroEarnSize += equip.nitroSize;
+            nitroEarnSize += equip.nitroEarnSize;
             bombSize += equip.bombSize;
-            nitroTime += equip.nitroTime;
+            nitroTime += equip.nitroSpeed;
         }
 
         lane = 0;
