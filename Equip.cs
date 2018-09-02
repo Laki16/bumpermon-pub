@@ -28,18 +28,6 @@ public class Equip : MonoBehaviour {
     public GameObject infoBtn;
     public GameObject equipBtn;
 
-    //Upgrade coins
-    [HideInInspector]
-    public int[] normalGold = {30, 200, 400, 600, 800, 1000, 2000, 3000, 4000, 8000, 10000 };
-    [HideInInspector]
-    public int[] rareGold = {100, 800, 1500, 3000, 5000, 8000, 12000, 15000, 20000 };
-    [HideInInspector]
-    public int[] epicGold = {500, 3000, 5000, 10000, 15000, 20000, 30000 };
-    [HideInInspector]
-    public int[] legendGold = {4000, 15000, 30000, 50000, 100000 };
-
-    //판매가격은 업그레이드 가격의 15%
-
     private void Start()
     {
         shopManager = GameObject.Find("Equip(Shop)Manager").GetComponent<ShopManager>();    
@@ -266,50 +254,31 @@ public class Equip : MonoBehaviour {
         }
     }
 
-    public int GetUpgradeGold(int index, int level)
-    {
-        switch (index)
-        {
-            case 1: return normalGold[level];
-            case 2: return rareGold[level];
-            case 3: return epicGold[level];
-            case 4: return legendGold[level];
-            default: return 0;
-        }
-    }
+    //public int GetUpgradeGold(int index, int level)
+    //{
+    //    switch (index)
+    //    {
+    //        case 1: return normalGold[level];
+    //        case 2: return rareGold[level];
+    //        case 3: return epicGold[level];
+    //        case 4: return legendGold[level];
+    //        default: return 0;
+    //    }
+    //}
 
-    public int GetSellGold(int index, int level)
-    {
-        float gold = 0;
-        switch (index)
-        {
-            case 1: gold = normalGold[level-1]; break;
-            case 2: gold =  rareGold[level-1]; break;
-            case 3: gold = epicGold[level-1]; break;
-            case 4: gold = legendGold[level-1]; break;
-        }
-        gold *= 0.15f;
-        return (int)gold;
-    }
-
-    public void LevelUp(int index) //index는 totalItemSlot의 위치.
-    {
-        string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
-        string temp = _inventory[index];
-        int curLevel = System.Convert.ToInt32(temp[5]);
-        Debug.Log("Level : " + curLevel);
-        string _temp = temp.Substring(0, 4) + (curLevel+1).ToString();
-        _inventory[index] = _temp;
-        Debug.Log(_temp);
-        string inventory = string.Empty;
-        for(int i=0; i<_inventory.Length; i++)
-        {
-            inventory += _inventory[i];
-        }
-
-        PlayerPrefs.SetString("Inventory", inventory);
-        PlayerPrefs.Save();
-    }
+    //public int GetSellGold(int index, int level)
+    //{
+    //    float gold = 0;
+    //    switch (index)
+    //    {
+    //        case 1: gold = normalGold[level-1]; break;
+    //        case 2: gold =  rareGold[level-1]; break;
+    //        case 3: gold = epicGold[level-1]; break;
+    //        case 4: gold = legendGold[level-1]; break;
+    //    }
+    //    gold *= 0.15f;
+    //    return (int)gold;
+    //}
 
     public void UpdateFrame(int index)
     {

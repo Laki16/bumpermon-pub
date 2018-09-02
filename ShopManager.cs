@@ -67,6 +67,9 @@ public class ShopManager : MonoBehaviour
     public GameObject escPanel;
     public EquipDisplay equipDisplay;
     public Image infoImage;
+    public Button upgradeBtn;
+    public Text upgradeCoin;
+    public Text upgradeText;
 
     [Header("Inventory")]
     [HideInInspector]
@@ -83,6 +86,18 @@ public class ShopManager : MonoBehaviour
     public Text equipGems;
     public Text shopCoins;
     public Text shopGems;
+
+    //Upgrade coins
+    [HideInInspector]
+    public int[] normalGold = { 30, 200, 400, 600, 800, 1000, 2000, 3000, 4000, 8000, 10000 };
+    [HideInInspector]
+    public int[] rareGold = { 100, 800, 1500, 3000, 5000, 8000, 12000, 15000, 20000 };
+    [HideInInspector]
+    public int[] epicGold = { 500, 3000, 5000, 10000, 15000, 20000, 30000 };
+    [HideInInspector]
+    public int[] legendGold = { 4000, 15000, 30000, 50000, 100000 };
+    //판매가격은 업그레이드 가격의 15%
+
 
     // Use this for initialization
     void Start()
@@ -388,6 +403,27 @@ public class ShopManager : MonoBehaviour
         Destroy(beforeInfoBtn);
 
         equipDisplay.UpdateUI(currentEquip.EquipIndex);
+        //돈 부족하거나 만렙이면 upgrade버튼 비활성화
+        if(GetUpgradeGold() > PlayerPrefs.GetInt("Gold"))
+        {
+            upgradeBtn.interactable = false;
+        }
+        else
+        {
+            upgradeBtn.interactable = true;
+        }
+
+        if(IsUpgradable() == true)
+        {
+            upgradeText.text = "Upgrade";
+            upgradeCoin.text = GetUpgradeGold().ToString();
+        }
+        else
+        {
+            upgradeText.text = "MAX";
+            upgradeCoin.text = string.Empty;
+        }
+
         infoPanel.SetActive(true);
         infoImage.sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
         escPanel.SetActive(true);
@@ -430,18 +466,107 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    public int GetUpgradeGold()
+    {
+        int requireGold = 0;
+        switch (currentEquip.EquipIndex / 100)
+        {
+            case 10: requireGold = normalGold[currentEquip.Level]; break;
+            case 11: requireGold = rareGold[currentEquip.Level]; break;
+            case 12: requireGold = epicGold[currentEquip.Level]; break;
+            case 13: requireGold = legendGold[currentEquip.Level]; break;
+        }
+        return requireGold;
+    }
+
+    public int GetSellGold()
+    {
+        float sellGold = 0f;
+        switch (currentEquip.EquipIndex / 100)
+        {
+            case 10: sellGold = normalGold[currentEquip.Level-1]; break;
+            case 11: sellGold = rareGold[currentEquip.Level-1]; break;
+            case 12: sellGold = epicGold[currentEquip.Level-1]; break;
+            case 13: sellGold = legendGold[currentEquip.Level-1]; break;
+        }
+        sellGold *= 0.15f;
+        return (int)sellGold;
+    }
+
+    public bool IsUpgradable()
+    {
+        int level = currentEquip.Level;
+        switch (currentEquip.EquipIndex)
+        {
+            case 10:
+                if (level == 11) return false;
+                else return true;
+            case 11:
+                if (level == 9) return false;
+                else return true;
+            case 12:
+                if (level == 7) return false;
+                else return true;
+            case 13:
+                if (level == 5) return false;
+                else return true;
+            default: return true;
+        }
+    }
+
     public void BtnOnUpgrade()
     {
-        equipCoins.text = PlayerPrefs.GetInt("Coin").ToString();
-        equipGems.text = PlayerPrefs.GetInt("Gem").ToString();
+        int gold = PlayerPrefs.GetInt("Gold");
+        gold -= GetUpgradeGold();
+        for(int i=0; i<totalItemSlot.Count; i++)
+        {
+            if(totalItemSlot[i] == currentEquip)
+            {
+                LevelUp(i); break;
+            }
+        }
+        equipCoins.text = gold.ToString();
 
+        PlayerPrefs.SetInt("Gold", gold);
+        PlayerPrefs.Save();
+        CloudVariables.SystemValues[0] = gold;
+        PlayGamesScript.Instance.SaveData();
+
+        //Cloud에 아이템 업그레이드 저장
+    }
+
+    public void LevelUp(int index) //index는 totalItemSlot의 위치.
+    {
+        string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
+        string temp = _inventory[index];
+        int curLevel = System.Convert.ToInt32(temp[5]);
+        Debug.Log("Level : " + curLevel);
+        string _temp = temp.Substring(0, 4) + (curLevel + 1).ToString();
+        _inventory[index] = _temp;
+        Debug.Log(_temp);
+        string inventory = string.Empty;
+        for (int i = 0; i < _inventory.Length; i++)
+        {
+            inventory += _inventory[i];
+        }
+
+        PlayerPrefs.SetString("Inventory", inventory);
+        PlayerPrefs.Save();
     }
 
     public void BtnOnSell()
     {
+        int gold = PlayerPrefs.GetInt("Gold");
+        gold += GetSellGold();
+        equipCoins.text = gold.ToString();
 
-        equipCoins.text = PlayerPrefs.GetInt("Coin").ToString();
-        equipGems.text = PlayerPrefs.GetInt("Gem").ToString();
+        //아이템 리스트에서 아이템 없애고, playerprefs에서도 삭제 후 infoPanel까지 꺼야 함. 현재 장착중이면 그것도 삭제해야함.
+        //Cloud에도 저장.
+
+        PlayerPrefs.SetInt("Gold", gold);
+        PlayerPrefs.Save();
+        CloudVariables.SystemValues[0] = gold;
+        PlayGamesScript.Instance.SaveData();
     }
 
     public void NewItem(int itemNumber, int itemValue)
