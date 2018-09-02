@@ -68,8 +68,10 @@ public class ShopManager : MonoBehaviour
     public EquipDisplay equipDisplay;
     public Image infoImage;
     public Button upgradeBtn;
+    public Button sellBtn;
     public Text upgradeCoin;
     public Text upgradeText;
+    public Text equipLevelText;
 
     [Header("Inventory")]
     [HideInInspector]
@@ -80,6 +82,7 @@ public class ShopManager : MonoBehaviour
     public Text storageText;
     //public int foundItem = 0;
     //public int storage;
+    public List<Text> equippedLevel = new List<Text>(3);
 
     [Header("DB")]
     public Text equipCoins;
@@ -191,6 +194,7 @@ public class ShopManager : MonoBehaviour
 
     public void CloudSaveItem()
     {
+        //Debug.Log("Saving...");
         string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
 
         for (int i = 0; i < _inventory.Length - 1; i++)
@@ -314,7 +318,7 @@ public class ShopManager : MonoBehaviour
                     count++;
                 }
 
-                Debug.Log("equip!");
+                //Debug.Log("equip!");
                 
                 totalItemSlot[i].GetComponent<Equip>().UpdateFrame(currentCharacter.MonsterIndex);
                 currentEquip = totalItemSlot[i].GetComponent<Equip>();
@@ -341,6 +345,12 @@ public class ShopManager : MonoBehaviour
         List<int> temp = indexArray.Distinct().ToList();
 
         foundItemText.text = "발견한 아이템 " + temp.Count.ToString() + "/40";
+
+        for (int i = 0; i < totalItemSlot.Count; i++)
+        {
+            totalItemSlot[i].transform.Find("Text").GetComponent<Text>().text
+                = "+" + totalItemSlot[i].GetComponent<Equip>().Level.ToString();
+        }
     }
 
     public void UpdateShopUI()
@@ -403,27 +413,7 @@ public class ShopManager : MonoBehaviour
         Destroy(beforeInfoBtn);
 
         equipDisplay.UpdateUI(currentEquip.EquipIndex);
-        //돈 부족하거나 만렙이면 upgrade버튼 비활성화
-        if(GetUpgradeGold() > PlayerPrefs.GetInt("Gold"))
-        {
-            upgradeBtn.interactable = false;
-        }
-        else
-        {
-            upgradeBtn.interactable = true;
-        }
-
-        if(IsUpgradable() == true)
-        {
-            upgradeText.text = "Upgrade";
-            upgradeCoin.text = GetUpgradeGold().ToString();
-        }
-        else
-        {
-            upgradeText.text = "MAX";
-            upgradeCoin.text = string.Empty;
-        }
-
+        UpdateInfoPanel();
         infoPanel.SetActive(true);
         infoImage.sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
         escPanel.SetActive(true);
@@ -518,14 +508,17 @@ public class ShopManager : MonoBehaviour
     {
         int gold = PlayerPrefs.GetInt("Gold");
         gold -= GetUpgradeGold();
+
         for(int i=0; i<totalItemSlot.Count; i++)
         {
-            if(totalItemSlot[i] == currentEquip)
+            if (totalItemSlot[i].GetComponent<Equip>() == currentEquip)
             {
+                //Debug.Log("Lv Up " + i);
                 LevelUp(i); break;
             }
         }
         equipCoins.text = gold.ToString();
+        
 
         PlayerPrefs.SetInt("Gold", gold);
         PlayerPrefs.Save();
@@ -533,25 +526,71 @@ public class ShopManager : MonoBehaviour
         PlayGamesScript.Instance.SaveData();
 
         //Cloud에 아이템 업그레이드 저장
+        CloudSaveItem();
+        UpdateInfoPanel();
     }
 
     public void LevelUp(int index) //index는 totalItemSlot의 위치.
     {
+        currentEquip.Level++;
+
         string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
         string temp = _inventory[index];
-        int curLevel = System.Convert.ToInt32(temp[5]);
-        Debug.Log("Level : " + curLevel);
+        int curLevel = temp[4]-48;
+
         string _temp = temp.Substring(0, 4) + (curLevel + 1).ToString();
         _inventory[index] = _temp;
-        Debug.Log(_temp);
+
         string inventory = string.Empty;
-        for (int i = 0; i < _inventory.Length; i++)
+        for (int i = 0; i < _inventory.Length-1; i++)
         {
-            inventory += _inventory[i];
+            inventory += (_inventory[i] + ",");
         }
 
         PlayerPrefs.SetString("Inventory", inventory);
         PlayerPrefs.Save();
+
+        UpdateInventoryText();
+        for (int i = 0; i < currentCharacter.GetComponent<EquippedItem>().equippedItem.Count; i++)
+        {
+            equippedLevel[i].text
+                = "+" + currentCharacter.GetComponent<EquippedItem>().equippedItem[i].Level.ToString();
+        }
+    }
+
+    public void UpdateInfoPanel()
+    {
+        //돈 부족하거나 만렙이면 upgrade버튼 비활성화
+        if (GetUpgradeGold() > PlayerPrefs.GetInt("Gold"))
+        {
+            upgradeBtn.interactable = false;
+        }
+        else
+        {
+            upgradeBtn.interactable = true;
+        }
+
+        if (IsUpgradable() == true)
+        {
+            upgradeText.text = "Upgrade";
+            upgradeCoin.text = GetUpgradeGold().ToString();
+        }
+        else
+        {
+            upgradeText.text = "MAX";
+            upgradeCoin.text = string.Empty;
+        }
+
+        if(currentEquip.isEquipped == true)
+        {
+            sellBtn.interactable = false;
+        }
+        else
+        {
+            sellBtn.interactable = true;
+        }
+
+        equipLevelText.text = "+" + currentEquip.Level;
     }
 
     public void BtnOnSell()
@@ -560,8 +599,30 @@ public class ShopManager : MonoBehaviour
         gold += GetSellGold();
         equipCoins.text = gold.ToString();
 
-        //아이템 리스트에서 아이템 없애고, playerprefs에서도 삭제 후 infoPanel까지 꺼야 함. 현재 장착중이면 그것도 삭제해야함.
-        //Cloud에도 저장.
+        string equipped = PlayerPrefs.GetString("Equipped");
+        string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
+        string temp = string.Empty;
+        for (int i=0; i<totalItemSlot.Count; i++)
+        {
+            if(totalItemSlot[i].GetComponent<Equip>() == currentEquip)
+            {
+                _inventory[i] = temp;
+                totalItemSlot.RemoveAt(i);
+                string start = equipped.Substring(0, i);
+                string end = equipped.Substring(i + 1, equipped.Length-1);
+                equipped = start + end;
+                break;   
+            }
+        }
+        string inventory = string.Empty;
+        for (int i = 0; i < _inventory.Length-1; i++)
+        {
+            inventory += (_inventory[i] + ",");
+        }
+        PlayerPrefs.SetString("Equipped", equipped);
+        CloudSaveItem();
+        
+        infoPanel.SetActive(false);
 
         PlayerPrefs.SetInt("Gold", gold);
         PlayerPrefs.Save();
@@ -633,10 +694,20 @@ public class ShopManager : MonoBehaviour
 
     public void ApplyEquipment()
     {
-        if(currentCharacter != null)
+        equip_hp = 0;
+        equip_spd = 0;
+        equip_def = 0;
+        equip_str = 0;
+        equip_luk = 0;
+        equip_nitroEarnSize = 0;
+        equip_bombSize = 0;
+        equip_nitroTime = 0;
+
+        if (currentCharacter != null)
         {
             for (int i = 0; i < currentCharacter.GetComponent<EquippedItem>().equippedItem.Count; i++)
             {
+                currentCharacter.GetComponent<EquippedItem>().equippedItem[i].GetComponent<Equip>().SetStatus();
                 equip = currentCharacter.GetComponent<EquippedItem>().equippedItem[i];
 
                 equip_hp += equip.HP;
