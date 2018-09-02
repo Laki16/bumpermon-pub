@@ -79,8 +79,10 @@ public class ShopManager : MonoBehaviour
     //public int storage;
 
     [Header("DB")]
-    public Text coins;
-    public Text gems;
+    public Text equipCoins;
+    public Text equipGems;
+    public Text shopCoins;
+    public Text shopGems;
 
     // Use this for initialization
     void Start()
@@ -99,6 +101,7 @@ public class ShopManager : MonoBehaviour
         equip_bombSize = 0.0f;
         equip_nitroTime = 0.0f;
 
+        UpdateShopUI();
     }
 
     // Update is called once per frame
@@ -197,7 +200,8 @@ public class ShopManager : MonoBehaviour
         slot.SetActive(true);
         slot.GetComponent<Equip>().EquipIndex = currentEquip.EquipIndex;
         slot.GetComponentInChildren<Image>().sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
-        slot.GetComponentInChildren<Text>().text = "+" + currentEquip.Level;
+        //slot.GetComponentInChildren<Text>().text = "+" + currentEquip.Level;
+        slot.transform.Find("Text").GetComponent<Text>().text = "+" + currentEquip.Level;
 
         //slot.GetComponent<Equip>().equippedCharacter = currentCharacter.MonsterIndex;
         for (int i=0; i<totalItemSlot.Count; i++)
@@ -266,8 +270,8 @@ public class ShopManager : MonoBehaviour
     public void UpdateEquipUI()
     {
         //DB
-        coins.text = PlayerPrefs.GetInt("Coin").ToString();
-        gems.text = PlayerPrefs.GetInt("Gem").ToString();
+        equipCoins.text = PlayerPrefs.GetInt("Coin").ToString();
+        equipGems.text = PlayerPrefs.GetInt("Gem").ToString();
 
         int count = 1;
         GameObject slot;
@@ -322,6 +326,13 @@ public class ShopManager : MonoBehaviour
         List<int> temp = indexArray.Distinct().ToList();
 
         foundItemText.text = "발견한 아이템 " + temp.Count.ToString() + "/40";
+    }
+
+    public void UpdateShopUI()
+    {
+        //시작했을 때와 아이템 구매했을 때 적용
+        shopCoins.text = PlayerPrefs.GetInt("Coin").ToString();
+        shopGems.text = PlayerPrefs.GetInt("Coin").ToString();
     }
 
     IEnumerator ChangeItem()
@@ -421,16 +432,16 @@ public class ShopManager : MonoBehaviour
 
     public void BtnOnUpgrade()
     {
+        equipCoins.text = PlayerPrefs.GetInt("Coin").ToString();
+        equipGems.text = PlayerPrefs.GetInt("Gem").ToString();
 
-        coins.text = PlayerPrefs.GetInt("Coin").ToString();
-        gems.text = PlayerPrefs.GetInt("Gem").ToString();
     }
 
     public void BtnOnSell()
     {
 
-        coins.text = PlayerPrefs.GetInt("Coin").ToString();
-        gems.text = PlayerPrefs.GetInt("Gem").ToString();
+        equipCoins.text = PlayerPrefs.GetInt("Coin").ToString();
+        equipGems.text = PlayerPrefs.GetInt("Gem").ToString();
     }
 
     public void NewItem(int itemNumber, int itemValue)

@@ -292,16 +292,24 @@ public class Equip : MonoBehaviour {
         return (int)gold;
     }
 
+    public void LevelUp(int index) //index는 totalItemSlot의 위치.
+    {
+        string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
+        string temp = _inventory[index];
+        int curLevel = System.Convert.ToInt32(temp[5]);
+        Debug.Log("Level : " + curLevel);
+        string _temp = temp.Substring(0, 4) + (curLevel+1).ToString();
+        _inventory[index] = _temp;
+        Debug.Log(_temp);
+        string inventory = string.Empty;
+        for(int i=0; i<_inventory.Length; i++)
+        {
+            inventory += _inventory[i];
+        }
 
-
-
-
-
-
-
-
-
-
+        PlayerPrefs.SetString("Inventory", inventory);
+        PlayerPrefs.Save();
+    }
 
     public void UpdateFrame(int index)
     {
