@@ -72,6 +72,7 @@ public class ShopManager : MonoBehaviour
     public Text upgradeCoin;
     public Text upgradeText;
     public Text equipLevelText;
+    public List<Text> statText = new List<Text>(4);
 
     [Header("Inventory")]
     [HideInInspector]
@@ -218,6 +219,7 @@ public class ShopManager : MonoBehaviour
         }
         slot.SetActive(true);
         slot.GetComponent<Equip>().EquipIndex = currentEquip.EquipIndex;
+        slot.GetComponent<Equip>().Level = currentEquip.Level;
         slot.GetComponentInChildren<Image>().sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
         //slot.GetComponentInChildren<Text>().text = "+" + currentEquip.Level;
         slot.transform.Find("Text").GetComponent<Text>().text = "+" + currentEquip.Level;
@@ -258,6 +260,7 @@ public class ShopManager : MonoBehaviour
         }
         slot.SetActive(true);
         slot.GetComponent<Equip>().EquipIndex = currentEquip.EquipIndex;
+        slot.GetComponent<Equip>().EquipIndex = currentEquip.Level;
         slot.GetComponentInChildren<Image>().sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
         //slot.GetComponent<Equip>().equippedCharacter = currentCharacter.MonsterIndex;
         for(int i=0; i<totalItemSlot.Count; i++)
@@ -591,6 +594,43 @@ public class ShopManager : MonoBehaviour
         }
 
         equipLevelText.text = "+" + currentEquip.Level;
+
+        float[] stats = new float[8] {0,0,0,0,0,0,0,0 };
+
+        Equip origin_equip = new Equip();
+        origin_equip.EquipIndex = currentEquip.EquipIndex;
+        origin_equip.Level = 1;
+        origin_equip.SetStatus();
+
+        Equip temp_equip = new Equip();
+        temp_equip.EquipIndex = currentEquip.EquipIndex;
+        temp_equip.Level = currentEquip.Level;
+        temp_equip.SetStatus();
+
+        stats[0] += temp_equip.HP - origin_equip.HP;
+        stats[1] += temp_equip.SPD - origin_equip.SPD;
+        stats[2] += temp_equip.DEF - origin_equip.DEF;
+        stats[3] += temp_equip.STR - origin_equip.STR;
+        stats[4] += temp_equip.LUK - origin_equip.LUK;
+        stats[5] += temp_equip.nitroEarnSize - origin_equip.nitroEarnSize;
+        stats[6] += temp_equip.bombSize - origin_equip.bombSize;
+        stats[7] += temp_equip.nitroSpeed - origin_equip.nitroSpeed;
+
+        int count = 0;
+        for(int i=0; i<8; i++)
+        {
+            //Debug.Log("Stat" + i + " " + stats[i]);
+            if (stats[i] != 0)
+            {
+                if(stats[i] > 0)
+                {
+                    statText[count].text += "<color=#FF0000> +" + stats[i].ToString()+"</color>";
+                }
+                count++;
+            }
+        }
+        Destroy(origin_equip);
+        Destroy(temp_equip);
     }
 
     public void BtnOnSell()
