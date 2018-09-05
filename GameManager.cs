@@ -265,6 +265,10 @@ public class GameManager : MonoBehaviour {
         lArm.GetComponent<EnemyArm>().player = player;
         rArm.GetComponent<EnemyArm>().player = player;
         SoundManager.GetComponent<SoundManager>().isLobbyEnd = true;
+
+        //DB
+        coin = 0;
+        gem = 0;
     }
 
     public void BtnOnOption()
@@ -468,7 +472,6 @@ public class GameManager : MonoBehaviour {
             prevG += gem;
             PlayerPrefs.SetInt("Gem", prevG);
             prevGems = gem;
-
         }
         else
         {

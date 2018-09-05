@@ -27,6 +27,7 @@ public class Equip : MonoBehaviour {
     [Header("Button")]
     public GameObject infoBtn;
     public GameObject equipBtn;
+    public GameObject unequipBtn;
 
     private void Start()
     {
@@ -315,6 +316,12 @@ public class Equip : MonoBehaviour {
         if (!isEquipped)
         {
             var newEquipItem = Instantiate(equipBtn);
+            newEquipItem.transform.SetParent(EventSystem.current.currentSelectedGameObject.transform, false);
+            shopManager.beforeEquipBtn = newEquipItem;
+        }
+        else
+        {
+            var newEquipItem = Instantiate(unequipBtn);
             newEquipItem.transform.SetParent(EventSystem.current.currentSelectedGameObject.transform, false);
             shopManager.beforeEquipBtn = newEquipItem;
         }

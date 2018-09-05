@@ -865,7 +865,8 @@ public class PlayerController : MonoBehaviour
     public void Restart()
     {
         preSpeed = minSpeed;
-        myAnimator.Play("Spawn");
+        //myAnimator.Play("Spawn");
+        //다른 애니메이션 만들어서 넣을 것.
         //live = 1;
         //curHP = character.HP / 2;
         curHP = character.HP;

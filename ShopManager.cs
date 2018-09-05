@@ -84,6 +84,10 @@ public class ShopManager : MonoBehaviour
     //public int foundItem = 0;
     //public int storage;
     public List<Text> equippedLevel = new List<Text>(3);
+    [Space(10)]
+    public GameObject chkPanel;
+    public Text chkText;
+    private int checkNumber;
 
     [Header("DB")]
     public Text equipCoins;
@@ -195,10 +199,10 @@ public class ShopManager : MonoBehaviour
 
     public void CloudSaveItem()
     {
-        //Debug.Log("Saving...");
-        string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
 
-        for (int i = 0; i < _inventory.Length - 1; i++)
+        string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
+        //Debug.Log("Saving..." + _inventory.Length);
+        for (int i = 0; i < _inventory.Length - 1; i++) 
         {
             int item = System.Convert.ToInt32(_inventory[i]);
             CloudVariables.SystemValues[21 + i] = item;
@@ -370,39 +374,52 @@ public class ShopManager : MonoBehaviour
         changeSlotNum = -1;
         changeAnimator.Play("Change");
         changeBtn.SetActive(true);
-        
-        while(changeSlotNum == -1)
+        //changePanel.SetActive(true);
+
+        while (changeSlotNum == -1)
         {
             yield return null;
         }
 
-        changeAnimator.Play("Idle");
-        switch (changeSlotNum)
+        if(changeSlotNum != 0)
         {
-            case 0:
-                resetItem = slot1.GetComponent<Equip>().equippedCharacter;
-                ReplaceItem(0, resetItem);
-                break;
-            case 1:
-                resetItem = slot2.GetComponent<Equip>().equippedCharacter;
-                ReplaceItem(1, resetItem);
-                break;
-            case 2:
-                resetItem = slot3.GetComponent<Equip>().equippedCharacter;
-                ReplaceItem(2, resetItem);
-                break;
+            changeAnimator.Play("Idle");
+            switch (changeSlotNum)
+            {
+                case 1:
+                    resetItem = slot1.GetComponent<Equip>().equippedCharacter;
+                    ReplaceItem(0, resetItem);
+                    break;
+                case 2:
+                    resetItem = slot2.GetComponent<Equip>().equippedCharacter;
+                    ReplaceItem(1, resetItem);
+                    break;
+                case 3:
+                    resetItem = slot3.GetComponent<Equip>().equippedCharacter;
+                    ReplaceItem(2, resetItem);
+                    break;
+            }
+
+            currentCharacter.GetComponent<EquippedItem>().equippedItem[changeSlotNum-1] = currentEquip;
+            currentEquip.isEquipped = true;
+
+            changeBtn.SetActive(false);
+
+            //빠진 아이템 리셋
+            Debug.Log("Reset " + resetItem);
+            totalItemSlot[resetItem].GetComponent<Equip>().ResetFrame();
+            totalItemSlot[resetItem].GetComponent<Equip>().isEquipped = false;
+
+            //UpdateEquipUI();
+        }
+        else
+        {
+            changeAnimator.Play("Idle");
+            changeBtn.SetActive(false);
+            //changePanel.SetActive(false);
+            Debug.Log("cancel");
         }
 
-        currentCharacter.GetComponent<EquippedItem>().equippedItem[changeSlotNum] = currentEquip;
-
-        changeSlotNum = -1;
-        changeBtn.SetActive(false);
-
-        //빠진 아이템 리셋
-        Debug.Log("Reset "+resetItem);
-        totalItemSlot[resetItem].GetComponent<Equip>().ResetFrame();
-
-        //UpdateEquipUI();
     }
 
     public void BtnOnChange(int number)
@@ -459,6 +476,43 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    public void BtnOnUnequip()
+    {
+        Destroy(beforeEquipBtn);
+        Destroy(beforeInfoBtn);
+
+        currentEquip.ResetFrame();
+        currentEquip.equippedCharacter = 0;
+        currentEquip.isEquipped = false;
+
+        int slotcount = 0;
+        int size = currentCharacter.GetComponent<EquippedItem>().equippedItem.Count;
+        for(int i=0; i<size; i++)
+        {
+            if(currentEquip.EquipIndex
+                == currentCharacter.GetComponent<EquippedItem>().equippedItem[i].EquipIndex)
+            {
+                slotcount = i;
+            }
+        }
+
+        switch (slotcount)
+        {
+            case 0: slot1.SetActive(false); break;
+            case 1: slot2.SetActive(false); break;
+            case 2: slot3.SetActive(false); break;
+            default: break;
+        }
+        currentCharacter.GetComponent<EquippedItem>().equippedItem.RemoveAt(slotcount);
+
+        string _equipped = string.Empty;
+        for (int i = 0; i < totalItemSlot.Count; i++)
+        {
+            _equipped += totalItemSlot[i].GetComponent<Equip>().equippedCharacter.ToString();
+        }
+        PlayerPrefs.SetString("Equipped", _equipped);
+    }
+
     public int GetUpgradeGold()
     {
         int requireGold = 0;
@@ -509,8 +563,8 @@ public class ShopManager : MonoBehaviour
 
     public void BtnOnUpgrade()
     {
-        int gold = PlayerPrefs.GetInt("Gold");
-        gold -= GetUpgradeGold();
+        int coin = PlayerPrefs.GetInt("Coin");
+        coin -= GetUpgradeGold();
 
         for(int i=0; i<totalItemSlot.Count; i++)
         {
@@ -520,12 +574,12 @@ public class ShopManager : MonoBehaviour
                 LevelUp(i); break;
             }
         }
-        equipCoins.text = gold.ToString();
+        equipCoins.text = coin.ToString();
         
 
-        PlayerPrefs.SetInt("Gold", gold);
+        PlayerPrefs.SetInt("Coin", coin);
         PlayerPrefs.Save();
-        CloudVariables.SystemValues[0] = gold;
+        CloudVariables.SystemValues[0] = coin;
         PlayGamesScript.Instance.SaveData();
 
         //Cloud에 아이템 업그레이드 저장
@@ -564,7 +618,7 @@ public class ShopManager : MonoBehaviour
     public void UpdateInfoPanel()
     {
         //돈 부족하거나 만렙이면 upgrade버튼 비활성화
-        if (GetUpgradeGold() > PlayerPrefs.GetInt("Gold"))
+        if (GetUpgradeGold() > PlayerPrefs.GetInt("Coin"))
         {
             upgradeBtn.interactable = false;
         }
@@ -633,41 +687,82 @@ public class ShopManager : MonoBehaviour
         Destroy(temp_equip);
     }
 
+    public IEnumerator SellCoroutine()
+    {
+        while(checkNumber == -1)
+        {
+            yield return null;
+        }
+        if(checkNumber == 0) //NO
+        {
+            Debug.Log("cancel");
+        }
+        else if(checkNumber == 1) //YES
+        {
+            int coin = PlayerPrefs.GetInt("Coin");
+            coin += GetSellGold();
+            equipCoins.text = coin.ToString();
+
+            string equipped = PlayerPrefs.GetString("Equipped");
+            string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
+            string temp = string.Empty;
+            for (int i = 0; i < totalItemSlot.Count; i++)
+            {
+                if (totalItemSlot[i].GetComponent<Equip>() == currentEquip)
+                {
+                    _inventory[i] = temp;
+                    Destroy(totalItemSlot[i]);
+                    totalItemSlot.RemoveAt(i);
+
+                    string start = equipped.Substring(0, i);
+                    string end = equipped.Substring(i + 1, equipped.Length - i - 1);
+                    equipped = start + end;
+                    break;
+                }
+            }
+            PlayerPrefs.SetString("Equipped", equipped);
+
+            string inventory = string.Empty;
+            for (int i = 0; i < _inventory.Length - 1; i++)
+            {
+                if (_inventory[i] != string.Empty)
+                {
+                    inventory += (_inventory[i] + ",");
+                }
+                Debug.Log(inventory);
+            }
+            PlayerPrefs.SetString("Inventory", inventory);
+            PlayerPrefs.SetInt("Coin", coin);
+            PlayerPrefs.Save();
+            CloudVariables.SystemValues[21 + totalItemSlot.Count] = 0;
+
+            CloudSaveItem();
+            CloudVariables.SystemValues[0] = coin;
+            PlayGamesScript.Instance.SaveData();
+
+            infoPanel.SetActive(false);
+            UpdateInventoryText();
+        }
+    }
+
     public void BtnOnSell()
     {
-        int gold = PlayerPrefs.GetInt("Gold");
-        gold += GetSellGold();
-        equipCoins.text = gold.ToString();
+        checkNumber = -1;
+        StartCoroutine("SellCoroutine");
+        chkText.text = "<color=#FFFF00>" + GetSellGold() + "</color>코인에 판매하시겠습니까?";
+        chkPanel.SetActive(true);
+    }
 
-        string equipped = PlayerPrefs.GetString("Equipped");
-        string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
-        string temp = string.Empty;
-        for (int i=0; i<totalItemSlot.Count; i++)
-        {
-            if(totalItemSlot[i].GetComponent<Equip>() == currentEquip)
-            {
-                _inventory[i] = temp;
-                totalItemSlot.RemoveAt(i);
-                string start = equipped.Substring(0, i);
-                string end = equipped.Substring(i + 1, equipped.Length-1);
-                equipped = start + end;
-                break;   
-            }
-        }
-        string inventory = string.Empty;
-        for (int i = 0; i < _inventory.Length-1; i++)
-        {
-            inventory += (_inventory[i] + ",");
-        }
-        PlayerPrefs.SetString("Equipped", equipped);
-        CloudSaveItem();
-        
-        infoPanel.SetActive(false);
+    public void BtnOnYes()
+    {
+        checkNumber = 1;
+        chkPanel.SetActive(false);
+    }
 
-        PlayerPrefs.SetInt("Gold", gold);
-        PlayerPrefs.Save();
-        CloudVariables.SystemValues[0] = gold;
-        PlayGamesScript.Instance.SaveData();
+    public void BtnOnNo()
+    {
+        checkNumber = 0;
+        chkPanel.SetActive(false);
     }
 
     public void NewItem(int itemNumber, int itemValue)
@@ -708,6 +803,7 @@ public class ShopManager : MonoBehaviour
                 break;
         }
 
+        newItem.GetComponent<Equip>().Level = 1;
         int inventoryCount = totalItemSlot.Count;
         if(inventoryCount < 100)
         {
