@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using System;
  
 public class UnityAdsHelper : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class UnityAdsHelper : MonoBehaviour
     private const string video_id = "video";
     private const string rewarded_video_id = "rewardedVideo";
     private const string rewarded_video_15secs_id = "rewardedvideo_15secs";
+
+    private int index;
+    public CrateController crateController;
 
     void Start()
     {
@@ -26,8 +30,9 @@ public class UnityAdsHelper : MonoBehaviour
 #endif
     }
 
-    public void ShowAd()
+    public void ShowAd() //continue btn
     {
+        index = 0;
         if (Advertisement.IsReady(video_id))
         {
             var options = new ShowOptions { resultCallback = HandleShowResult };
@@ -36,8 +41,9 @@ public class UnityAdsHelper : MonoBehaviour
         }
     }
 
-    public void ShowRewardedAd()
+    public void ShowRewardedAd(int _index) //rewarded ads
     {
+        index = _index;
         if (Advertisement.IsReady(rewarded_video_id))
         {
             var options = new ShowOptions { resultCallback = HandleShowResult };
@@ -46,7 +52,7 @@ public class UnityAdsHelper : MonoBehaviour
         }
     }
 
-    public void ShowRewardedAd_15secs()
+    public void ShowRewardedAd_15secs() //not used
     {
         if (Advertisement.IsReady(rewarded_video_15secs_id))
         {
@@ -64,7 +70,28 @@ public class UnityAdsHelper : MonoBehaviour
                 {
                     Debug.Log("The ad was successfully shown.");
 
-                    Time.timeScale = 1;
+                    switch (index)
+                    {
+                        case 0: Time.timeScale = 1; break;
+                        case 1:
+                            PlayerPrefs.SetString("Time1", DateTime.Now.ToString());
+                            crateController.BtnOnCrate(1);
+                            break;
+                        case 2:
+                            PlayerPrefs.SetString("Time2", DateTime.Now.ToString());
+
+                            int gem = PlayerPrefs.GetInt("Gem");
+                            gem += 10;
+                            PlayerPrefs.SetInt("Gem", gem);
+                            PlayerPrefs.Save();
+                            CloudVariables.SystemValues[1] = gem;
+                            PlayGamesScript.Instance.SaveData();
+                            break;
+                        case 3:
+                            PlayerPrefs.SetString("Time3", DateTime.Now.ToString());
+                            crateController.BtnOnCrate(4);
+                            break;
+                    }
 
                     break;
                 }

@@ -6,6 +6,8 @@ using System;
 
 public class TimeCalculate : MonoBehaviour {
 
+    public UnityAdsHelper unityAdsHelper;
+
     public GameObject btn1;
     public GameObject btn2;
     public GameObject btn3;
@@ -26,13 +28,13 @@ public class TimeCalculate : MonoBehaviour {
     double time2sec;
     double time3sec;
 
-    System.DateTime currentTime;
-    System.DateTime pastTime1;
-    System.DateTime pastTime2;
-    System.DateTime pastTime3;
-    System.TimeSpan timeCal1;
-    System.TimeSpan timeCal2;
-    System.TimeSpan timeCal3;
+    DateTime currentTime;
+    DateTime pastTime1;
+    DateTime pastTime2;
+    DateTime pastTime3;
+    TimeSpan timeCal1;
+    TimeSpan timeCal2;
+    TimeSpan timeCal3;
 
     private void Awake()
     {
@@ -41,7 +43,7 @@ public class TimeCalculate : MonoBehaviour {
 
     void LateUpdate()
     {
-        currentTime = System.DateTime.Now;
+        currentTime = DateTime.Now;
 
         //timer1
         pastTime1 = Convert.ToDateTime(PlayerPrefs.GetString("Time1"));
@@ -124,19 +126,6 @@ public class TimeCalculate : MonoBehaviour {
 
     public void ResetTimer(int index)
     {
-        switch (index)
-        {
-            case 1:
-                PlayerPrefs.SetString("Time1", System.DateTime.Now.ToString());
-                break;
-            case 2:
-                PlayerPrefs.SetString("Time2", System.DateTime.Now.ToString());
-                break;
-            case 3:
-                PlayerPrefs.SetString("Time3", System.DateTime.Now.ToString());
-                break;
-            default:
-                break;
-        }
+        unityAdsHelper.ShowRewardedAd(index);
     }
 }

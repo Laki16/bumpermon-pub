@@ -18,15 +18,18 @@ public class CrateController : MonoBehaviour {
     public GameObject crates;
     public GameObject currentCrate;
     public GameObject boxCrate;
+    public GameObject simpleCrate;
     public GameObject metalCrate;
     public GameObject superCrate;
 
     [Header("Particle Effect")]
     //public GameObject boxIdleFx;
+    public GameObject simpleIdleFX;
     public GameObject metalIdleFX;
     public GameObject superIdleFX;
     [Space(10)]
     //public GameObject boxDropFX;
+    public GameObject simpleDropFX;
     public GameObject metalDropFX;
     public GameObject superDropFX;
     public GameObject superDropFX2;
@@ -62,8 +65,8 @@ public class CrateController : MonoBehaviour {
     //public Text currentItemTitle;
     public Text currentItemTitle;
     [Space(5)]
-    public Sprite gold;
-    public Sprite gem;
+    public Sprite gold_sprite;
+    public Sprite gem_sprite;
 
     public void BtnOnCrate(int _index)
     {
@@ -108,6 +111,9 @@ public class CrateController : MonoBehaviour {
                 chkPanel.SetActive(true);
                 chkText.text = "슈퍼 상자를 구매하시겠습니까?";
                 break;
+            case 4:
+                chk = 1;
+                break;
             default:
                 break;
         }
@@ -136,6 +142,9 @@ public class CrateController : MonoBehaviour {
                     break;
                 case 3:
                     currentCrate = superCrate;
+                    break;
+                case 4:
+                    currentCrate = simpleCrate;
                     break;
                 default:
                     break;
@@ -236,6 +245,9 @@ public class CrateController : MonoBehaviour {
             case 3:
                 superIdleFX.SetActive(true);
                 break;
+            case 4:
+                simpleIdleFX.SetActive(true);
+                break;
             default:
                 break;
         }
@@ -252,6 +264,9 @@ public class CrateController : MonoBehaviour {
                 break;
             case 3:
                 superIdleFX.SetActive(false);
+                break;
+            case 4:
+                simpleIdleFX.SetActive(false);
                 break;
             default:
                 break;
@@ -275,6 +290,9 @@ public class CrateController : MonoBehaviour {
                 superDropFX.SetActive(true);
                 superDropFX2.SetActive(true);
                 break;
+            case 4:
+                simpleDropFX.SetActive(true);
+                break;
             default:
                 break;
         }
@@ -297,13 +315,16 @@ public class CrateController : MonoBehaviour {
         switch (index)
         {
             case 1:
-                magnitude = 0.005f;
+                magnitude = 0.003f;
                 break;
             case 2:
                 magnitude = 0.01f;
                 break;
             case 3:
                 magnitude = 0.02f;
+                break;
+            case 4:
+                magnitude = 0.007f;
                 break;
             default:
                 break;
@@ -348,6 +369,10 @@ public class CrateController : MonoBehaviour {
                     crateNum = 7;
                     yield return new WaitForSeconds(1.0f);
                     break;
+                case 4:
+                    crateNum = 3;
+                    yield return new WaitForSeconds(1.0f);
+                    break;
                 default:
                     break;
             }
@@ -377,22 +402,43 @@ public class CrateController : MonoBehaviour {
         switch (_level)
         {
             case 1:
-                if (index == 1) crate_gold = Random.Range(30, 70);
-                else if (index == 2) crate_gold = Random.Range(100, 200);
-                else if (index == 3) crate_gold = Random.Range(300, 500);
-                currentItemImg.sprite = gold;
-                //currentItemTitle.text = "Coin";
-                //currentItemTitle.color = new Color32(255,255,0,255);
+                if (index == 1) crate_gold = Random.Range(20, 50);
+                else if (index == 2)
+                {
+                    crate_gold = Random.Range(500, 1000);
+                }
+                else if (index == 3)
+                {
+                    crate_gold = Random.Range(1500, 5000);
+                }
+                else if (index == 4) crate_gold = Random.Range(50, 100);
+                currentItemImg.sprite = gold_sprite;
                 currentItemTitle.text = crate_gold.ToString();
+
+                int coin = PlayerPrefs.GetInt("Coin");
+                coin += crate_gold;
+                PlayerPrefs.SetInt("Coin", coin);
+                PlayerPrefs.Save();
+                CloudVariables.SystemValues[0] = coin;
+                PlayGamesScript.Instance.SaveData();
                 break;
             case 2:
-                if (index == 1) crate_gem = Random.Range(1, 3);
-                else if (index == 2) crate_gem = Random.Range(5, 10);
+                if (index == 1) crate_gem = Random.Range(1, 2);
+                else if (index == 2)
+                {
+                    crate_gem = Random.Range(5, 10);
+                }
                 else if (index == 3) crate_gem = Random.Range(10, 20);
-                currentItemImg.sprite = gem;
-                //currentItemTitle.text = "Gem";
-                //currentItemTitle.color = new Color32(0,255,255,255);
+                else if (index == 4) crate_gem = Random.Range(2, 5);
+                currentItemImg.sprite = gem_sprite;
                 currentItemTitle.text = crate_gem.ToString();
+
+                int gem = PlayerPrefs.GetInt("Gem");
+                gem += crate_gem;
+                PlayerPrefs.SetInt("Gem", gem);
+                PlayerPrefs.Save();
+                CloudVariables.SystemValues[1] = gem;
+                PlayGamesScript.Instance.SaveData();
                 break;
             case 3: 
                 if (index == 1) //Normal(98.89%)
@@ -401,10 +447,14 @@ public class CrateController : MonoBehaviour {
                     if (prob == 0) RandomLegendItem(); //0.01%
                     else if (prob < 10) RandomEpicItem(); //0.1%
                     else if (prob < 100) RandomRareItem(); //1%
-                    else
-                    {
-                        RandomNormalItem();
-                    }
+                    else RandomNormalItem();
+                }
+                else if(index == 4)//Normal(70%)
+                {
+                    prob = Random.Range(0, 10000);
+                    if (prob < 100) RandomLegendItem(); //1%
+                    else if (prob < 2900) RandomEpicItem(); //29%
+                    else RandomRareItem();
                 }
                 else //Normal(100%)
                 {

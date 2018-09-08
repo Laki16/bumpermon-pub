@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour {
     float playTime;
 
     [Header("Ads")]
-    public UnityAdsHelper UnityAdsHelper;
+    public UnityAdsHelper unityAdsHelper;
 
     // Use this for initialization
     void Start()
@@ -377,7 +377,7 @@ public class GameManager : MonoBehaviour {
 
         //광고시스템 추가
         Time.timeScale = 0;
-        UnityAdsHelper.ShowAd();
+        unityAdsHelper.ShowAd();
 
         leftEnemyArm.Idle();
         rightEnemyArm.Idle();
