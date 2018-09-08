@@ -65,9 +65,11 @@ public class GameManager : MonoBehaviour {
     bool isContinueAvailable = true;
     public Text boxText;
     public Text timeText;
-    
+
 
     [Header("System")]
+    public CharacterManager characterManager;
+    public ShopManager shopManager;
     public GameObject blockController;
     public PlayGamesScript playGamesScript;
     public SpawnGrounds spawnGrounds;
@@ -363,6 +365,14 @@ public class GameManager : MonoBehaviour {
     public void BtnOnStoreToMain()
     {
         myStoreAnimator.SetBool("Up", false);
+        //update gold, gem
+        coin = PlayerPrefs.GetInt("Coin");
+        gem = PlayerPrefs.GetInt("Gem");
+        totalCoins.text = coin.ToString();
+        totalGems.text = gem.ToString();
+
+        characterManager.currentCoin.text = coin.ToString();
+        shopManager.UpdateShopUI();
     }
 
     public void BtnOnContinue()
@@ -514,6 +524,7 @@ public class GameManager : MonoBehaviour {
     public void BtnOnShop()
     {
         myShopAnimator.SetBool("isOpen", true);
+        shopManager.UpdateShopUI();
     }
 
     public void BtnOnMain()

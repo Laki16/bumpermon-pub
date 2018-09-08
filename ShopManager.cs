@@ -364,7 +364,7 @@ public class ShopManager : MonoBehaviour
     {
         //시작했을 때와 아이템 구매했을 때 적용
         shopCoins.text = PlayerPrefs.GetInt("Coin").ToString();
-        shopGems.text = PlayerPrefs.GetInt("Coin").ToString();
+        shopGems.text = PlayerPrefs.GetInt("Gem").ToString();
     }
 
     IEnumerator ChangeItem()
@@ -911,6 +911,4 @@ public class ShopManager : MonoBehaviour
         bSizeUpgraded.text = "+" + equip_bombSize.ToString();
         nTimeUpgraded.text = "+" + equip_nitroTime.ToString();
     }
-
-
 }

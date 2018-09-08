@@ -55,7 +55,7 @@ public class CharacterManager : MonoBehaviour {
     public GameObject LockImage;
     Image selectedFrame;
     [Space(10)]
-    public Text currentGold;
+    public Text currentCoin;
     public Text monsterName;
     public Text requireGold;
     public GameObject coinImg;
@@ -181,7 +181,7 @@ public class CharacterManager : MonoBehaviour {
 
         //골드 DB에서 가져올 것
         curCoin = PlayerPrefs.GetInt("Coin");
-        currentGold.text = curCoin.ToString();
+        currentCoin.text = curCoin.ToString();
 
         character = currentCharacter.GetComponent<Character>();
         shopManager.currentCharacter = character;
