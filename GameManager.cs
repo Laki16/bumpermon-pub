@@ -359,6 +359,7 @@ public class GameManager : MonoBehaviour {
 
     public void BtnOnStore()
     {
+        shopManager.UpdateShopUI();
         myStoreAnimator.SetBool("Up", true);
     }
     
@@ -523,8 +524,8 @@ public class GameManager : MonoBehaviour {
 
     public void BtnOnShop()
     {
-        myShopAnimator.SetBool("isOpen", true);
         shopManager.UpdateShopUI();
+        myShopAnimator.SetBool("isOpen", true);
     }
 
     public void BtnOnMain()

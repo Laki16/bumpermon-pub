@@ -29,7 +29,6 @@ public class CrateController : MonoBehaviour {
     public GameObject superIdleFX;
     [Space(10)]
     //public GameObject boxDropFX;
-    public GameObject simpleDropFX;
     public GameObject metalDropFX;
     public GameObject superDropFX;
     public GameObject superDropFX2;
@@ -291,7 +290,7 @@ public class CrateController : MonoBehaviour {
                 superDropFX2.SetActive(true);
                 break;
             case 4:
-                simpleDropFX.SetActive(true);
+                //simpleDropFX.SetActive(true);
                 break;
             default:
                 break;
@@ -395,6 +394,7 @@ public class CrateController : MonoBehaviour {
         //상자 까고난 뒤에 세이브
         shopManager.CloudSaveItem();
         shopManager.UpdateInventoryText();
+        shopManager.UpdateShopUI();
     }
 
     public void DisplayItem(int _level)

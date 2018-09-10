@@ -363,6 +363,9 @@ public class ShopManager : MonoBehaviour
     public void UpdateShopUI()
     {
         //시작했을 때와 아이템 구매했을 때 적용
+        equipCoins.text = PlayerPrefs.GetInt("Coin").ToString();
+        equipGems.text = PlayerPrefs.GetInt("Gem").ToString();
+
         shopCoins.text = PlayerPrefs.GetInt("Coin").ToString();
         shopGems.text = PlayerPrefs.GetInt("Gem").ToString();
     }
