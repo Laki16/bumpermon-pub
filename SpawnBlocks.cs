@@ -63,8 +63,11 @@ public class SpawnBlocks : MonoBehaviour
         curLUK = player.GetComponent<Character>().LUK;
         for(int i=0; i<player.GetComponent<EquippedItem>().equippedItem.Count; i++)
         {
-            equip = player.GetComponent<EquippedItem>().equippedItem[i];
-            curLUK += equip.LUK;
+            if(player.GetComponent<EquippedItem>().equippedItem[i] != null)
+            {
+                equip = player.GetComponent<EquippedItem>().equippedItem[i];
+                curLUK += equip.LUK;
+            }
         }
 
         for (int i = 0; i < 10; i++) SpawnBlock();

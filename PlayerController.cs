@@ -142,22 +142,22 @@ public class PlayerController : MonoBehaviour
         curHP = character.HP;
         StartCoroutine(HPSetting());
         //Character Initial Nitro Settings
-        nitroEarnSize = character.nitroEarnSize;
-        bombSize = character.bombSize;
-        nitroTime = character.nitroTime;
+        //nitroEarnSize = character.nitroEarnSize;
+        //bombSize = character.bombSize;
+        //nitroTime = character.nitroTime;
 
         //Equipment Initial Settings
-        for (int i=0; i<character.GetComponent<EquippedItem>().equippedItem.Count; i++)
-        {
-            equip = character.GetComponent<EquippedItem>().equippedItem[i];
+        //for (int i=0; i<character.GetComponent<EquippedItem>().equippedItem.Count; i++)
+        //{
+        //    equip = character.GetComponent<EquippedItem>().equippedItem[i];
 
-            curHP += equip.HP;
-            curDEF += equip.DEF;
+        //    curHP += equip.HP;
+        //    curDEF += equip.DEF;
 
-            nitroEarnSize += equip.nitroEarnSize;
-            bombSize += equip.bombSize;
-            nitroTime += equip.nitroSpeed;
-        }
+        //    nitroEarnSize += equip.nitroEarnSize;
+        //    bombSize += equip.bombSize;
+        //    nitroTime += equip.nitroSpeed;
+        //}
 
         lane = 0;
         groundCount = 0.0f;

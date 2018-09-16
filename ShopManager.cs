@@ -211,7 +211,7 @@ public class ShopManager : MonoBehaviour
         PlayGamesScript.Instance.SaveData();
     }
 
-    public void AddItem(int size)
+    public void AddItem(int size, int type) //type 0:normal, 1:null change
     {
         GameObject slot;
         switch (size)
@@ -238,8 +238,14 @@ public class ShopManager : MonoBehaviour
             }
         }
 
-        currentCharacter.GetComponent<EquippedItem>().equippedItem.Insert(size, currentEquip);
-        //currentCharacter.GetComponent<EquippedItem>().size++;
+        if(type == 0) //normal ->insert
+        {
+            currentCharacter.GetComponent<EquippedItem>().equippedItem.Insert(size, currentEquip);
+        }
+        else if(type == 1) //null -> change
+        {
+            currentCharacter.GetComponent<EquippedItem>().equippedItem[size] = currentEquip;
+        }
 
         currentEquip.UpdateFrame(currentCharacter.MonsterIndex);
         currentEquip.isEquipped = true;
@@ -329,7 +335,7 @@ public class ShopManager : MonoBehaviour
                 
                 totalItemSlot[i].GetComponent<Equip>().UpdateFrame(currentCharacter.MonsterIndex);
                 currentEquip = totalItemSlot[i].GetComponent<Equip>();
-                AddItem(count-2);
+                AddItem(count-2, 0);
             }
             else
             {
@@ -457,25 +463,41 @@ public class ShopManager : MonoBehaviour
         bool isDuplicate = false;
         for(int i=0; i< _equippedItem.equippedItem.Count; i++)
         {
-            if (_equippedItem.equippedItem[i] == currentEquip)
+            if (_equippedItem.equippedItem[i] != null
+                && _equippedItem.equippedItem[i] == currentEquip)
             {
                 Debug.Log(currentEquip.name + " Same Item");
                 isDuplicate = true;
             }
         }
 
-        if(!isDuplicate)
+        if (!isDuplicate)
         {
+            bool isNull = false;
             int size = _equippedItem.equippedItem.Count;
-            Debug.Log(size);
-            if (size < 3)
+            for (int i = 0; i < _equippedItem.equippedItem.Count; i++)
             {
-                AddItem(size);
+                if (_equippedItem.equippedItem[i] == null)
+                {
+                    size = i;
+                    AddItem(size, 1);
+                    isNull = true;
+                    break;
+                }
             }
-            else //full
+            //Debug.Log(size);
+            if(isNull == false)
             {
-                StartCoroutine("ChangeItem");
+                if (size < 3)
+                {
+                    AddItem(size, 0);
+                }
+                else //full
+                {
+                    StartCoroutine("ChangeItem");
+                }
             }
+            
         }
     }
 
@@ -492,13 +514,16 @@ public class ShopManager : MonoBehaviour
         int size = currentCharacter.GetComponent<EquippedItem>().equippedItem.Count;
         for(int i=0; i<size; i++)
         {
-            if(currentEquip.EquipIndex
+            if(currentCharacter.GetComponent<EquippedItem>().equippedItem[i] == null)
+            {
+
+            }
+            else if(currentEquip.EquipIndex
                 == currentCharacter.GetComponent<EquippedItem>().equippedItem[i].EquipIndex)
             {
                 slotcount = i;
             }
         }
-
         switch (slotcount)
         {
             case 0: slot1.SetActive(false); break;
@@ -506,7 +531,8 @@ public class ShopManager : MonoBehaviour
             case 2: slot3.SetActive(false); break;
             default: break;
         }
-        currentCharacter.GetComponent<EquippedItem>().equippedItem.RemoveAt(slotcount);
+        //currentCharacter.GetComponent<EquippedItem>().equippedItem.RemoveAt(slotcount);
+        currentCharacter.GetComponent<EquippedItem>().equippedItem[slotcount] = null;
 
         string _equipped = string.Empty;
         for (int i = 0; i < totalItemSlot.Count; i++)
@@ -863,8 +889,8 @@ public class ShopManager : MonoBehaviour
                 equip_bombSize += equip.bombSize;
                 equip_nitroTime += equip.nitroSpeed;
 
-                Debug.Log(i + ": " + equip_hp+", "+equip_spd + ", " +equip_def + ", " + equip_str + ", "
-                    +equip_luk + ", " +equip_nitroEarnSize + ", " +equip_bombSize + ", " +equip_nitroTime);
+                //Debug.Log(i + ": " + equip_hp+", "+equip_spd + ", " +equip_def + ", " + equip_str + ", "
+                //    +equip_luk + ", " +equip_nitroEarnSize + ", " +equip_bombSize + ", " +equip_nitroTime);
             }
         }
 
@@ -876,16 +902,18 @@ public class ShopManager : MonoBehaviour
         {
             for (int i = 0; i < currentCharacter.GetComponent<EquippedItem>().equippedItem.Count; i++)
             {
-                equip = currentCharacter.GetComponent<EquippedItem>().equippedItem[i];
-
-                currentCharacter.HP += equip.HP;
-                currentCharacter.SPD += equip.SPD;
-                currentCharacter.DEF += equip.DEF;
-                currentCharacter.STR += equip.STR;
-                currentCharacter.LUK += equip.LUK;
-                currentCharacter.nitroEarnSize += equip.nitroEarnSize;
-                currentCharacter.bombSize += equip.bombSize;
-                currentCharacter.nitroTime += equip.nitroSpeed;
+                if(currentCharacter.GetComponent<EquippedItem>().equippedItem[i] != null)
+                {
+                    equip = currentCharacter.GetComponent<EquippedItem>().equippedItem[i];
+                    currentCharacter.HP += equip.HP;
+                    currentCharacter.SPD += equip.SPD;
+                    currentCharacter.DEF += equip.DEF;
+                    currentCharacter.STR += equip.STR;
+                    currentCharacter.LUK += equip.LUK;
+                    currentCharacter.nitroEarnSize += equip.nitroEarnSize;
+                    currentCharacter.bombSize += equip.bombSize;
+                    currentCharacter.nitroTime += equip.nitroSpeed;
+                }
             }
         }
     }
