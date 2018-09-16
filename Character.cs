@@ -36,9 +36,9 @@ public class Character : MonoBehaviour{
     {
         int golem, ghost, santa, skeleton;
         golem = CloudVariables.SystemValues[3];
-        ghost = CloudVariables.SystemValues[3];
-        santa = CloudVariables.SystemValues[3];
-        skeleton = CloudVariables.SystemValues[3];
+        ghost = CloudVariables.SystemValues[4];
+        santa = CloudVariables.SystemValues[5];
+        skeleton = CloudVariables.SystemValues[6];
 
         if (golem == 0) {
             PlayerPrefs.SetInt("GolemLevel", 1);

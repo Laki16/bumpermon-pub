@@ -14,6 +14,7 @@ public class CrateController : MonoBehaviour {
     public Text chkText;
     public Equipment equipment;
     public ShopManager shopManager;
+    public PurchaseManager purchaseManager;
     [Space(10)]
     public GameObject crates;
     public GameObject currentCrate;
@@ -88,11 +89,13 @@ public class CrateController : MonoBehaviour {
     public void BtnOnNo()
     {
         chk = 0;
+        purchaseManager.chkIndex = 0;
     }
 
     public void BtnOnYes()
     {
         chk = 1;
+        purchaseManager.chkIndex = 1;
     }
 
     IEnumerator BoxOpening()
