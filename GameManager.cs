@@ -211,10 +211,13 @@ public class GameManager : MonoBehaviour {
         else titleText.enabled = true;
     }
 
-    IEnumerator GameStart(){
-
+    IEnumerator GameStart()
+    {
         //player의 능력치를 가져옴
         player.GetComponent<Character>().SetStatus();
+        //item능력치 적용
+        shopManager.ApplyEquipmentToCharacter();
+
         spawnGrounds.playerController = player.GetComponent<PlayerController>();
         for (int i = 3; i > 0; i--){
             countdownText.text = (i + "");
@@ -520,6 +523,7 @@ public class GameManager : MonoBehaviour {
     public void BtnOnCharacter()
     {
         myCharacterAnimator.SetBool("isOpen", true);
+        characterManager.UpdateUI();
     }
 
     public void BtnOnShop()

@@ -351,7 +351,7 @@ public class ShopManager : MonoBehaviour
         }
         List<int> temp = indexArray.Distinct().ToList();
 
-        foundItemText.text = "발견한 아이템 " + temp.Count.ToString() + "/40";
+        foundItemText.text = "발견한 아이템 " + temp.Count.ToString() + "/30";
 
         for (int i = 0; i < totalItemSlot.Count; i++)
         {
@@ -620,6 +620,11 @@ public class ShopManager : MonoBehaviour
 
     public void UpdateInfoPanel()
     {
+        //for(int i=0; i<4; i++)
+        //{
+        //    statText[i].text = string.Empty;
+        //}
+
         //돈 부족하거나 만렙이면 upgrade버튼 비활성화
         if (GetUpgradeGold() > PlayerPrefs.GetInt("Coin"))
         {
@@ -854,10 +859,33 @@ public class ShopManager : MonoBehaviour
                 equip_def += equip.DEF;
                 equip_str += equip.STR;
                 equip_luk += equip.LUK;
-
                 equip_nitroEarnSize += equip.nitroEarnSize;
                 equip_bombSize += equip.bombSize;
                 equip_nitroTime += equip.nitroSpeed;
+
+                Debug.Log(i + ": " + equip_hp+", "+equip_spd + ", " +equip_def + ", " + equip_str + ", "
+                    +equip_luk + ", " +equip_nitroEarnSize + ", " +equip_bombSize + ", " +equip_nitroTime);
+            }
+        }
+
+    }
+
+    public void ApplyEquipmentToCharacter()
+    {
+        if (currentCharacter != null)
+        {
+            for (int i = 0; i < currentCharacter.GetComponent<EquippedItem>().equippedItem.Count; i++)
+            {
+                equip = currentCharacter.GetComponent<EquippedItem>().equippedItem[i];
+
+                currentCharacter.HP += equip.HP;
+                currentCharacter.SPD += equip.SPD;
+                currentCharacter.DEF += equip.DEF;
+                currentCharacter.STR += equip.STR;
+                currentCharacter.LUK += equip.LUK;
+                currentCharacter.nitroEarnSize += equip.nitroEarnSize;
+                currentCharacter.bombSize += equip.bombSize;
+                currentCharacter.nitroTime += equip.nitroSpeed;
             }
         }
     }
@@ -895,7 +923,17 @@ public class ShopManager : MonoBehaviour
 
     public void UpdateStatus()
     {
+        hpUpgraded.text = "+";
+        spdUpgraded.text = "+";
+        defUpgraded.text = "+";
+        strUpgraded.text = "+";
+        lukUpgraded.text = "+";
+        nSizeUpgraded.text = "+";
+        bSizeUpgraded.text = "+";
+        nTimeUpgraded.text = "+";
+
         ApplyEquipment();
+
         hpDefault.text = currentCharacter.HP.ToString();
         spdDefault.text = currentCharacter.SPD.ToString();
         defDefault.text = currentCharacter.DEF.ToString();

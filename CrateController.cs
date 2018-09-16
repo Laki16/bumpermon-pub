@@ -504,7 +504,7 @@ public class CrateController : MonoBehaviour {
     public void RandomNormalItem()
     {
         normalCardFX.SetActive(false);
-        int randItem = GenerateRandomNumber(0, 14);
+        int randItem = GenerateRandomNumber(0, 13);
         //Debug.Log(randItem);
 
         currentItemImg.sprite = equipment.normal_item_image[randItem];
@@ -519,7 +519,7 @@ public class CrateController : MonoBehaviour {
     public void RandomRareItem()
     {
         rareCardFX.SetActive(false);
-        int randItem = GenerateRandomNumber(0, 11);
+        int randItem = GenerateRandomNumber(0, 9);
 
         currentItemImg.sprite = equipment.rare_item_image[randItem];
         currentItemTitle.text = equipment.rare_item_name[randItem];
@@ -533,7 +533,7 @@ public class CrateController : MonoBehaviour {
     public void RandomEpicItem()
     {
         epicCardFX.SetActive(false);
-        int randItem = GenerateRandomNumber(0, 7);
+        int randItem = GenerateRandomNumber(0, 5);
 
         currentItemImg.sprite = equipment.epic_item_image[randItem];
         currentItemTitle.text = equipment.epic_item_name[randItem];
@@ -547,7 +547,7 @@ public class CrateController : MonoBehaviour {
     public void RandomLegendItem()
     {
         legendCardFX.SetActive(false);
-        int randItem = GenerateRandomNumber(0, 4);
+        int randItem = GenerateRandomNumber(0, 3);
 
         currentItemImg.sprite = equipment.legend_item_image[randItem];
         currentItemTitle.text = equipment.legend_item_name[randItem];
