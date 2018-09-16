@@ -1,14 +1,17 @@
 ﻿using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
+using System.Collections;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayGamesScript : MonoBehaviour
 {
     public GameManager gameManager;
     public ShopManager shopManager;
     public Character character;
+    public Text startText;
 
     private string leaderboardId = GPGSIds.leaderboard_global_score_ranking;
     public static PlayGamesScript Instance { get; private set; }
@@ -51,16 +54,27 @@ public class PlayGamesScript : MonoBehaviour
         Social.localUser.Authenticate(success => {
             LoadData();
 
-            Invoke("CloudLoading", 2.0f);
+            StartCoroutine("CloudLoading");
         });
     }
 
-    public void CloudLoading()
+    IEnumerator CloudLoading()
     {
+        gameManager.startBtn.GetComponent<Button>().interactable = false;
+        yield return new WaitForSeconds(0.5f);
+        startText.text = "LOADING.";
+        yield return new WaitForSeconds(0.5f);
+        startText.text = "LOADING..";
+        yield return new WaitForSeconds(0.5f);
+        startText.text = "LOADING...";
+
         gameManager.CloudLoadData();
         shopManager.CloudLoadItem();
         shopManager.UpdateUI();
         character.CloudLoadCharacter();
+
+        gameManager.startBtn.GetComponent<Button>().interactable = true;
+        startText.text = "TOUCH TO START";
     }
 
     #region Saved Games

@@ -843,18 +843,22 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator LeftFX()
     {
-        justActionLeftFX.SetActive(true);
+        justActionLeftFX.GetComponent<ParticleSystem>().Clear();
+        justActionLeftFX.GetComponent<ParticleSystem>().Play();
+        //justActionLeftFX.SetActive(true);
         soundManager.GetComponent<SoundManager>().PlayBoost();
         yield return new WaitForSeconds(0.6f);
-        justActionLeftFX.SetActive(false);
+        //justActionLeftFX.SetActive(false);
     }
 
     IEnumerator RightFX()
     {
-        justActionRightFX.SetActive(true);
+        justActionRightFX.GetComponent<ParticleSystem>().Clear();
+        justActionRightFX.GetComponent<ParticleSystem>().Play();
+        //justActionRightFX.SetActive(true);
         soundManager.GetComponent<SoundManager>().PlayBoost();
         yield return new WaitForSeconds(0.6f);
-        justActionRightFX.SetActive(false);
+        //justActionRightFX.SetActive(false);
     }
     //IEnumerator IncreaseMinAutoSpeed()
     //{

@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour {
     public Sprite livingheart;
     public Sprite deadHeart;
 
-
     [Header("OutGameUI")]
     public Text introduceText;
     public Text titleText;
@@ -65,7 +64,7 @@ public class GameManager : MonoBehaviour {
     bool isContinueAvailable = true;
     public Text boxText;
     public Text timeText;
-
+    //private int gameOverCoins;
 
     [Header("System")]
     public CharacterManager characterManager;
@@ -86,6 +85,7 @@ public class GameManager : MonoBehaviour {
     public int brokenBoxes;
 
     [Header("Animation")]
+    //public Animator myBoxOpenAnimator;
     Animator myCameraAnimator;
     Animator myMenuAnimator;
     Animator myGameOverAnimator;
@@ -343,7 +343,7 @@ public class GameManager : MonoBehaviour {
         myMenuAnimator.SetBool("Restart", true);
     }
 
-    public void BtnOnYes()
+    public void BtnOnHome()
     {
         isDown = false;
         isDev = false;
@@ -353,7 +353,7 @@ public class GameManager : MonoBehaviour {
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().BeginBGM());
     }
-    
+
     public void BtnOnNo()
     {
         scoreUI.SetActive(true);
@@ -429,7 +429,8 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
-        if(!isContinueAvailable){
+
+        if (!isContinueAvailable){
             continueBtn.GetComponent<Image>().sprite = deadHeart;
             continueBtn.interactable = false;
         }
@@ -442,6 +443,7 @@ public class GameManager : MonoBehaviour {
         //int curGem = prevGem + gem;
         //PlayerPrefs.SetInt("Gem", curGem);
 
+        //gameOverCoins = coin;
         coinText.text = ("" + coin);
         boxText.text = ("" + (brokenBoxes + prevBoxes));
         playTime = Time.time;
@@ -513,12 +515,38 @@ public class GameManager : MonoBehaviour {
         CloudSaveData();
         //playGamesScript.UpdateLeaderBoard();
 
-        myBoxAnimator.SetBool("GameOver", true);
+        //myBoxAnimator.SetBool("GameOver", true);
+        //StartCoroutine("BoxOpening");
         myGameOverAnimator.SetBool("GameOver", true);
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().GameOver());
         skullFX.SetActive(true);
     }
+
+    //IEnumerator BoxOpening()
+    //{
+    //    //yield return new WaitForSeconds(0.5f);
+    //    for (int i=brokenBoxes; i>=0; i--)
+    //    {
+    //        boxText.text = i.ToString();
+    //        int rand = Random.Range(0, 100);
+    //        if(rand == 0)
+    //        {
+    //            gem++;
+    //        }else if(rand < 40)
+    //        {
+    //            coin++;
+    //            gameOverCoins++;
+    //            coinText.text = gameOverCoins.ToString();
+    //        }
+    //        yield return null;
+    //    }
+
+    //    brokenBoxes = 0;
+    //    PlayerPrefs.SetInt("Coin", coin);
+    //    PlayerPrefs.SetInt("Gem", gem);
+    //    PlayerPrefs.Save();
+    //}
 
     public void BtnOnCharacter()
     {
