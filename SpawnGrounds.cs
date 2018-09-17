@@ -23,6 +23,7 @@ public class SpawnGrounds : MonoBehaviour
     //Iterator
     private int groundIterator = 0;
     private int backgroundIterator = 0;
+    private int backgroundIndex = -1;
 
     [Header("Position")]
     private Vector3 localPostion;
@@ -57,36 +58,48 @@ public class SpawnGrounds : MonoBehaviour
     {
         groundArray[groundIterator % maxGrounds].transform.position += new Vector3(groundXSize * 3 * 10, 0, 0);
         groundIterator++;
-        //groundIterator %= maxGrounds;
+        backgroundIndex++;
 
+        if (backgroundIndex % maxGrounds == 0 && backgroundIndex != 0)
+        {
+            SpawnMap();
+        }
+    }
+
+    public void SpawnMap()
+    {
         //다음 background를 생성해야 할 때 다음 background를 instantiate해서 위치를 바꿔야 한다.
         //위치를 저장해 두고, 그 맵을 삭제한 뒤에 그 위치에 instantiate한다.
-        if (groundIterator % maxGrounds == 0)
+        Transform _transform = backgroundArray[backgroundIterator % mapLength].transform;
+        Destroy(backgroundArray[backgroundIterator % mapLength]);
+
+        if ((backgroundIterator % (mapLength+1)) == 0 && backgroundIterator <= (mapLength + 1) * 2)
         {
-            Transform _transform = backgroundArray[backgroundIterator % mapLength].transform;
-            Destroy(backgroundArray[backgroundIterator % mapLength]);
+            isTunnel = true;
+        }
 
-            if (backgroundIterator%mapLength == 0 && backgroundIterator < 14)
-            {
-                isTunnel = true;
-            }
-
-            if (isTunnel)
+        if (isTunnel)
+        {
+            backgroundArray[backgroundIterator % mapLength]
+                = Instantiate(tunnel, _transform.position, _transform.rotation);
+            isTunnel = false;
+        }
+        else
+        {
+            if (backgroundIterator >= (mapLength + 1) * 3)
             {
                 backgroundArray[backgroundIterator % mapLength]
-                    = Instantiate(tunnel, _transform.position, _transform.rotation);
-                isTunnel = false;
+                          = Instantiate(backgroundPrefab[mapLength - 1], _transform.position, _transform.rotation);
             }
             else
             {
                 backgroundArray[backgroundIterator % mapLength]
-                       = Instantiate(backgroundPrefab[(backgroundIterator / mapLength) + 1], _transform.position, _transform.rotation);
+                       = Instantiate(backgroundPrefab[(backgroundIterator / (mapLength + 1)) + 1], _transform.position, _transform.rotation);
             }
-            backgroundArray[backgroundIterator % mapLength].transform.position += new Vector3(150 * mapLength, 0, 0);
-
-            if (backgroundIterator < 14) backgroundIterator++;
         }
-
+        
+        backgroundArray[backgroundIterator % mapLength].transform.position += new Vector3(150 * mapLength, 0, 0);
+        backgroundIterator++;
     }
 
 }

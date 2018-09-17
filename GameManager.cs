@@ -353,6 +353,8 @@ public class GameManager : MonoBehaviour {
 
     public void BtnOnHome()
     {
+        PlayerPrefs.Save();
+        CloudSaveData();
         isDown = false;
         isDev = false;
         Time.timeScale = 1;
@@ -411,7 +413,14 @@ public class GameManager : MonoBehaviour {
         //player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minAutoSpeed;
         //player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minSpeed;
 
-        player.GetComponent<Animator>().Play("Idle");
+        if(player.GetComponent<Animator>() == null)
+        {
+            player.GetComponentInChildren<Animator>().Play("Idle");
+        }
+        else
+        {
+            player.GetComponent<Animator>().Play("Idle");
+        }
         //player.GetComponent<PlayerController>().live = 1;
         //player.GetComponent<PlayerController>().checkDead = false;
         //player.GetComponent<PlayerController>().speed += player.GetComponent<PlayerController>().minSpeed;
@@ -447,14 +456,8 @@ public class GameManager : MonoBehaviour {
         //int curScore = (int)player.transform.position.x + 20;
         int curScore = scoreUI.GetComponent<Score>().score;
         int prevScore = PlayerPrefs.GetInt("Score");
-
-        //int prevGem = PlayerPrefs.GetInt("Gem");
-        //int curGem = prevGem + gem;
-        //PlayerPrefs.SetInt("Gem", curGem);
-
-        //gameOverCoins = coin;
-        coinText.text = ("" + coin);
-        boxText.text = ("" + (brokenBoxes + prevBoxes));
+        
+        //boxText.text = ("" + (brokenBoxes + prevBoxes));
         playTime = Time.time;
         int min = (int)playTime / 60;
         int sec = (int)playTime - min * 60;
@@ -483,79 +486,39 @@ public class GameManager : MonoBehaviour {
 
         if (isContinueAvailable)
         {
-            int prevC = PlayerPrefs.GetInt("Coin");
-            prevC += coin;
-            PlayerPrefs.SetInt("Coin", prevC);
+            int pCoin = PlayerPrefs.GetInt("Coin");
+            int pGem = PlayerPrefs.GetInt("Gem");
+            pCoin += coin;
+            pGem += gem;
+            PlayerPrefs.SetInt("Coin", pCoin);
+            PlayerPrefs.SetInt("Gem", pGem);
+
             prevCoins = coin;
-
-            int prevB = PlayerPrefs.GetInt("Box");
-            prevB += brokenBoxes;
-            PlayerPrefs.SetInt("Box", prevB);
-            prevBoxes = brokenBoxes;
-
-            int prevG = PlayerPrefs.GetInt("Gem");
-            prevG += gem;
-            PlayerPrefs.SetInt("Gem", prevG);
             prevGems = gem;
         }
         else
         {
-            int prevC = PlayerPrefs.GetInt("Coin");
-            prevC += (coin - prevCoins);
-            PlayerPrefs.SetInt("Coin", prevC);
-
-            int prevB = PlayerPrefs.GetInt("Box");
-            prevB += (brokenBoxes - prevBoxes);
-            PlayerPrefs.SetInt("Box", prevB);
-
-            int prevG = PlayerPrefs.GetInt("Gem");
-            prevG += (gem - prevGems);
-            PlayerPrefs.SetInt("Gem", prevG);
+            int pCoin = PlayerPrefs.GetInt("Coin");
+            int pGem = PlayerPrefs.GetInt("Gem");
+            pCoin += (coin - prevCoins);
+            pGem += (gem - prevGems);
+            PlayerPrefs.SetInt("Coin", pCoin);
+            PlayerPrefs.SetInt("Gem", pGem);
         }
+        coinText.text = ("" + coin);
 
-        if(curScore >= prevScore){
+        if (curScore >= prevScore){
             PlayerPrefs.SetInt("Score", curScore);
             highScore.SetActive(true);
         }else{
             highScore.SetActive(false);
         }
 
-        PlayerPrefs.Save();
-        CloudSaveData();
-        //playGamesScript.UpdateLeaderBoard();
-
-        //myBoxAnimator.SetBool("GameOver", true);
-        //StartCoroutine("BoxOpening");
         myGameOverAnimator.SetBool("GameOver", true);
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().GameOver());
         skullFX.SetActive(true);
     }
-
-    //IEnumerator BoxOpening()
-    //{
-    //    //yield return new WaitForSeconds(0.5f);
-    //    for (int i=brokenBoxes; i>=0; i--)
-    //    {
-    //        boxText.text = i.ToString();
-    //        int rand = Random.Range(0, 100);
-    //        if(rand == 0)
-    //        {
-    //            gem++;
-    //        }else if(rand < 40)
-    //        {
-    //            coin++;
-    //            gameOverCoins++;
-    //            coinText.text = gameOverCoins.ToString();
-    //        }
-    //        yield return null;
-    //    }
-
-    //    brokenBoxes = 0;
-    //    PlayerPrefs.SetInt("Coin", coin);
-    //    PlayerPrefs.SetInt("Gem", gem);
-    //    PlayerPrefs.Save();
-    //}
 
     public void BtnOnCharacter()
     {
