@@ -236,6 +236,14 @@ public class GameManager : MonoBehaviour {
         brokenBoxes = 0;
     }
 
+    IEnumerator GameContinue()
+    {
+        yield return new WaitForSeconds(0.5f);
+        countdownText.text = "GO!";
+        yield return new WaitForSeconds(1.0f);
+        countdownText.text = "";
+    }
+
     public void BtnOnStart()
     {
         isGameStart = true;
@@ -395,14 +403,15 @@ public class GameManager : MonoBehaviour {
 
         leftEnemyArm.Idle();
         rightEnemyArm.Idle();
-        StartCoroutine(GameStart());
+        StartCoroutine(GameContinue());
 
         //주변 블럭 날리기
-        StartCoroutine(player.GetComponent<PlayerController>().NitroShockwave(true));
+        player.GetComponent<PlayerController>().ContinueShockwave();
+        //StartCoroutine(player.GetComponent<PlayerController>().ContinueShockwave());
         //player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minAutoSpeed;
         //player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minSpeed;
 
-        //player.GetComponent<Animator>().Play("Idle");
+        player.GetComponent<Animator>().Play("Idle");
         //player.GetComponent<PlayerController>().live = 1;
         //player.GetComponent<PlayerController>().checkDead = false;
         //player.GetComponent<PlayerController>().speed += player.GetComponent<PlayerController>().minSpeed;

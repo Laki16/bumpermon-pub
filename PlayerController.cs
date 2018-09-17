@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour
 
     //Character
     private Character character;
-    private float curHP;
+    public float curHP;
     private float curDEF;
     private float curSTR;
     private float tm = 1; //give life per 1000m 
@@ -142,22 +142,9 @@ public class PlayerController : MonoBehaviour
         curHP = character.HP;
         StartCoroutine(HPSetting());
         //Character Initial Nitro Settings
-        //nitroEarnSize = character.nitroEarnSize;
-        //bombSize = character.bombSize;
-        //nitroTime = character.nitroTime;
-
-        //Equipment Initial Settings
-        //for (int i=0; i<character.GetComponent<EquippedItem>().equippedItem.Count; i++)
-        //{
-        //    equip = character.GetComponent<EquippedItem>().equippedItem[i];
-
-        //    curHP += equip.HP;
-        //    curDEF += equip.DEF;
-
-        //    nitroEarnSize += equip.nitroEarnSize;
-        //    bombSize += equip.bombSize;
-        //    nitroTime += equip.nitroSpeed;
-        //}
+        nitroEarnSize = character.nitroEarnSize;
+        bombSize = character.bombSize;
+        nitroTime = character.nitroTime;
 
         lane = 0;
         groundCount = 0.0f;
@@ -207,8 +194,8 @@ public class PlayerController : MonoBehaviour
         if (transform.position.x - groundCount >= 0)
         {
             groundCount += SpawnGrounds.groundXSize * 10;
-            //groundController.GetComponent<SpawnGrounds>().SpawnGround();
-            groundController.GetComponent<SpawnGrounds>().DecideGround();
+            groundController.GetComponent<SpawnGrounds>().SpawnGround();
+            //groundController.GetComponent<SpawnGrounds>().DecideGround();
             minAutoSpeed += 5.0f;
         }
         //--------------------------------------------
@@ -528,6 +515,19 @@ public class PlayerController : MonoBehaviour
         if(!isRevival)
         StartCoroutine(AfterNitro());
         yield return null;
+    }
+
+    public void ContinueShockwave()
+    {
+        Debug.Log("Continue bombsize : " + bombSize);
+        Collider[] cols = Physics.OverlapSphere(transform.position, bombSize, 1 << 12);
+        if (cols != null)
+        {
+            for (int i = 0; i < cols.Length; i++)
+            {
+                cols[i].gameObject.GetComponent<Block>().StartCoroutine(cols[i].gameObject.GetComponent<Block>().SplitMesh(true));
+            }
+        }
     }
 
     void Raycast()

@@ -21,7 +21,7 @@ public class PurchaseManager : MonoBehaviour {
             case 1: chkText.text = "5000코인을 구매하시겠습니까?"; break;
             case 2: chkText.text = "20000코인을 구매하시겠습니까?"; break;
             case 3: chkText.text = "100000코인을 구매하시겠습니까?"; break;
-            case 4: chkText.text = "450000코인을 구매하시겠습니까?"; break;
+            case 4: chkText.text = "500000코인을 구매하시겠습니까?"; break;
             default: Debug.Log("Invalid request"); break;
         }
     }
@@ -69,10 +69,10 @@ public class PurchaseManager : MonoBehaviour {
                     }
                     else Debug.Log("need more gems!");
                     break;
-                case 4: //499gems to 450000coins
-                    if (gem >= 499)
+                case 4: //1499gems to 500000coins
+                    if (gem >= 1499)
                     {
-                        gem -= 499;
+                        gem -= 1499;
                         coin += 450000;
                     }
                     else Debug.Log("need more gems!");
