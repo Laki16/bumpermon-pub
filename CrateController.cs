@@ -56,6 +56,7 @@ public class CrateController : MonoBehaviour {
     private int crate_legend;
     private int prob;
     private List<int> usedProb = new List<int>();
+    private bool open = false;
     //private bool interactable = false;
 
     [Header("Image")]
@@ -346,7 +347,11 @@ public class CrateController : MonoBehaviour {
 
     public void BtnOnOpen()
     {
-        StartCoroutine("Open");
+        if (!open)
+        {
+            open = true;
+            StartCoroutine("Open");
+        }
     }
 
     IEnumerator Open()
@@ -379,7 +384,8 @@ public class CrateController : MonoBehaviour {
                     break;
             }
             DisplayItem(1);
-           crateOpenNum = 2;
+            crateOpenNum = 2;
+            open = false;
         }
         else
         {
@@ -387,10 +393,13 @@ public class CrateController : MonoBehaviour {
             {
                 DisplayItem(crateOpenNum);
                 crateOpenNum++;
-            }else if (crateOpenNum > crateNum)
+                open = false;
+            }
+            else if (crateOpenNum > crateNum)
             {
                 mainPanel.GetComponent<Animator>().Play("Idle");
                 StartCoroutine("FadeOut");
+                open = false;
             }
         }
 

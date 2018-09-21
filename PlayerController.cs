@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
     //int preGear;
     public float nitroEarnSize;
     public float bombSize;
+    public float nitroSpeed;
     public float nitroTime;
     bool isBoost = false;
 
@@ -136,7 +137,7 @@ public class PlayerController : MonoBehaviour
         //Character Initial Settings
         character = GetComponent<Character>();
         minSpeed = character.SPD;
-        maxSpeed = minSpeed + 200;
+        maxSpeed = minSpeed + 100;
         speed = minSpeed;
         minAutoSpeed = minSpeed;
         curHP = character.HP;
@@ -144,7 +145,7 @@ public class PlayerController : MonoBehaviour
         //Character Initial Nitro Settings
         nitroEarnSize = character.nitroEarnSize;
         bombSize = character.bombSize;
-        nitroTime = character.nitroTime;
+        nitroSpeed = character.nitroSpeed;
 
         lane = 0;
         groundCount = 0.0f;
@@ -241,8 +242,9 @@ public class PlayerController : MonoBehaviour
                                 endTime = Time.time + 0.5f;
                             }
                             camMoving = true;
-                            speed += 5.0f;
-                            nitro += nitroEarnSize;
+                            speed += 3.0f;
+                            if(nitro < 100) nitro += nitroEarnSize;
+                            if (nitro > 100) nitro = 100;
                         }
                         //버그(부딪히고 저스트액션 했을때, 노부스트되어야함)
                         else if (!isBlockForward && speed < minSpeed)
@@ -271,7 +273,7 @@ public class PlayerController : MonoBehaviour
                 myAnimator.SetBool("Sprint", true);
                 if (nitro < 100)
                 {
-                    nitro += 5 * speed / maxSpeed * Time.deltaTime;
+                    nitro += 2 * speed / maxSpeed * Time.deltaTime;
                 }
                 else
                 {
@@ -297,7 +299,7 @@ public class PlayerController : MonoBehaviour
         //-----------------nitro-----------------------
         if (useNitro)
         {
-            speed = preSpeed + 150f;
+            speed = preSpeed * nitroSpeed/100; //현재 속도와 맞는 비율로 높아지게 할 것.
             nitroTime -= Time.deltaTime;
             nitro -= Time.deltaTime * 22;
 
@@ -728,6 +730,13 @@ public class PlayerController : MonoBehaviour
     {
         isShield = true;
         shieldEffect.SetActive(true);
+        Invoke("OffShield", 5.0f);
+    }
+    
+    public void OffShield()
+    {
+        isShield = false;
+        shieldEffect.SetActive(false);
     }
 
     public IEnumerator GetNitro()

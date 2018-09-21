@@ -19,7 +19,7 @@ public class Character : MonoBehaviour{
     public float LUK;
     public float nitroEarnSize;
     public float bombSize;
-    public float nitroTime;
+    public float nitroSpeed;
 
     [HideInInspector]
     public int[] golemGold = { 10, 50, 100, 300, 500, 1000, 2000, 3500, 5000};
@@ -78,12 +78,13 @@ public class Character : MonoBehaviour{
                 }
                 Level = PlayerPrefs.GetInt("GolemLevel");
                 HP = 50 + Level * 2.5f;
-                SPD = 20 + Level * 2;
+                SPD = 15 + Level * 1.5f;
                 DEF = 20 + Level * 1;
                 STR = 20 + Level * 5;
                 LUK = 2 + Level * .3f;
                 nitroEarnSize = 8 + Level * 0.5f;
                 bombSize = 15 + Level * 0.3f;
+                nitroSpeed = 130 + Level * 10;
                 break;
             case 2: //Ghost
                 if (!PlayerPrefs.HasKey("GhostLevel")){
@@ -91,12 +92,13 @@ public class Character : MonoBehaviour{
                 }
                 Level = PlayerPrefs.GetInt("GhostLevel");
                 HP = 30 + Level * 5;
-                SPD = 35 + Level * 2.5f;
+                SPD = 27 + Level * 2;
                 DEF = 10 + Level * 1;
                 STR = 10 + Level * 1;
                 LUK = 15 + Level * 3;
                 nitroEarnSize = 12 + Level * 1;
                 bombSize = 5 + Level * 1.2f;
+                nitroSpeed = 150 + Level * 5;
                 break;
             case 3: //Dragon
                 if (!PlayerPrefs.HasKey("DragonLevel")){
@@ -116,12 +118,13 @@ public class Character : MonoBehaviour{
                 }
                 Level = PlayerPrefs.GetInt("SantaLevel");
                 HP = 40 + Level * 4;
-                SPD = 30 + Level * 2.5f;
+                SPD = 15 + Level * 2;
                 DEF = 5 + Level * 2;
                 STR = 5 + Level * 1;
                 LUK = 20 + Level * 1.5f;
                 nitroEarnSize = 7 + Level * 0.5f;
                 bombSize = 10 + Level * 1;
+                nitroSpeed = 140 + Level * 5;
                 break;
             case 5: //Skeleton
                 if (!PlayerPrefs.HasKey("SkeletonLevel"))
@@ -130,12 +133,13 @@ public class Character : MonoBehaviour{
                 }
                 Level = PlayerPrefs.GetInt("SkeletonLevel");
                 HP = 50 + Level * 5.5f;
-                SPD = 30 + Level * 3;
+                SPD = 20 + Level * 2.5f;
                 DEF = 10 + Level * 2;
                 STR = 7 + Level * 2;
                 LUK = 5 + Level * 1.5f;
                 nitroEarnSize = 12 + Level * 0.4f;
                 bombSize = 8 + Level * 1.3f;
+                nitroSpeed = 160 + Level * 3;
                 break;
             default:
                 Debug.Log("Invalid character type");

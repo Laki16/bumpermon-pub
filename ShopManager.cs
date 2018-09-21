@@ -912,7 +912,7 @@ public class ShopManager : MonoBehaviour
                     currentCharacter.LUK += equip.LUK;
                     currentCharacter.nitroEarnSize += equip.nitroEarnSize;
                     currentCharacter.bombSize += equip.bombSize;
-                    currentCharacter.nitroTime += equip.nitroSpeed;
+                    currentCharacter.nitroSpeed += equip.nitroSpeed;
                 }
             }
         }
@@ -969,7 +969,7 @@ public class ShopManager : MonoBehaviour
         lukDefault.text = currentCharacter.LUK.ToString();
         nSizeDefault.text = currentCharacter.nitroEarnSize.ToString();
         bSizeDefault.text = currentCharacter.bombSize.ToString();
-        nTimeDefault.text = currentCharacter.nitroTime.ToString();
+        nTimeDefault.text = currentCharacter.nitroSpeed.ToString();
 
         hpUpgraded.text = "+" + equip_hp.ToString();
         spdUpgraded.text = "+" + equip_spd.ToString();
