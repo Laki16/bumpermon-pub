@@ -6,10 +6,6 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    //Accessary Index
-    //  0001 : 
-    //private static int maxAccessorys = 100;
-    
     //[HideInInspector]
     public Character currentCharacter;
     public Equipment equipment;
@@ -82,7 +78,6 @@ public class ShopManager : MonoBehaviour
     public Text foundItemText;
     public Text storageText;
     public int storage;
-    //public int foundItem = 0;
     public List<Text> equippedLevel = new List<Text>(3);
     [Space(10)]
     public GameObject chkPanel;
@@ -106,7 +101,6 @@ public class ShopManager : MonoBehaviour
     public int[] legendGold = { 20000, 30000, 50000, 100000, 160000, 220000, 350000, 500000, 700000 };
     //판매가격은 업그레이드 가격의 15%
 
-
     // Use this for initialization
     void Start()
     {
@@ -126,11 +120,6 @@ public class ShopManager : MonoBehaviour
         UpdateShopUI();
     }
 
-    // Update is called once per frame
-    //void Update()
-    //{
-    //}
-
     public void LoadItem()
     {
         string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
@@ -142,12 +131,10 @@ public class ShopManager : MonoBehaviour
             var newItem = Instantiate(item);
             newItem.transform.SetParent(contentPanel.transform, false);
 
-            //number = System.Convert.ToInt32(_inventory[i].Substring(0,3));
             itemIndex = System.Convert.ToInt32(_inventory[i].Substring(0, 4));
             itemLevel = System.Convert.ToInt32(_inventory[i].Substring(4, 1));
             itemCharacter = _equipped[i]-48;
 
-            //Debug.Log(i + ", " + itemIndex + ", " + itemLevel + ", " + itemCharacter);
             newItem.GetComponent<Equip>().EquipIndex = itemIndex;
             newItem.GetComponent<Equip>().Level = itemLevel;
             newItem.GetComponent<Equip>().equippedCharacter = itemCharacter;
@@ -191,15 +178,12 @@ public class ShopManager : MonoBehaviour
             _inventory += item.ToString() + ",";
         }
         PlayerPrefs.SetString("Inventory", _inventory);
-
-        //LoadItem();
     }
 
     public void CloudSaveItem()
     {
 
         string[] _inventory = PlayerPrefs.GetString("Inventory").Split(',');
-        //Debug.Log("Saving..." + _inventory.Length);
         for (int i = 0; i < _inventory.Length - 1; i++) 
         {
             int item = System.Convert.ToInt32(_inventory[i]);
@@ -223,10 +207,8 @@ public class ShopManager : MonoBehaviour
         slot.GetComponent<Equip>().EquipIndex = currentEquip.EquipIndex;
         slot.GetComponent<Equip>().Level = currentEquip.Level;
         slot.GetComponentInChildren<Image>().sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
-        //slot.GetComponentInChildren<Text>().text = "+" + currentEquip.Level;
         slot.transform.Find("Text").GetComponent<Text>().text = "+" + currentEquip.Level;
 
-        //slot.GetComponent<Equip>().equippedCharacter = currentCharacter.MonsterIndex;
         for (int i=0; i<totalItemSlot.Count; i++)
         {
             if (totalItemSlot[i].GetComponent<Equip>() == currentEquip)
@@ -328,9 +310,6 @@ public class ShopManager : MonoBehaviour
                     slot.GetComponent<Equip>().equippedCharacter = i;
                     count++;
                 }
-
-                //Debug.Log("equip!");
-                
                 totalItemSlot[i].GetComponent<Equip>().UpdateFrame(currentCharacter.MonsterIndex);
                 currentEquip = totalItemSlot[i].GetComponent<Equip>();
                 AddItem(count-2, 0);
@@ -382,7 +361,6 @@ public class ShopManager : MonoBehaviour
         changeSlotNum = -1;
         changeAnimator.Play("Change");
         changeBtn.SetActive(true);
-        //changePanel.SetActive(true);
 
         while (changeSlotNum == -1)
         {
@@ -417,14 +395,11 @@ public class ShopManager : MonoBehaviour
             Debug.Log("Reset " + resetItem);
             totalItemSlot[resetItem].GetComponent<Equip>().ResetFrame();
             totalItemSlot[resetItem].GetComponent<Equip>().isEquipped = false;
-
-            //UpdateEquipUI();
         }
         else
         {
             changeAnimator.Play("Idle");
             changeBtn.SetActive(false);
-            //changePanel.SetActive(false);
             Debug.Log("cancel");
         }
 
@@ -495,7 +470,6 @@ public class ShopManager : MonoBehaviour
                     break;
                 }
             }
-            //Debug.Log(size);
             if(isNull == false)
             {
                 if (size < 3)
@@ -541,7 +515,6 @@ public class ShopManager : MonoBehaviour
             case 2: slot3.SetActive(false); break;
             default: break;
         }
-        //currentCharacter.GetComponent<EquippedItem>().equippedItem.RemoveAt(slotcount);
         currentCharacter.GetComponent<EquippedItem>().equippedItem[slotcount] = null;
 
         string _equipped = string.Empty;
@@ -851,9 +824,7 @@ public class ShopManager : MonoBehaviour
     public void NewItem(int itemNumber, int itemValue)
     {
         var newItem = Instantiate(item);
-        //newItem.transform.parent = contentPanel.transform;
         newItem.transform.SetParent(contentPanel.transform, false);
-        //newItem.AddComponent<Equip>();
         int itemNum = 0;
 
         switch (itemValue)
@@ -892,7 +863,6 @@ public class ShopManager : MonoBehaviour
         {
             totalItemSlot.Add(newItem);
             //save
-            //string temp = inventoryCount.ToString("000") + itemNum.ToString("0000") + "1,";
             string temp = itemNum.ToString("0000") + "1,"; //item index, level
             string _inventory = PlayerPrefs.GetString("Inventory");
             _inventory += temp;
@@ -907,8 +877,6 @@ public class ShopManager : MonoBehaviour
         {
             Debug.Log("Inventory full!");
         }
-
-        //currentItemNumber = totalItemSlot.Count;
     }
 
     public void ApplyEquipment()
@@ -1028,3 +996,4 @@ public class ShopManager : MonoBehaviour
         nTimeUpgraded.text = "+" + equip_nitroTime.ToString();
     }
 }
+

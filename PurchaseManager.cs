@@ -93,36 +93,5 @@ public class PurchaseManager : MonoBehaviour {
             shopManager.UpdateShopUI();
         }
     }
-
-    //public void BtnOnBuyGem(int _index)
-    //{
-    //    chkIndex = 0;
-    //    int gem = PlayerPrefs.GetInt("Gem");
-    //    index = _index;
-    //    switch (_index)
-    //    {
-    //        case 1: //0.99$ to 40gems
-
-    //            break;
-    //        case 2: //2.99$ to 300gems
-
-    //            break;
-    //        case 3: //4.99$ to 1100gems
-
-    //            break;
-    //        case 4: //9.99$ to 10000gems
-
-    //            break;
-    //        default: Debug.Log("Invalid request"); break;
-    //        //case 5: chkText.text = "40젬을 구매하시겠습니까?"; break;
-    //        //case 6: chkText.text = "300젬을 구매하시겠습니까?"; break;
-    //        //case 7: chkText.text = "1100젬을 구매하시겠습니까?"; break;
-    //        //case 8: chkText.text = "10000젬을 구매하시겠습니까?"; break;
-    //    }
-    //    PlayerPrefs.SetInt("Gem", gem);
-    //    CloudVariables.SystemValues[1] = gem;
-    //    PlayGamesScript.Instance.SaveData();
-
-    //    shopManager.UpdateShopUI();
-    //}
+    
 }

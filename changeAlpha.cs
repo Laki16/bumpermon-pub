@@ -16,17 +16,9 @@ public class changeAlpha : MonoBehaviour {
         isFade = false;
 	}
 
-	private void Update()
-	{
-        //if(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Roll")){
-        //    ChangeAlpha();
-        //}
-	}
-
     public void RollStart(){
         player.GetComponent<PlayerController>().ghostMode = true;
         StopAllCoroutines();
-        //Debug.Log("Roll start.");
         StartCoroutine("Rolling");
     }
 
@@ -37,7 +29,6 @@ public class changeAlpha : MonoBehaviour {
     }
 
 	public void ChangeAlpha(){
-        //Debug.Log("Change !");
         SkinnedMeshRenderer smr = toonGhost.GetComponent<SkinnedMeshRenderer>();
         if(isFade){
             smr.material = normalShader;

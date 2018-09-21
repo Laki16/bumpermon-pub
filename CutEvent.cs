@@ -67,7 +67,5 @@ public class CutEvent : MonoBehaviour {
         golemPlayer.SetActive(true);
         IngamePanel.SetActive(true);
         tutorial.SetActive(true);
-        //StartCoroutine(tutorial.GetComponent<TutorialController>().Tutorial());
-        //Debug.Log("tutorial coroutine start.");
     }
 }

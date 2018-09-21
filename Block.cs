@@ -11,7 +11,6 @@ public class Block : MonoBehaviour {
     {
         if (!other.GetComponent<PlayerController>().ghostMode)
         {
-            //StartCoroutine(cameraShake.Shake(.1f, .1f));
             StartCoroutine(SplitMesh(true));
         }
     }
@@ -31,7 +30,6 @@ public class Block : MonoBehaviour {
         {
             boomFX.SetActive(false);
             gameObject.SetActive(false);
-            //Destroy(gameObject);
         }
     }
 }

@@ -11,11 +11,6 @@ public class Nitro : MonoBehaviour {
         playerController = GameObject.FindGameObjectWithTag("PlayerController");
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     void UseNitro()
     {
         playerController.GetComponent<PlayerController>().UseNitro();

@@ -21,7 +21,6 @@ public class SpawnBlocks : MonoBehaviour
     [Header("Block")]
     public GameObject block;
     public static float blockXSize = 1.0f;
-    //maxBlocks >= maxNodes * maxDifficulty 이어야 함
     private static int maxBlocks = 210;
     private static int maxNodes = 25;
     private int existNode = 0;
@@ -76,24 +75,10 @@ public class SpawnBlocks : MonoBehaviour
     void Update()
     {
         DeleteBlock();
-        //if (node[delNodeIterator].transform.position.x < player.transform.position.x)
-        //{
-        //    if (existNode > 0)
-        //    {
-        //        existNode--;
-        //        delNodeIterator++;
-        //        delNodeIterator %= maxNodes;
-        //    }
-        //}
-        //Debug.Log(existNode);
         if (endSpawn)
         {
             if (lane[iterator].transform.position.x + 25.0f < player.transform.position.x)
             {
-                //if (lane[iterator] == node[nodeIterator])
-                //{
-                //    existNode--;
-                //}
                 if (existNode < maxNodes)
                 {
                     SpawnBlock();
@@ -144,7 +129,6 @@ public class SpawnBlocks : MonoBehaviour
         int rand = Random.Range(0, 3);
         if (rand == 0) SpawnCoin();
 
-        //node[nodeIterator] = lane[iterator];
         for (int i = 0; i < difficulty; i++)
         {
             lane[iterator].transform.position = new Vector3(beforeDifficulty, -1, -0.5f);
@@ -236,7 +220,6 @@ public class SpawnBlocks : MonoBehaviour
     }
 
     void SpawnCoin(){
-        //Debug.Log("Spawn Coins");
         int genRandom;
         if (nowLane == -1) genRandom = Random.Range(0, 2);
         else if (nowLane == 1) genRandom = Random.Range(-1, 1);

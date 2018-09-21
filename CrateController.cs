@@ -58,13 +58,9 @@ public class CrateController : MonoBehaviour {
     private int prob;
     private List<int> usedProb = new List<int>();
     private bool open = false;
-    //private bool interactable = false;
 
     [Header("Image")]
-    //public GameObject item;
-    //public GameObject flipItem;
     public Image currentItemImg;
-    //public Text currentItemTitle;
     public Text currentItemTitle;
     [Space(5)]
     public Sprite gold_sprite;
@@ -179,7 +175,6 @@ public class CrateController : MonoBehaviour {
         }
 
         currentCrate.SetActive(true);
-        //mainBtn.interactable = false;
         crates.GetComponent<Animator>().Play("Drop", -1, 0f);
 
         float time = 0.0f;
@@ -263,7 +258,6 @@ public class CrateController : MonoBehaviour {
         switch (index)
         {
             case 1:
-                //boxIdleFx.SetActive(true);
                 break;
             case 2:
                 metalIdleFX.SetActive(true);
@@ -305,19 +299,15 @@ public class CrateController : MonoBehaviour {
         switch (index)
         {
             case 1:
-                //Instantiate(boxDropFX, currentCrate.transform.position, currentCrate.transform.rotation);
                 break;
             case 2:
-                //Instantiate(metalDropFX, currentCrate.transform.position, currentCrate.transform.rotation);
                 metalDropFX.SetActive(true);
                 break;
             case 3:
-                //Instantiate(superDropFX, currentCrate.transform.position, currentCrate.transform.rotation);
                 superDropFX.SetActive(true);
                 superDropFX2.SetActive(true);
                 break;
             case 4:
-                //simpleDropFX.SetActive(true);
                 break;
             default:
                 break;
@@ -380,7 +370,6 @@ public class CrateController : MonoBehaviour {
     IEnumerator Open()
     {
         IdleFXEndEvent();
-        //Item.SetActive(true);
 
         if (crateNum == 0)
         {
@@ -519,7 +508,6 @@ public class CrateController : MonoBehaviour {
                 break;
         }
         mainPanel.GetComponent<Animator>().Play("Card", -1, 0f);
-        //PanelBtnEnable();
     }
 
     public int GenerateRandomNumber(int min, int max)
@@ -541,7 +529,6 @@ public class CrateController : MonoBehaviour {
 
         currentItemImg.sprite = equipment.normal_item_image[randItem];
         currentItemTitle.text = equipment.normal_item_name[randItem];
-        //currentItemNum.color = new Color32(0, 255, 0, 255);
         FXClear();
         normalCardFX.SetActive(true);
 
@@ -555,7 +542,6 @@ public class CrateController : MonoBehaviour {
 
         currentItemImg.sprite = equipment.rare_item_image[randItem];
         currentItemTitle.text = equipment.rare_item_name[randItem];
-        //currentItemNum.color = new Color32(0, 85, 255, 255);
         FXClear();
         rareCardFX.SetActive(true);
 
@@ -569,7 +555,6 @@ public class CrateController : MonoBehaviour {
 
         currentItemImg.sprite = equipment.epic_item_image[randItem];
         currentItemTitle.text = equipment.epic_item_name[randItem];
-        //currentItemNum.color = new Color32(200, 0, 255, 255);
         FXClear();
         epicCardFX.SetActive(true);
 
@@ -583,7 +568,6 @@ public class CrateController : MonoBehaviour {
 
         currentItemImg.sprite = equipment.legend_item_image[randItem];
         currentItemTitle.text = equipment.legend_item_name[randItem];
-        //currentItemNum.color = new Color32(255, 225, 80, 255);
         FXClear();
         legendCardFX.SetActive(true);
 

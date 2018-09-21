@@ -39,7 +39,6 @@ public class EnemyArm : MonoBehaviour
         Random.InitState(randomSeed);
         moveCoroutine = MoveArmTemp();
         StartCoroutine(moveCoroutine);
-        //StartCoroutine(LobbyMoving());
     }
 
     // Update is called once per frame
@@ -47,7 +46,6 @@ public class EnemyArm : MonoBehaviour
     {
         if (!player.GetComponent<PlayerController>().checkDead)
         {
-            //if(!isLobby)
             speed = player.GetComponent<PlayerController>().speed;
         }
         else
@@ -144,9 +142,7 @@ public class EnemyArm : MonoBehaviour
         {
             myAnimator.SetTrigger("Lane1");
         }
-        //GameObject newMineFX;
-        //newMineFX = Instantiate(mineFX, minePosition, mineFX.transform.rotation);
-        //newMineFX.SetActive(true);
+
         //3초 카운트 (애니메이션 이벤트로 대체 고려)
         float timeCount = 0;
         bool endCountAnimationTime = false;
@@ -160,7 +156,6 @@ public class EnemyArm : MonoBehaviour
             }
             yield return null;
         }
-        //Destroy(newMineFX);
         //마인 생성
         GameObject newMine;
         newMine = Instantiate(item, minePosition, new Quaternion(0, 0, 0, 0));
@@ -188,31 +183,7 @@ public class EnemyArm : MonoBehaviour
         isLobby = false;
         StartCoroutine(moveCoroutine);
     }
-
-    //public IEnumerator LobbyMoving()
-    //{
-    //    speed = 70.0f;
-    //    StartCoroutine(LobbyFollowCamera());
-    //    while (true)
-    //    {
-    //        movingTime = Random.Range(1, 3);
-    //        changedPosition = 5.0f;
-    //        yield return new WaitForSeconds(movingTime);
-    //        changedPosition = -5.0f;
-    //        yield return new WaitForSeconds(movingTime);
-    //        changedPosition = 0.0f;
-    //    }
-    //}
-
-    //public IEnumerator LobbyFollowCamera()
-    //{
-    //    while(true)
-    //    {
-    //        yield return new WaitForSeconds(3.3f);
-    //        transform.position = new Vector3(-20, transform.position.y, transform.position.z);
-    //    }
-    //}
-
+    
     public IEnumerator ArmSpeedRecovery()
     {
         xOffset = 10.0f;
@@ -221,12 +192,10 @@ public class EnemyArm : MonoBehaviour
         {
             if (transform.position.x > player.transform.position.x + xOffset)
             {
-                //changedPosition = -15.0f - speed / 100;
                 changedPosition = -0.1f * speed - 40.0f;
             }
             else
             {
-                //changedPosition = 15.0f + speed / 100;
                 changedPosition = 0.1f * speed + 40.0f;
             }
             yield return null;

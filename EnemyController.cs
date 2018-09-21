@@ -10,10 +10,6 @@ public class EnemyController : MonoBehaviour
     public GameObject rArm;
     public GameObject blockController;
 
-    //[Header("Flag")]
-    //public bool readyForLArmAction;
-    //public bool readyForRArmAction;
-
     [Header("Trigger")]
     public bool lArmJustMove = true;
     public bool rArmJustMove = true;
@@ -36,8 +32,6 @@ public class EnemyController : MonoBehaviour
             //평소
             if (lArmJustMove)
             {
-                //lArm.GetComponent<EnemyArm>().justMove = true;
-                //readyForLArmAction = true;
                 //오버헤드 방지
                 while (lArmJustMove)
                 {
@@ -47,7 +41,6 @@ public class EnemyController : MonoBehaviour
             //마인 설치 명령오면
             else
             {
-                //readyForLArmAction = false;
                 lArm.GetComponent<EnemyArm>().PlaceMine(minePosition);
                 while(!lArmJustMove)
                 {
@@ -64,8 +57,6 @@ public class EnemyController : MonoBehaviour
             //평소
             if (rArmJustMove)
             {
-                //rArm.GetComponent<EnemyArm>().justMove = true;
-                //readyForRArmAction = true;
                 //오버헤드 방지
                 while (rArmJustMove)
                 {
@@ -75,7 +66,6 @@ public class EnemyController : MonoBehaviour
             //마인 설치 명령오면
             else
             {
-                //readyForRArmAction = false;
                 rArm.GetComponent<EnemyArm>().PlaceMine(minePosition);
                 while (!rArmJustMove)
                 {

@@ -9,13 +9,11 @@ public class SantaAnimation : MonoBehaviour {
     void GetSledge()
     {
         sledge.SetActive(true);
-        //particle effect
     }
 
     void RemoveSledge()
     {
         sledge.SetActive(false);
-        //particle effect
     }
     
 }

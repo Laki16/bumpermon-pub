@@ -74,7 +74,6 @@ public class CharacterManager : MonoBehaviour {
     {
         selectedFrame = golemFrame;
         Invoke("UpdateUI", 0.5f);
-        //UpdateUI();
 	}
 
     public void BtnOnGolem(){

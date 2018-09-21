@@ -20,10 +20,6 @@ public class TimeCalculate : MonoBehaviour {
     public GameObject timer2;
     public GameObject timer3;
 
-    //public string displayTime1;
-    //public string displayTime2;
-    //public string displayTime3;
-
     double time1sec;
     double time2sec;
     double time3sec;
@@ -104,18 +100,12 @@ public class TimeCalculate : MonoBehaviour {
             btn3.GetComponent<Button>().interactable = true;
             price3.SetActive(true);
         }
-
-        //Debug.Log(timeCal1);
-        //Debug.Log(timeCal2);
-        //Debug.Log(timeCal3);
     }
 
     public void UpdateTime()
     {
         if (!PlayerPrefs.HasKey("Time1"))
         {
-            //System.DateTime tempTime = System.Convert.ToDateTime("2000/01/01 00:00");
-            //System.DateTime tempTime = System.DateTime.Now;
             string temp = "1/1/2018 0:00:00 PM";
 
             PlayerPrefs.SetString("Time1", temp);

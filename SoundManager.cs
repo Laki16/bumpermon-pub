@@ -10,8 +10,6 @@ public class SoundManager : MonoBehaviour {
     public AudioSource itemSFX;
     public AudioSource buttonClick;
 
-    //public static SoundManager Instance = null;
-
     //타이틀 드럼 끝났는지 체크
     public bool isLobbyEnd = false;
     [Header("BGM")]
@@ -36,26 +34,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClip itemNitroSFX;
     public AudioClip itemShieldSFX;
     public AudioClip itemCoinSFX;
-
-
-    // Use this for initialization
-    void Start () {
-        //StartCoroutine(BeginBGM());
-	}
-
-    //void Awake()
-    //{
-    //    if (Instance == null)
-    //    {
-    //        Instance = this;
-    //    }
-    //    else if (Instance != this)
-    //    {
-    //        Destroy(gameObject);
-    //    }
-    //    DontDestroyOnLoad(gameObject);
-    //}
-
+    
     // Update is called once per frame
     void Update () {
         if (Input.GetMouseButtonDown(0))
@@ -156,17 +135,6 @@ public class SoundManager : MonoBehaviour {
         BGM.clip = inGameBGM_4;
         BGM.Play();
         BGM.GetComponent<AudioSource>().loop = true;
-
-        //BGM.Stop();
-        //BGM.GetComponent<AudioSource>().loop = false;
-        //BGM.clip = inGameBGM_3;
-        //BGM.Play();
-        //yield return new WaitForSeconds(BGM.clip.length);
-        //BGM.Play();
-        //yield return new WaitForSeconds(BGM.clip.length);
-        //BGM.clip = inGameBGM_4;
-        //BGM.GetComponent<AudioSource>().loop = true;
-        //BGM.Play();
     }
 
     public IEnumerator BeginBGM()
@@ -179,7 +147,6 @@ public class SoundManager : MonoBehaviour {
         {
             yield return null;
         }
-        //yield return new WaitForSeconds(BGM.clip.length);
         BGM.GetComponent<AudioSource>().loop = false;
         BGM.clip = InGameBGM;
         BGM.Play();
@@ -187,29 +154,5 @@ public class SoundManager : MonoBehaviour {
         BGM.clip = inGameBGM_4;
         BGM.Play();
         BGM.GetComponent<AudioSource>().loop = true;
-        //    BGM.clip = lobbyBGM;
-        //    BGM.Play();
-        //    while(!isLobbyEnd)
-        //    {
-        //        yield return null;
-        //    }
-        //    //yield return new WaitForSeconds(BGM.clip.length);
-        //    BGM.GetComponent<AudioSource>().loop = false;
-        //    BGM.clip = inGameBGM_1;
-        //    BGM.Play();
-        //    yield return new WaitForSeconds(BGM.clip.length);
-        //    BGM.clip = inGameBGM_2;
-        //    BGM.Play();
-        //    yield return new WaitForSeconds(BGM.clip.length);
-        //    BGM.Play();
-        //    yield return new WaitForSeconds(BGM.clip.length);
-        //    BGM.clip = inGameBGM_3;
-        //    BGM.Play();
-        //    yield return new WaitForSeconds(BGM.clip.length);
-        //    BGM.Play();
-        //    yield return new WaitForSeconds(BGM.clip.length);
-        //    BGM.clip = inGameBGM_4;
-        //    BGM.GetComponent<AudioSource>().loop = true;
-        //    BGM.Play();
     }
 }

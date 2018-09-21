@@ -52,9 +52,6 @@ public class Equip : MonoBehaviour {
                 nitroEarnSize = 0.5f + (Level-1) * 0.9f;
                 nitroSpeed = 3 + (Level-1);
                 break;
-            //case 1003: //안경(N)
-            //    bombSize = 1.5f + (Level-1) * 0.4f;
-            //    break;
             case 1003: //항아리(N)
                 SPD = -2;
                 DEF = 0.5f + (Level-1) * 0.3f;
@@ -65,9 +62,6 @@ public class Equip : MonoBehaviour {
                 LUK = 2 + (Level-1)*0.5f;
                 nitroSpeed = -7;
                 break;
-            //case 1006: //열쇠고리(N)
-            //    nitroSpeed = 3 + (Level-1)*0.7f;
-            //    break;
             case 1005: //배낭(N)
                 HP = -2;
                 nitroEarnSize = 3 + (Level-1) * 0.4f;
@@ -77,10 +71,6 @@ public class Equip : MonoBehaviour {
                 SPD = 2 + (Level-1);
                 nitroSpeed = 1.5f + (Level-1) * 0.3f;
                 break;
-            //case 1009: //박스테이프(N)
-            //    DEF = 1.5f + (Level-1) * 0.2f;
-            //    LUK = 0.5f + (Level-1) * 0.5f;
-            //    break;
             case 1007: //선인장(N)
                 DEF = 1 + (Level-1);
                 LUK = -2;
@@ -121,10 +111,6 @@ public class Equip : MonoBehaviour {
                 DEF = -1.5f;
                 nitroSpeed = 6 + (Level-1) * 2;
                 break;
-            //case 1104: //후라이팬(R)
-            //    DEF = 3 + (Level-1) * 0.7f;
-            //    LUK = 2.5f + (Level-1) * 1.5f;
-            //    break;
             case 1103: //갑옷(R)
                 SPD = -2;
                 DEF = 3 + (Level-1);
@@ -162,11 +148,6 @@ public class Equip : MonoBehaviour {
                 SPD = 6 + (Level-1) * 2;
                 DEF = -2;
                 break;
-            //case 1202: //키보드(E)
-            //    STR = 3 + (Level-1);
-            //    nitroSpeed = 8 + (Level-1) * 2;
-            //    bombSize = 2 + (Level-1) * 3;
-            //    break;
             case 1202: //오리발(E)
                 SPD = 4 + (Level-1) * 1.9f;
                 nitroSpeed = 13 + (Level-1);
@@ -226,12 +207,6 @@ public class Equip : MonoBehaviour {
                 break;
 
             ////////////////////////////////LEGEND/////////////////////////////////////
-            //case 1300: //절대반지(L)
-            //    HP = 15 + (Level-1) * 4;
-            //    DEF = 3 + (Level-1);
-            //    nitroSpeed = 20 + (Level-1) * 5;
-            //    bombSize = 7 + (Level-1) * 3;
-            //    break;
             case 1300: //모래시계(L)
                 HP = 7 + (Level-1) * 2.5f;
                 LUK = 6 + (Level-1) * 3.3f;
@@ -265,33 +240,7 @@ public class Equip : MonoBehaviour {
                 break;
         }
     }
-
-    //public int GetUpgradeGold(int index, int (Level-1))
-    //{
-    //    switch (index)
-    //    {
-    //        case 1: return normalGold[(Level-1)];
-    //        case 2: return rareGold[(Level-1)];
-    //        case 3: return epicGold[(Level-1)];
-    //        case 4: return legendGold[(Level-1)];
-    //        default: return 0;
-    //    }
-    //}
-
-    //public int GetSellGold(int index, int (Level-1))
-    //{
-    //    float gold = 0;
-    //    switch (index)
-    //    {
-    //        case 1: gold = normalGold[(Level-1)-1]; break;
-    //        case 2: gold =  rareGold[(Level-1)-1]; break;
-    //        case 3: gold = epicGold[(Level-1)-1]; break;
-    //        case 4: gold = legendGold[(Level-1)-1]; break;
-    //    }
-    //    gold *= 0.15f;
-    //    return (int)gold;
-    //}
-
+    
     public void UpdateFrame(int index)
     {
         transform.Find("Frame").GetComponent<Image>().color = new Color32(0, 0, 0, 255);

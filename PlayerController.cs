@@ -33,8 +33,6 @@ public class PlayerController : MonoBehaviour
     public float minAutoSpeed;
     //맵의 끝 지점(가정)
     public long endDistance;
-    //목숨 : 벽에 부딪힐 때와 지뢰를 밟았을 때 줄어든다.
-    //public int live;
     public bool checkDead = false;
     private bool isShield = false;
     //부딪혔을때 속도 제어용 변수
@@ -44,12 +42,8 @@ public class PlayerController : MonoBehaviour
     private bool moveLeft = false;
     public GameObject shieldFX;
     public GameObject shieldEffect;
-    //public GameObject sprintFX;
     public GameObject justActionLeftFX;
     public GameObject justActionRightFX;
-    //public GameObject gearUpFX_1;
-    //public GameObject gearDownFX_1;
-    //public GameObject gearDownFX_2;
     public GameObject nitroFX;
 
     [Header("SFX")]
@@ -86,7 +80,6 @@ public class PlayerController : MonoBehaviour
     public bool ghostMode;
 
     [Header("UI")]
-    //public Scrollbar nitroBar;
     public Image speedBar;
     public Scrollbar gearBar;
     public Text speedText;
@@ -95,9 +88,6 @@ public class PlayerController : MonoBehaviour
     bool isChangeColor;
     bool isCoroutineRunning = false;
     public GameObject orb;
-    //public Button startBtn;
-    //public Button optionBtn;
-    //public GameObject feverUI;
     public GameObject comboL;
     public GameObject comboR;
     public GameObject scoreUI;
@@ -158,8 +148,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Find to child anim");
             myAnimator = GetComponentInChildren<Animator>();
         }
-        //bloomsettings = profile.bloom.settings;
-        //bloomsettings.bloom.intensity = 0;
+
         GameObject shield;
         shield = Instantiate(shieldFX, transform.position + new Vector3(0, 0.3f, 0), transform.rotation, transform);
         shieldEffect = shield;
@@ -196,7 +185,6 @@ public class PlayerController : MonoBehaviour
         {
             groundCount += SpawnGrounds.groundXSize * 10;
             groundController.GetComponent<SpawnGrounds>().SpawnGround();
-            //groundController.GetComponent<SpawnGrounds>().DecideGround();
             minAutoSpeed += 5.0f;
         }
         //--------------------------------------------
@@ -226,16 +214,6 @@ public class PlayerController : MonoBehaviour
                                 StartCoroutine(RightFX());
                                 StartCoroutine(ComboUp());
                             }
-                            //if (speed < maxSpeed)
-                            //{
-                            //    if(camMoving){
-                            //        //endTime += 0.1f;
-                            //    }else{
-                            //        endTime = Time.time + 0.3f;
-                            //    }
-                            //    camMoving = true;
-                            //    speed += 5.0f;
-                            //}
                             //밸런스를 위해 부스트를 사용할 때 항상 5만큼 속도를 늘려주는 대신 기본적으로 줄어드는 속도를 증가시켰음
                             if (!camMoving)
                             {
@@ -291,7 +269,6 @@ public class PlayerController : MonoBehaviour
                 {
                     //속도를 더 빠르게 감소시킨다. 누르고 있지 않으면 답답하게끔
                     speed -= Mathf.Pow(speed, 0.6f) * Time.deltaTime;
-                    //speed -= Mathf.Pow(speed, 0.25f) * Time.deltaTime;
                 }
             }
         }
@@ -311,32 +288,7 @@ public class PlayerController : MonoBehaviour
             nitroTime -= Time.deltaTime;
             nitro -= Time.deltaTime * 22;
 
-            if (nitroTime <= 0)
-            {
-                if (!isNitroShockwave)
-                {
-                    //StartCoroutine(NitroShockwave(false));
-                }
-            }
         }
-        //---------------------------------------------
-        //----------------- Attack --------------------
-        //if (isAttack)
-        //{
-        //    attackTime -= Time.deltaTime;
-        //    Ray attackRay = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.forward);
-        //    RaycastHit attackHit;
-        //    //13 : mine Layer
-        //    if (Physics.Raycast(attackRay, out attackHit, 2.0f, 1 << 13))
-        //    {
-        //        //폭발
-        //        attackHit.collider.gameObject.SetActive(false);
-        //    }
-        //    if (attackTime <= 0)
-        //    {
-        //        isAttack = false;
-        //    }
-        //}
         //---------------------------------------------
         //--------------- touch control ---------------
         for (int i = 0; i < Input.touches.Length; i++)
@@ -352,19 +304,6 @@ public class PlayerController : MonoBehaviour
                 Calculate(Input.touches[i].position);
             }
         }
-        //foreach (Touch touch in Input.touches)
-        //{
-        //    if (touch.phase == TouchPhase.Began)
-        //    {
-        //        isMouseDown = true;
-        //        initialPos = touch.position;
-        //    }
-        //    if (touch.phase == TouchPhase.Ended)
-        //    {
-        //        isMouseDown = false;
-        //        Calculate(touch.position);
-        //    }
-        //}
         //---------------------------------------------
         //---------------mouse control-------------- -
         if (Input.GetMouseButtonDown(0))
@@ -386,7 +325,6 @@ public class PlayerController : MonoBehaviour
             {
                 if (!isBlockLeft)
                 {
-                    //Debug.Log("Left");
                     lane++;
                 }
             }
@@ -403,7 +341,6 @@ public class PlayerController : MonoBehaviour
             {
                 if (!isBlockRight)
                 {
-                    //Debug.Log("Right");
                     lane--;
                 }
             }
@@ -413,13 +350,11 @@ public class PlayerController : MonoBehaviour
             isKeyPressed = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && !isKeyPressed)
-        {
-            isKeyPressed = true;
-            //StartCoroutine(comboL.GetComponent<ComboUI>().ComboUp("18X"));
-            //feverUI.GetComponent<FeverUI>().FeverExtend();
-            StartCoroutine(ComboUp());
-        }
+        //if (Input.GetKeyDown(KeyCode.UpArrow) && !isKeyPressed)
+        //{
+        //    isKeyPressed = true;
+        //    StartCoroutine(ComboUp());
+        //}
         if (Input.GetKeyUp(KeyCode.UpArrow) && isKeyPressed)
         {
             isKeyPressed = false;
@@ -440,7 +375,6 @@ public class PlayerController : MonoBehaviour
             speedText.text = ((int)speed+1 + "km");
         }
         hpBar.GetComponent<Image>().fillAmount = curHP / Character.maxHP;
-        //distanceText.text = (((int)transform.position.x + 20) + "");
         //---------------------------------------------
 
         //---------------------HP---------------------- 
@@ -484,12 +418,6 @@ public class PlayerController : MonoBehaviour
             //offset = Vector3.Slerp(offset, new Vector3(-2.0f, 1.5f, 0), 0.15f);
             offset = Vector3.SmoothDamp(offset, new Vector3(-2.0f, 1.5f, 0), ref velocity, 0.15f);
         }
-        //---------------------------------------------
-
-        //---------------PostProcessing----------------
-        //if(isBoost || useNitro){
-        //    bloomsettings.bloom.intensity = speed / 100.0f;
-        //}
         //---------------------------------------------
 
         if (nitro >= 100)
@@ -543,11 +471,9 @@ public class PlayerController : MonoBehaviour
     void Raycast()
     {
         Ray ray = new Ray(transform.position + new Vector3(0, 0.3f, 0), transform.right);
-        //Debug.DrawRay(ray.origin, ray.direction * 3, Color.red, 0.01f);
         RaycastHit hit;
         //space 의 2/3 지점 이내일때 피하면 부스트 따라서, ray는 space만큼 쏘면 피했을때 다른 블럭이 잡히지않음
         //Ray 거리는 최소노드길이(minDifficulty + minSpace)보다 짧아야함****************
-        //if (Physics.Raycast(ray, out hit, SpawnBlocks.minDifficulty + SpawnBlocks.minSpace))
         if (Physics.Raycast(ray, out hit, SpawnBlocks.minDifficulty + SpawnBlocks.minSpace, 1 << 12))
         {
             isBlockForward = true;
@@ -627,7 +553,6 @@ public class PlayerController : MonoBehaviour
                 StopCoroutine(speedRecovery);
             }
             preSpeed = speed;
-            //preGear = currentGear;
             damagedSpeed = 1.0f;
             useNitro = true;
             StartCoroutine(scoreUI.GetComponent<Score>().FeverOn());
@@ -698,12 +623,6 @@ public class PlayerController : MonoBehaviour
                     preSpeed = speed;
                     speed = 0.0f;
                     nowCombo = 0;
-                    //if (live > 0)
-                    //{
-                    //    live--;
-                    //    if (gameManager != null)
-                    //        gameManager.LiveDown();
-                    //}
                     float damage;
                     if (transform.position.x < 100) damage = 5 * (1 - curDEF / 100);
                     else damage = (int)(transform.position.x / 100) * (1 - curDEF / 100);
@@ -770,7 +689,6 @@ public class PlayerController : MonoBehaviour
         {
             while (curHP < temp)
             {
-                //Debug.Log(curHP + "up!");
                 curHP += num * Time.deltaTime;
                 yield return null;
             }
@@ -790,7 +708,6 @@ public class PlayerController : MonoBehaviour
     Coroutine speedRecovery;
     IEnumerator SpeedRecovery()
     {
-        //Debug.Log("Recovery!");
         damagedSpeed = -8.0f;
         //경직 시간만큼 기다림
         yield return new WaitForSeconds(0.8f);
@@ -800,11 +717,6 @@ public class PlayerController : MonoBehaviour
             damagedSpeed = 1.0f;
             speed += minSpeed;
         }
-        //while (speed < preSpeed / 2)
-        //{
-        //    speed += preSpeed / 10 * Time.deltaTime;
-        //    yield return null;
-        //}
         isStun = true;
     }
 
@@ -851,7 +763,6 @@ public class PlayerController : MonoBehaviour
         nitroTime = 4.3f;
         useNitro = false;
         orb.GetComponent<OrbColor>().AccentColor = new Color32((byte)165, (byte)0, (byte)0, (byte)255);
-        //StartCoroutine(comboM.GetComponent<ComboNitro>().ComboNitroEnd());
     }
 
     void SmashCameraEffect()
@@ -862,34 +773,21 @@ public class PlayerController : MonoBehaviour
     {
         justActionLeftFX.GetComponent<ParticleSystem>().Clear();
         justActionLeftFX.GetComponent<ParticleSystem>().Play();
-        //justActionLeftFX.SetActive(true);
         soundManager.GetComponent<SoundManager>().PlayBoost();
         yield return new WaitForSeconds(0.6f);
-        //justActionLeftFX.SetActive(false);
     }
 
     IEnumerator RightFX()
     {
         justActionRightFX.GetComponent<ParticleSystem>().Clear();
         justActionRightFX.GetComponent<ParticleSystem>().Play();
-        //justActionRightFX.SetActive(true);
         soundManager.GetComponent<SoundManager>().PlayBoost();
         yield return new WaitForSeconds(0.6f);
-        //justActionRightFX.SetActive(false);
     }
-    //IEnumerator IncreaseMinAutoSpeed()
-    //{
-    //    float startTime = Time.time;
-    //    float runningTime = 0;
-    //}
 
     public void Restart()
     {
         preSpeed = minSpeed;
-        //myAnimator.Play("Spawn");
-        //다른 애니메이션 만들어서 넣을 것.
-        //live = 1;
-        //curHP = character.HP / 2;
         curHP = character.HP;
         checkDead = false;
         speed += minSpeed;

@@ -11,7 +11,6 @@ public class Score : MonoBehaviour {
     public GameManager gameManager;
     public Color32 originColor;
 
-    //public float timeIntervalColor = 0.5f;
     public float speedColor = 2.0f;
     public int score;
     public float playerPos;

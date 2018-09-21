@@ -9,7 +9,6 @@ public class ComboUI : MonoBehaviour {
     public GameObject comboText;
     public GameObject[] comboTexts = new GameObject[comboTextsArraySize];
     public GameObject scoreCombo;
-    //public Animation a;
 
     public AnimationClip comboAnimatationClip;
     public float comboAnimationLength;

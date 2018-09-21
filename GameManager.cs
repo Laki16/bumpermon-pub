@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour {
     public GameObject coinUI;
     public GameObject gemUI;
     public GameObject scoreUI;
-    //public GameObject lives;
 
     public Sprite livingheart;
     public Sprite deadHeart;
@@ -64,7 +63,6 @@ public class GameManager : MonoBehaviour {
     bool isContinueAvailable = true;
     public Text boxText;
     public Text timeText;
-    //private int gameOverCoins;
 
     [Header("System")]
     public CharacterManager characterManager;
@@ -73,7 +71,6 @@ public class GameManager : MonoBehaviour {
     public PlayGamesScript playGamesScript;
     public SpawnGrounds spawnGrounds;
     public GameObject player;
-    //public GameObject enemy;
     public Camera camera;
     float meterBetBlock;
     int timeLeft = 3;
@@ -85,7 +82,6 @@ public class GameManager : MonoBehaviour {
     public int brokenBoxes;
 
     [Header("Animation")]
-    //public Animator myBoxOpenAnimator;
     Animator myCameraAnimator;
     Animator myMenuAnimator;
     Animator myGameOverAnimator;
@@ -109,7 +105,6 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        //SoundManager = GameObject.FindGameObjectWithTag("SoundManager");
         isDown = false;
         isMusicOn = true;
         isGameStart = false;
@@ -125,8 +120,6 @@ public class GameManager : MonoBehaviour {
         myStoreAnimator = storePanel.GetComponent<Animator>();
 
         LoadRecord();
-        //LoadSample();
-        //Invoke("UpdateUI", 0.5f);
     }
 
     public void CloudLoadData()
@@ -165,37 +158,22 @@ public class GameManager : MonoBehaviour {
     }
 
     void LoadRecord(){
-        //int loadScore = 0;
-        //int loadCoin = 0;
-        ////int loadBox = 0;
-        //int loadGem = 0;
-
         if (PlayerPrefs.HasKey("Score"))
         {
             score = PlayerPrefs.GetInt("Score");
             coin = PlayerPrefs.GetInt("Coin");
-            //loadBox = PlayerPrefs.GetInt("Box");
             gem = PlayerPrefs.GetInt("Gem");
         }
         else
         {
             PlayerPrefs.SetInt("Score", 0);
             PlayerPrefs.SetInt("Coin", 0);
-            //PlayerPrefs.SetInt("Box", 0);
             PlayerPrefs.SetInt("Gem", 0);
-            //load tutorial
-            //SceneManager.LoadScene(1);
         }
 
         recordText.text = ("HIGH SCORE : " + score);
         totalCoins.text = ("" + coin);
         totalGems.text = ("" + gem);
-
-        //Game Data Cloud Save
-        //CloudVariables.SystemValues[0] = loadCoin;
-        //CloudVariables.SystemValues[1] = loadGem;
-        //CloudVariables.SystemValues[2] = score;
-        //PlayGamesScript.Instance.SaveData();
     }
     
     void UpdateUI() //사용x
@@ -230,7 +208,6 @@ public class GameManager : MonoBehaviour {
         countdownText.text = "GO!";
         yield return new WaitForSeconds(1.0f);
         countdownText.text = "";
-        //enemy.SetActive(true);
         meterBetBlock = player.transform.position.x;
         myCameraAnimator.enabled = false;
         brokenBoxes = 0;
@@ -265,7 +242,6 @@ public class GameManager : MonoBehaviour {
 
         coinUI.SetActive(false);
         gemUI.SetActive(false);
-        //lives.SetActive(true);
 
         checkPanel.SetActive(true);
         inGamePanel.SetActive(true);
@@ -273,12 +249,9 @@ public class GameManager : MonoBehaviour {
         myCameraAnimator.Play("StartMoving");
         StartCoroutine(GameStart());
         //팔 로비 애니메이션으로 대체할것
-        //lArm.GetComponent<EnemyArm>().StopArm();
-        //rArm.GetComponent<EnemyArm>().StopArm();
         lArm.GetComponent<EnemyArm>().player = player;
         rArm.GetComponent<EnemyArm>().player = player;
         SoundManager.GetComponent<SoundManager>().isLobbyEnd = true;
-
         //DB
         coin = 0;
         gem = 0;
@@ -409,10 +382,6 @@ public class GameManager : MonoBehaviour {
 
         //주변 블럭 날리기
         player.GetComponent<PlayerController>().ContinueShockwave();
-        //StartCoroutine(player.GetComponent<PlayerController>().ContinueShockwave());
-        //player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minAutoSpeed;
-        //player.GetComponent<PlayerController>().preSpeed = player.GetComponent<PlayerController>().minSpeed;
-
         if(player.GetComponent<Animator>() == null)
         {
             player.GetComponentInChildren<Animator>().Play("Idle");
@@ -421,28 +390,7 @@ public class GameManager : MonoBehaviour {
         {
             player.GetComponent<Animator>().Play("Idle");
         }
-        //player.GetComponent<PlayerController>().live = 1;
-        //player.GetComponent<PlayerController>().checkDead = false;
-        //player.GetComponent<PlayerController>().speed += player.GetComponent<PlayerController>().minSpeed;
-        //player.GetComponent<PlayerController>().damagedSpeed = 1.0f;
         player.GetComponent<PlayerController>().Restart();
-        LiveUp();
-    }
-
-    public void LiveUp()
-    {
-        //int heartNum = player.GetComponent<PlayerController>().live;
-        //string temp = "Live" + heartNum.ToString();
-        //GameObject heart = GameObject.Find(temp);
-        //heart.GetComponent<Image>().sprite = livingheart;
-    }
-
-    public void LiveDown()
-    {
-        //int heartNum = player.GetComponent<PlayerController>().live;
-        //string temp = "Live" + (heartNum + 1).ToString();
-        //GameObject heart = GameObject.Find(temp);
-        //heart.GetComponent<Image>().sprite = deadHeart;
     }
 
     public void GameOver()
@@ -453,17 +401,14 @@ public class GameManager : MonoBehaviour {
             continueBtn.interactable = false;
         }
         optionBtn.GetComponent<Button>().interactable = false;
-        //int curScore = (int)player.transform.position.x + 20;
         int curScore = scoreUI.GetComponent<Score>().score;
         int prevScore = PlayerPrefs.GetInt("Score");
         
-        //boxText.text = ("" + (brokenBoxes + prevBoxes));
         playTime = Time.time;
         int min = (int)playTime / 60;
         int sec = (int)playTime - min * 60;
         float res = playTime - min*60 - sec;
         res = (int)(res * 100);
-        //Debug.Log(min +", "+sec+", "+res);
 
         string m, s, r;
         if (min < 10)

@@ -62,14 +62,6 @@ public class Character : MonoBehaviour{
         PlayGamesScript.Instance.SaveData();
     }
 
-    //public void InitStatus(){
-    //    PlayerPrefs.SetInt("GolemLevel", 1);
-    //    PlayerPrefs.SetInt("GhostLevel", 0);
-    //    PlayerPrefs.SetInt("DragonLevel", 0);
-    //    PlayerPrefs.SetInt("SantaLevel", 0);
-    //    PlayerPrefs.SetInt("SkeletonLevel", 0);
-    //}
-
     public void SetStatus(){
         switch(MonsterIndex){
             case 1: //Golem
@@ -190,7 +182,6 @@ public class Character : MonoBehaviour{
 
         PlayerPrefs.Save();
         //cloud saving
-        //PlayGamesScript.Instance.SaveData();
         CloudSaveCharacter();
     }
 }
