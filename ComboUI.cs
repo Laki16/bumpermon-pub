@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ComboUI : MonoBehaviour {
     private static int comboTextsArraySize = 3;
@@ -36,18 +35,20 @@ public class ComboUI : MonoBehaviour {
         colorChange = Mathf.Pow(nowCombo, 1.5f);
         redColorChange = Mathf.Clamp(redColorChange, 0, 150);
         colorChange = Mathf.Clamp(colorChange, 0, 240);
-        scoreCombo.GetComponent<TextMeshProUGUI>().faceColor = new Color32((byte)(255 - redColorChange), (byte)(255 - colorChange), (byte)(255 - colorChange), (byte)255);
+        scoreCombo.GetComponent<Text>().color
+            = new Color32((byte)(255 - redColorChange), (byte)(255 - colorChange), (byte)(255 - colorChange), 255);
         scoreCombo.GetComponent<Animator>().Play("Score_Combo", -1, 0);
 
         comboTexts[nowIterator].SetActive(true);
-        comboTexts[nowIterator].GetComponent<TextMeshProUGUI>().SetText(combo);
+        comboTexts[nowIterator].GetComponent<Text>().text = (combo);
 
         redColorChange = nowCombo;
         colorChange = Mathf.Pow(nowCombo, 1.5f);
         redColorChange = Mathf.Clamp(redColorChange, 0, 150);
         colorChange = Mathf.Clamp(colorChange, 0, 240);
 
-        comboTexts[nowIterator].GetComponent<TextMeshProUGUI>().faceColor = new Color32((byte)(255 - redColorChange), (byte)(255 - colorChange), (byte)(255 - colorChange), (byte)255);
+        comboTexts[nowIterator].GetComponent<Text>().color
+            = new Color32((byte)(255 - redColorChange), (byte)(255 - colorChange), (byte)(255 - colorChange), 255);
 
         yield return new WaitForSeconds(comboAnimationLength - 0.1f);
         comboTexts[nowIterator].SetActive(false);

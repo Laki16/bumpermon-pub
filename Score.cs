@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class Score : MonoBehaviour { 
     public PlayerController player;
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI comboText;
+    public Text scoreText;
+    public Text comboText;
     public GameManager gameManager;
     public Color32 originColor;
 
@@ -28,18 +27,18 @@ public class Score : MonoBehaviour {
         {
             score += (player.nowCombo + 1);
             playerPos = player.transform.position.x;
-            scoreText.SetText(score + "");
+            scoreText.text = (score + "");
         }
         if (player.nowCombo > 0)
         {
-            comboText.GetComponent<TextMeshProUGUI>().margin = new Vector4(
-                190 + scoreText.GetComponent<TextMeshProUGUI>().bounds.extents.x, 0, 0, 0);
-            comboText.ForceMeshUpdate();
-            comboText.SetText(" x" + (player.nowCombo + 1));
+            //comboText.GetComponent<TextMeshProUGUI>().margin = new Vector4(
+            //    190 + scoreText.GetComponent<TextMeshProUGUI>().bounds.extents.x, 0, 0, 0);
+            //comboText.ForceMeshUpdate();
+            comboText.text = (" x" + (player.nowCombo + 1));
         }
         else
         {
-            comboText.SetText("");
+            comboText.text = string.Empty;
         }
     }
 
@@ -51,7 +50,7 @@ public class Score : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
         StopCoroutine(colorCoroutine);
-        scoreText.GetComponent<TextMeshProUGUI>().color = originColor;
+        scoreText.color = originColor;
     }
 
     Coroutine colorCoroutine;
@@ -63,7 +62,7 @@ public class Score : MonoBehaviour {
         while (timer < timeIntervalColor)
         {
             timer += Time.deltaTime * speedColor;
-            scoreText.GetComponent<TextMeshProUGUI>().color = Color32.Lerp(scoreText.GetComponent<TextMeshProUGUI>().color, color, timer);
+            scoreText.color = Color32.Lerp(scoreText.color, color, timer);
             yield return null;
         }
         // On finish recursively call the same routine

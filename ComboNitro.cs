@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ComboNitro : MonoBehaviour {
     private static int comboTextsArraySize = 15;
@@ -35,9 +34,8 @@ public class ComboNitro : MonoBehaviour {
         iterator++;
         iterator %= comboTextsArraySize;
 
-
         comboTexts[nowIterator].SetActive(true);
-        comboTexts[nowIterator].GetComponent<TextMeshProUGUI>().SetText(combo);
+        comboTexts[nowIterator].GetComponent<Text>().text = (combo);
         yield return new WaitForSeconds(comboAnimationLength - 0.7f);
         comboTexts[beforeIterator].SetActive(false);
         yield return new WaitForSeconds(comboAnimationLength - 0.1f - (comboAnimationLength - 0.6f));

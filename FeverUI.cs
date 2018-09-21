@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class FeverUI : MonoBehaviour
 {
 
-    public TextMeshProUGUI comboText;
-    public TextMeshProUGUI feverText;
+    public Text comboText;
+    public Text feverText;
     public Image feverBarL;
     public Image feverBarR;
 
@@ -60,13 +59,13 @@ public class FeverUI : MonoBehaviour
     public void ComboOn()
     {
         isCombo = true;
-        comboText.faceColor = new Color32(255, 255, 255, 255);
+        comboText.color = new Color32(255, 255, 255, 255);
     }
 
     public void ComboOff()
     {
         isCombo = false;
-        comboText.faceColor = new Color32(0, 0, 0, 0);
+        comboText.color = new Color32(0, 0, 0, 0);
     }
 
     public void FeverExtend()
@@ -98,7 +97,7 @@ public class FeverUI : MonoBehaviour
 
     public void FeverOff()
     {
-        feverText.faceColor = new Color32(0, 0, 0, 0);
+        feverText.color = new Color32(0, 0, 0, 0);
         feverWeight = 0.5f;
         isFever = false;
     }
@@ -111,7 +110,7 @@ public class FeverUI : MonoBehaviour
         while (timer < timeIntervalColor)
         {
             timer += Time.deltaTime * speedColor;
-            feverText.faceColor = Color32.Lerp(feverText.faceColor, color, timer);
+            feverText.color = Color32.Lerp(feverText.color, color, timer);
             yield return null;
         }
 
@@ -128,7 +127,7 @@ public class FeverUI : MonoBehaviour
             timer += 1.5f * Time.deltaTime;
             float temp = 30*Mathf.Sin(Mathf.PI * (Mathf.Pow(timer - 1, 4)));
             comboText.GetComponent<RectTransform>().sizeDelta = new Vector2(temp, temp);
-            feverText.fontSize = 140 + 30.0f*Mathf.Sin(Mathf.PI * (Mathf.Pow(timer - 1, 4)));
+            //feverText.fontSize = 140 + 30.0f*Mathf.Sin(Mathf.PI * (Mathf.Pow(timer - 1, 4)));
             yield return null;
         }
     }

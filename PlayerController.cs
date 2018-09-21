@@ -275,19 +275,11 @@ public class PlayerController : MonoBehaviour
         //---------------------------------------------
         //-----------------nitro-----------------------
         if (useNitro)
-        {
+        { 
             //니트로 스피드가 + a% 되는 식으로 구성
-            if(speed < minSpeed)
-            {
-                speed = minSpeed * nitroSpeed / 100;
-            }
-            else
-            {
-                speed = preSpeed * nitroSpeed / 100; 
-            }
+            speed = preSpeed * nitroSpeed / 100;
             nitroTime -= Time.deltaTime;
             nitro -= Time.deltaTime * 22;
-
         }
         //---------------------------------------------
         //--------------- touch control ---------------
@@ -410,12 +402,10 @@ public class PlayerController : MonoBehaviour
         if (Time.time <= endTime)
         {
             offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
-            //offset = Vector3.SmoothDamp(offset, new Vector3(-3.5f, 1.5f, 0), ref velocity, 1.0f);
         }
         else
         {
             camMoving = false;
-            //offset = Vector3.Slerp(offset, new Vector3(-2.0f, 1.5f, 0), 0.15f);
             offset = Vector3.SmoothDamp(offset, new Vector3(-2.0f, 1.5f, 0), ref velocity, 0.15f);
         }
         //---------------------------------------------
@@ -500,7 +490,6 @@ public class PlayerController : MonoBehaviour
                     {
                         if (lane < 1)
                         {
-                            //Debug.Log("Left");
                             if (!isBlockLeft)
                             {
                                 lane++;
@@ -512,7 +501,6 @@ public class PlayerController : MonoBehaviour
                     {
                         if (lane > -1)
                         {
-                            //Debug.Log("Right");
                             if (!isBlockRight)
                             {
                                 lane--;
@@ -526,7 +514,6 @@ public class PlayerController : MonoBehaviour
                     if (initialPos.y > finalPos.y)
                     {
                         // 밑으로 드래그
-                        //Debug.Log("Down");
                         if (!useNitro)
                         {
                             UseNitro();
@@ -535,7 +522,6 @@ public class PlayerController : MonoBehaviour
                     else
                     {
                         //위로 드래그
-                        //Debug.Log("Up");
                         Attack();
                     }
                 }
@@ -552,7 +538,8 @@ public class PlayerController : MonoBehaviour
             {
                 StopCoroutine(speedRecovery);
             }
-            preSpeed = speed;
+            if (speed < minSpeed) preSpeed = minSpeed;
+            else preSpeed = speed;
             damagedSpeed = 1.0f;
             useNitro = true;
             StartCoroutine(scoreUI.GetComponent<Score>().FeverOn());

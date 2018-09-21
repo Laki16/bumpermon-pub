@@ -8,7 +8,7 @@ public class SpawnGrounds : MonoBehaviour
 {
     [Header("Ground Info")]
     public GameObject ground;
-    public static int mapLength = 5;
+    public static int mapLength = 6;
     private int maxGrounds = 3;
     public static float groundXSize = 5.0f;
     [HideInInspector]
@@ -73,7 +73,7 @@ public class SpawnGrounds : MonoBehaviour
         Transform _transform = backgroundArray[backgroundIterator % mapLength].transform;
         Destroy(backgroundArray[backgroundIterator % mapLength]);
 
-        if ((backgroundIterator % (mapLength+1)) == 0 && backgroundIterator <= (mapLength + 1) * 2)
+        if ((backgroundIterator % (mapLength+1)) == 0 && backgroundIterator <= (mapLength + 1) * 3)
         {
             isTunnel = true;
         }
@@ -89,7 +89,7 @@ public class SpawnGrounds : MonoBehaviour
             if (backgroundIterator >= (mapLength + 1) * 3)
             {
                 backgroundArray[backgroundIterator % mapLength]
-                          = Instantiate(backgroundPrefab[mapLength - 1], _transform.position, _transform.rotation);
+                          = Instantiate(backgroundPrefab[3], _transform.position, _transform.rotation);
             }
             else
             {
