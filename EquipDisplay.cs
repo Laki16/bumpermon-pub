@@ -26,15 +26,15 @@ public class EquipDisplay : MonoBehaviour {
                 break;
             case 1001: //솜사탕(N)
                 itemTitle.text = "솜사탕";
-                itemDesc.text = "달콤한 솜사탕이네요.\n놀이공원에서 뛰는 느낌이 들어요.";
+                itemDesc.text = "달콤한 솜사탕이네요.\n놀이공원에서 뛰는 느낌이 \n들어요.";
                 break;
             case 1002: //아메리카노(N)
                 itemTitle.text = "아메리카노";
-                itemDesc.text = "시원한 아메리카노와 함께라면\n더 멀리 갈 수 있을까요?";
+                itemDesc.text = "시원한 아메리카노와 함께라면\n더 멀리 갈 수 \n있을까요?";
                 break;
             case 1003: //항아리(N)
                 itemTitle.text = "항아리";
-                itemDesc.text = "망치와 함께 쓴다면...\n끝없이 올라가야 할지도 모릅니다.";
+                itemDesc.text = "망치와 함께 쓴다면...\n끝없이 올라가야 할지도 \n모릅니다.";
                 break;
             case 1004: //양말(N)
                 itemTitle.text = "양말";
@@ -42,11 +42,11 @@ public class EquipDisplay : MonoBehaviour {
                 break;
             case 1005: //배낭(N)
                 itemTitle.text = "배낭";
-                itemDesc.text = "여행을 떠날 때 든든한 조력자가 되줄\n겁니다.";
+                itemDesc.text = "여행을 떠날 때 든든한 \n조력자가 되줄 겁니다.";
                 break;
             case 1006: //래쉬가드(N)
                 itemTitle.text = "래쉬가드";
-                itemDesc.text = "여기는 워터파크가 아닌데 말입니다.";
+                itemDesc.text = "여기는 워터파크가 아닌데 \n말입니다.";
                 break;
             case 1007: //선인장(N)
                 itemTitle.text = "선인장";
@@ -54,7 +54,7 @@ public class EquipDisplay : MonoBehaviour {
                 break;
             case 1008: //운동화(N)
                 itemTitle.text = "운동화";
-                itemDesc.text = "나이카 운동화네요!\n더 많이 뛸 수 있을 거에요.";
+                itemDesc.text = "나이카 운동화네요!\n더 오래 뛸 수 있을 거에요.";
                 break;
             case 1009: //하이힐(N)
                 itemTitle.text = "하이힐";
@@ -62,7 +62,7 @@ public class EquipDisplay : MonoBehaviour {
                 break;
             case 1010: //돌 조각(N)
                 itemTitle.text = "돌 조각";
-                itemDesc.text = "골렘에서 떨어져나온 돌 조각입니다.";
+                itemDesc.text = "골렘에서 떨어져나온 돌 \n조각입니다.";
                 break;
             case 1011: //화분(N)
                 itemTitle.text = "화분";
@@ -70,7 +70,7 @@ public class EquipDisplay : MonoBehaviour {
                 break;
             case 1012: //소화기(N)
                 itemTitle.text = "소화기";
-                itemDesc.text = "빨리 달리면 불이 붙을 수도 있어요!\n그럴 때 유용하답니다.";
+                itemDesc.text = "빨리 달리면 불이 붙을 수도 \n있어요!\n그럴 때 유용하답니다.";
                 break;
 
             ////////////////////////////////RARE/////////////////////////////////////
@@ -84,15 +84,15 @@ public class EquipDisplay : MonoBehaviour {
                 break;
             case 1102: //나뭇잎(R)
                 itemTitle.text = "나뭇잎";
-                itemDesc.text = "나뭇잎이 쓸모가 없다구요?\n작은 것이 강할 때가 있답니다.";
+                itemDesc.text = "나뭇잎이 쓸모가 없다구요?\n작은 것이 강할 때가 \n있답니다.";
                 break;
             case 1103: //갑옷(R)
                 itemTitle.text = "갑옷";
-                itemDesc.text = "좋은 재질로 만들어진 걸까요?\n가볍고 튼튼해 보이는 갑옷입니다.";
+                itemDesc.text = "좋은 재질로 만들어진 걸까요?\n가볍고 튼튼해 보이는 \n갑옷입니다.";
                 break;
             case 1104: //축구공(R)
                 itemTitle.text = "축구공";
-                itemDesc.text = "저도 공 차는거 정말 좋아하는데요\n제가 한번 차보겠습니다.";
+                itemDesc.text = "저도 공 차는거 정말 \n좋아하는데요\n제가 한번 차보겠습니다.";
                 break;
             case 1105: //까마귀(R)
                 itemTitle.text = "까마귀";
@@ -100,11 +100,11 @@ public class EquipDisplay : MonoBehaviour {
                 break;
             case 1106: //안전모(R)
                 itemTitle.text = "안전모";
-                itemDesc.text = "안전모가 필요할지도 모릅니다.\n상자가 떨어질 수도 있으니까요!";
+                itemDesc.text = "안전모가 필요할지도 \n모릅니다. 상자가 떨어질 \n수도 있으니까요!";
                 break;
             case 1107: //검(R)
                 itemTitle.text = "검";
-                itemDesc.text = "아직 탈출하지 못한 인형들을 위해\n박스를 베려고 하시는 당신은...";
+                itemDesc.text = "아직 탈출하지 못한 인형들을 \n위해 박스를 베주세요!";
                 break;
             case 1108: //틀니(R)
                 itemTitle.text = "틀니";
@@ -114,11 +114,11 @@ public class EquipDisplay : MonoBehaviour {
             ////////////////////////////////EPIC/////////////////////////////////////
             case 1200: //부적(E)
                 itemTitle.text = "부적";
-                itemDesc.text = "간혹 유령 인형이 출몰한다는 소문이\n있습니다.\n이 부적을 지니고 다니세요!";
+                itemDesc.text = "간혹 유령 인형이 출몰한다는 \n소문이 있습니다.\n이 부적을 지니고 다니세요!";
                 break;
             case 1201: //드레스(E)
                 itemTitle.text = "드레스";
-                itemDesc.text = "아주 아름다운 장식들로 가득합니다.\n하지만 여기 친구들에게는 영..";
+                itemDesc.text = "아주 아름다운 장식들로 \n가득합니다. 하지만 여기 \n친구들에게는 영..";
                 break;
             case 1202: //오리발(E)
                 itemTitle.text = "오리발";
@@ -130,21 +130,21 @@ public class EquipDisplay : MonoBehaviour {
                 break;
             case 1204: //선물상자(E)
                 itemTitle.text = "선물상자";
-                itemDesc.text = "산타가 준 선물상자로군요!\n어떤 스탯이 오를지 궁금한데요?";
+                itemDesc.text = "산타가 준 선물상자로군요!\n어떤 스탯이 오를지 \n궁금한데요?";
                 break;
 
             ////////////////////////////////LEGEND/////////////////////////////////////
             case 1300: //모래시계(L)
                 itemTitle.text = "모래시계";
-                itemDesc.text = "새로운 도전을 위해 모래시계를\n뒤집어보세요.";
+                itemDesc.text = "새로운 도전을 위해 \n모래시계를 뒤집어보세요.";
                 break;
             case 1301: //산삼(L)
                 itemTitle.text = "산삼";
-                itemDesc.text = "앗, 귀한 걸 발견하셨네요!\n이 산삼은 말하자면..\n지리산에서 발견된 100년 된..";
+                itemDesc.text = "앗, 귀한 걸 발견하셨네요!\n먹는 순간 당장 뛰고싶어질 \n거에요!";
                 break;
             case 1302: //왕관(L)
                 itemTitle.text = "왕관";
-                itemDesc.text = "컨테이너 벨트 끝에는 궁전이\n있다고 합니다.\n그곳에 사는 왕이 쓰는 걸까요?";
+                itemDesc.text = "컨테이너 벨트 끝에는 궁전이\n있다고 합니다. 그곳에 사는 \n왕이 쓰는 걸까요?";
                 break;
 
             ////////////////////////////////SPECIAL/////////////////////////////////////

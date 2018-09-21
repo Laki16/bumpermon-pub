@@ -54,14 +54,12 @@ public class GameManager : MonoBehaviour {
 
     [Header("GameOverUI")]
     public GameObject gameOverPanel;
-    public GameObject boxPanel;
     public GameObject highScore;
     public Text coinText;
     public Button continueBtn;
     public Button homeBtn2;
     public GameObject skullFX;
     bool isContinueAvailable = true;
-    public Text boxText;
     public Text timeText;
 
     [Header("System")]
@@ -79,7 +77,6 @@ public class GameManager : MonoBehaviour {
     public GameObject SoundManager;
     public GameObject lArm;
     public GameObject rArm;
-    public int brokenBoxes;
 
     [Header("Animation")]
     Animator myCameraAnimator;
@@ -87,7 +84,6 @@ public class GameManager : MonoBehaviour {
     Animator myGameOverAnimator;
     Animator myCharacterAnimator;
     Animator myShopAnimator;
-    Animator myBoxAnimator;
     Animator myStoreAnimator;
 
     [Header("DB")]
@@ -96,7 +92,6 @@ public class GameManager : MonoBehaviour {
     public int score;
     int prevCoins;
     int prevGems;
-    int prevBoxes;
     float playTime;
 
     [Header("Ads")]
@@ -116,7 +111,6 @@ public class GameManager : MonoBehaviour {
         myGameOverAnimator = gameOverPanel.GetComponent<Animator>();
         myCharacterAnimator = characterPanel.GetComponent<Animator>();
         myShopAnimator = shopPanel.GetComponent<Animator>();
-        myBoxAnimator = boxPanel.GetComponent<Animator>();
         myStoreAnimator = storePanel.GetComponent<Animator>();
 
         LoadRecord();
@@ -210,7 +204,6 @@ public class GameManager : MonoBehaviour {
         countdownText.text = "";
         meterBetBlock = player.transform.position.x;
         myCameraAnimator.enabled = false;
-        brokenBoxes = 0;
     }
 
     IEnumerator GameContinue()
@@ -365,7 +358,6 @@ public class GameManager : MonoBehaviour {
     public void BtnOnContinue()
     {
         isContinueAvailable = false;
-        myBoxAnimator.SetBool("GameOver", false);
         myGameOverAnimator.SetBool("GameOver", false);
         SoundManager.GetComponent<SoundManager>().StopBGM();
         StartCoroutine(SoundManager.GetComponent<SoundManager>().Continue());

@@ -40,6 +40,6 @@ public class ComboNitro : MonoBehaviour {
         comboTexts[beforeIterator].SetActive(false);
         yield return new WaitForSeconds(comboAnimationLength - 0.1f - (comboAnimationLength - 0.6f));
         comboTexts[nowIterator].SetActive(false);
-        gameManager.brokenBoxes++;
+        //gameManager.brokenBoxes++;
     }
 }
