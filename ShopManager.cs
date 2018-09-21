@@ -97,13 +97,13 @@ public class ShopManager : MonoBehaviour
 
     //Upgrade coins
     [HideInInspector]
-    public int[] normalGold = { 30, 200, 400, 600, 800, 1000, 2000, 3000, 4000, 8000, 10000 };
+    public int[] normalGold = { 200, 500, 1000, 2500, 3500, 5000, 7500, 10000, 0 };
     [HideInInspector]
-    public int[] rareGold = { 100, 800, 1500, 3000, 5000, 8000, 12000, 15000, 20000 };
+    public int[] rareGold = { 1500, 3000, 5000, 7500, 10000, 15000, 20000, 30000, 0 };
     [HideInInspector]
-    public int[] epicGold = { 500, 3000, 5000, 10000, 15000, 20000, 30000 };
+    public int[] epicGold = { 10000, 15000, 20000, 30000, 45000, 60000, 80000, 100000, 0 };
     [HideInInspector]
-    public int[] legendGold = { 4000, 15000, 30000, 50000, 100000 };
+    public int[] legendGold = { 20000, 30000, 50000, 100000, 160000, 220000, 350000, 500000, 0 };
     //판매가격은 업그레이드 가격의 15%
 
 
@@ -128,10 +128,9 @@ public class ShopManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-
-    }
+    //void Update()
+    //{
+    //}
 
     public void LoadItem()
     {
@@ -547,10 +546,11 @@ public class ShopManager : MonoBehaviour
         int requireGold = 0;
         switch (currentEquip.EquipIndex / 100)
         {
-            case 10: requireGold = normalGold[currentEquip.Level]; break;
-            case 11: requireGold = rareGold[currentEquip.Level]; break;
-            case 12: requireGold = epicGold[currentEquip.Level]; break;
-            case 13: requireGold = legendGold[currentEquip.Level]; break;
+            case 10: requireGold = normalGold[currentEquip.Level-1]; break;
+            case 11: requireGold = rareGold[currentEquip.Level-1]; break;
+            case 12: requireGold = epicGold[currentEquip.Level-1]; break;
+            case 13: requireGold = legendGold[currentEquip.Level-1]; break;
+            default: requireGold = -1; break;
         }
         return requireGold;
     }
@@ -564,6 +564,7 @@ public class ShopManager : MonoBehaviour
             case 11: sellGold = rareGold[currentEquip.Level-1]; break;
             case 12: sellGold = epicGold[currentEquip.Level-1]; break;
             case 13: sellGold = legendGold[currentEquip.Level-1]; break;
+            default: sellGold = -1; break;
         }
         sellGold *= 0.15f;
         return (int)sellGold;
@@ -571,49 +572,42 @@ public class ShopManager : MonoBehaviour
 
     public bool IsUpgradable()
     {
-        int level = currentEquip.Level;
-        switch (currentEquip.EquipIndex)
+        if(currentEquip.Level >= 9)
         {
-            case 10:
-                if (level == 11) return false;
-                else return true;
-            case 11:
-                if (level == 9) return false;
-                else return true;
-            case 12:
-                if (level == 7) return false;
-                else return true;
-            case 13:
-                if (level == 5) return false;
-                else return true;
-            default: return true;
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
     public void BtnOnUpgrade()
     {
         int coin = PlayerPrefs.GetInt("Coin");
-        coin -= GetUpgradeGold();
-
-        for(int i=0; i<totalItemSlot.Count; i++)
+        if(coin >= GetUpgradeGold())
         {
-            if (totalItemSlot[i].GetComponent<Equip>() == currentEquip)
+            for (int i = 0; i < totalItemSlot.Count; i++)
             {
-                //Debug.Log("Lv Up " + i);
-                LevelUp(i); break;
+                if (totalItemSlot[i].GetComponent<Equip>() == currentEquip)
+                {
+                    coin -= GetUpgradeGold();
+                    LevelUp(i);
+                    break;
+                }
             }
+            equipCoins.text = coin.ToString();
+
+            PlayerPrefs.SetInt("Coin", coin);
+            PlayerPrefs.Save();
+            CloudVariables.SystemValues[0] = coin;
+            PlayGamesScript.Instance.SaveData();
+
+            //Cloud에 아이템 업그레이드 저장
+            CloudSaveItem();
+            UpdateInfoPanel();
+            UpdateShopUI();
         }
-        equipCoins.text = coin.ToString();
-        
-
-        PlayerPrefs.SetInt("Coin", coin);
-        PlayerPrefs.Save();
-        CloudVariables.SystemValues[0] = coin;
-        PlayGamesScript.Instance.SaveData();
-
-        //Cloud에 아이템 업그레이드 저장
-        CloudSaveItem();
-        UpdateInfoPanel();
     }
 
     public void LevelUp(int index) //index는 totalItemSlot의 위치.
@@ -646,79 +640,94 @@ public class ShopManager : MonoBehaviour
 
     public void UpdateInfoPanel()
     {
-        //for(int i=0; i<4; i++)
-        //{
-        //    statText[i].text = string.Empty;
-        //}
-
-        //돈 부족하거나 만렙이면 upgrade버튼 비활성화
-        if (GetUpgradeGold() > PlayerPrefs.GetInt("Coin"))
+        int coin = PlayerPrefs.GetInt("Coin");
+        //돈 부족하거나 만렙이거나 장착중이면 upgrade버튼 비활성화
+        if (GetUpgradeGold() > coin || IsUpgradable() == false || currentEquip.isEquipped == true)
         {
+            if(IsUpgradable() == false)
+            {
+                upgradeText.text = "MAX";
+                upgradeCoin.text = string.Empty;
+            }
+            else
+            {
+                upgradeText.text = "Upgrade";
+                upgradeCoin.text = GetUpgradeGold().ToString();
+            }
             upgradeBtn.interactable = false;
         }
         else
         {
-            upgradeBtn.interactable = true;
-        }
-
-        if (IsUpgradable() == true)
-        {
             upgradeText.text = "Upgrade";
             upgradeCoin.text = GetUpgradeGold().ToString();
-        }
-        else
-        {
-            upgradeText.text = "MAX";
-            upgradeCoin.text = string.Empty;
-        }
-
-        if(currentEquip.isEquipped == true)
-        {
-            sellBtn.interactable = false;
-        }
-        else
-        {
-            sellBtn.interactable = true;
+            upgradeBtn.interactable = true;
         }
 
         equipLevelText.text = "+" + currentEquip.Level;
 
-        float[] stats = new float[8] {0,0,0,0,0,0,0,0 };
-
-        Equip origin_equip = new Equip();
-        origin_equip.EquipIndex = currentEquip.EquipIndex;
-        origin_equip.Level = 1;
-        origin_equip.SetStatus();
-
-        Equip temp_equip = new Equip();
-        temp_equip.EquipIndex = currentEquip.EquipIndex;
-        temp_equip.Level = currentEquip.Level;
-        temp_equip.SetStatus();
-
-        stats[0] += temp_equip.HP - origin_equip.HP;
-        stats[1] += temp_equip.SPD - origin_equip.SPD;
-        stats[2] += temp_equip.DEF - origin_equip.DEF;
-        stats[3] += temp_equip.STR - origin_equip.STR;
-        stats[4] += temp_equip.LUK - origin_equip.LUK;
-        stats[5] += temp_equip.nitroEarnSize - origin_equip.nitroEarnSize;
-        stats[6] += temp_equip.bombSize - origin_equip.bombSize;
-        stats[7] += temp_equip.nitroSpeed - origin_equip.nitroSpeed;
-
+        float[] stats = new float[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+        currentEquip.SetStatus();
+        stats[0] += currentEquip.HP;
+        stats[1] += currentEquip.SPD;
+        stats[2] += currentEquip.DEF;
+        stats[3] += currentEquip.STR;
+        stats[4] += currentEquip.LUK;
+        stats[5] += currentEquip.nitroEarnSize;
+        stats[6] += currentEquip.bombSize;
+        stats[7] += currentEquip.nitroSpeed;
         int count = 0;
-        for(int i=0; i<8; i++)
+        for (int i=0; i<8; i++)
         {
-            //Debug.Log("Stat" + i + " " + stats[i]);
-            if (stats[i] != 0)
+            if(stats[i] != 0)
             {
                 if(stats[i] > 0)
                 {
-                    statText[count].text += "<color=#FF0000> +" + stats[i].ToString()+"</color>";
+                    statText[count].text += " + " + stats[i].ToString();
+                }
+                else
+                {
+                    statText[count].text += " - " + stats[i].ToString();
                 }
                 count++;
             }
         }
-        Destroy(origin_equip);
-        Destroy(temp_equip);
+        
+        //Equip origin_equip = new Equip();
+        //origin_equip.EquipIndex = currentEquip.EquipIndex;
+        //origin_equip.Level = 1;
+        //origin_equip.SetStatus();
+
+        //Equip temp_equip = new Equip();
+        //temp_equip.EquipIndex = currentEquip.EquipIndex;
+        //temp_equip.Level = currentEquip.Level;
+        //currentEquip.SetStatus();
+
+        //stats[0] += temp_equip.HP - origin_equip.HP;
+        //stats[1] += temp_equip.SPD - origin_equip.SPD;
+        //stats[2] += temp_equip.DEF - origin_equip.DEF;
+        //stats[3] += temp_equip.STR - origin_equip.STR;
+        //stats[4] += temp_equip.LUK - origin_equip.LUK;
+        //stats[5] += temp_equip.nitroEarnSize - origin_equip.nitroEarnSize;
+        //stats[6] += temp_equip.bombSize - origin_equip.bombSize;
+        //stats[7] += temp_equip.nitroSpeed - origin_equip.nitroSpeed;
+
+        //currentEquip.SetStatus();
+        //int count = 0;
+        //for(int i=0; i<8; i++)
+        //{
+        //    //Debug.Log("Stat" + i + " " + stats[i]);
+        //    if (stats[i] != 0)
+        //    {
+        //        if(stats[i] > 0)
+        //        {
+        //            statText[count].text += "<color=#FF0000> +" + stats[i].ToString()+"</color>";
+        //            //statText[count].text = stats[i].ToString();
+        //        }
+        //        count++;
+        //    }
+        //}
+        ////Destroy(origin_equip);
+        ////Destroy(temp_equip);
     }
 
     public IEnumerator SellCoroutine()
