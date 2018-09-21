@@ -636,6 +636,7 @@ public class ShopManager : MonoBehaviour
             equippedLevel[i].text
                 = "+" + currentCharacter.GetComponent<EquippedItem>().equippedItem[i].Level.ToString();
         }
+
     }
 
     public void UpdateInfoPanel()
@@ -665,32 +666,7 @@ public class ShopManager : MonoBehaviour
 
         equipLevelText.text = "+" + currentEquip.Level;
 
-        float[] stats = new float[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
-        currentEquip.SetStatus();
-        stats[0] += currentEquip.HP;
-        stats[1] += currentEquip.SPD;
-        stats[2] += currentEquip.DEF;
-        stats[3] += currentEquip.STR;
-        stats[4] += currentEquip.LUK;
-        stats[5] += currentEquip.nitroEarnSize;
-        stats[6] += currentEquip.bombSize;
-        stats[7] += currentEquip.nitroSpeed;
-        int count = 0;
-        for (int i=0; i<8; i++)
-        {
-            if(stats[i] != 0)
-            {
-                if(stats[i] > 0)
-                {
-                    statText[count].text += " + " + stats[i].ToString();
-                }
-                else
-                {
-                    statText[count].text += " - " + stats[i].ToString();
-                }
-                count++;
-            }
-        }
+        UpdateStatUI();
         
         //Equip origin_equip = new Equip();
         //origin_equip.EquipIndex = currentEquip.EquipIndex;
@@ -728,6 +704,65 @@ public class ShopManager : MonoBehaviour
         //}
         ////Destroy(origin_equip);
         ////Destroy(temp_equip);
+    }
+
+    public void UpdateStatUI()
+    {
+        float[] stats = new float[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+        currentEquip.SetStatus();
+        stats[0] += currentEquip.HP;
+        stats[1] += currentEquip.SPD;
+        stats[2] += currentEquip.DEF;
+        stats[3] += currentEquip.STR;
+        stats[4] += currentEquip.LUK;
+        stats[5] += currentEquip.nitroEarnSize;
+        stats[6] += currentEquip.bombSize;
+        stats[7] += currentEquip.nitroSpeed;
+        int count = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            if (stats[i] != 0)
+            {
+                switch (i)
+                {
+                    case 0:
+                        statText[count].text = "체력";
+                        break;
+                    case 1:
+                        statText[count].text = "속도";
+                        break;
+                    case 2:
+                        statText[count].text = "방어력";
+                        break;
+                    case 3:
+                        statText[count].text = "힘";
+                        break;
+                    case 4:
+                        statText[count].text = "행운";
+                        break;
+                    case 5:
+                        statText[count].text = "부스트 획득량";
+                        break;
+                    case 6:
+                        statText[count].text = "폭발 범위";
+                        break;
+                    case 7:
+                        statText[count].text = "부스트 스피드";
+                        break;
+                }
+                if (stats[i] > 0)
+                {
+                    statText[count].text += " + " + stats[i].ToString();
+                }
+                else
+                {
+                    statText[count].text += " " + stats[i].ToString();
+                }
+                if (i == 6) statText[count].text += "m";
+                else if (i == 7) statText[count].text += "%";
+                count++;
+            }
+        }
     }
 
     public IEnumerator SellCoroutine()
