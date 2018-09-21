@@ -6,6 +6,8 @@ using System;
  
 public class UnityAdsHelper : MonoBehaviour
 {
+    public ShopManager shopManager;
+
     private const string android_game_id = "2703328";
     private const string ios_game_id = "xxxxxxx";
 
@@ -92,6 +94,7 @@ public class UnityAdsHelper : MonoBehaviour
                             crateController.BtnOnCrate(4);
                             break;
                     }
+                    shopManager.UpdateShopUI();
 
                     break;
                 }
