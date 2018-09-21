@@ -67,8 +67,8 @@ public class ShopManager : MonoBehaviour
     public GameObject escPanel;
     public EquipDisplay equipDisplay;
     public Image infoImage;
-    public Button upgradeBtn;
-    public Button sellBtn;
+    public GameObject upgradeBtn;
+    public GameObject sellBtn;
     public Text upgradeCoin;
     public Text upgradeText;
     public Text equipLevelText;
@@ -97,13 +97,13 @@ public class ShopManager : MonoBehaviour
 
     //Upgrade coins
     [HideInInspector]
-    public int[] normalGold = { 200, 500, 1000, 2500, 3500, 5000, 7500, 10000, 0 };
+    public int[] normalGold = { 200, 500, 1000, 2500, 3500, 5000, 7500, 10000, 15000 };
     [HideInInspector]
-    public int[] rareGold = { 1500, 3000, 5000, 7500, 10000, 15000, 20000, 30000, 0 };
+    public int[] rareGold = { 1500, 3000, 5000, 7500, 10000, 15000, 20000, 30000, 50000 };
     [HideInInspector]
-    public int[] epicGold = { 10000, 15000, 20000, 30000, 45000, 60000, 80000, 100000, 0 };
+    public int[] epicGold = { 10000, 15000, 20000, 30000, 45000, 60000, 80000, 120000, 170000 };
     [HideInInspector]
-    public int[] legendGold = { 20000, 30000, 50000, 100000, 160000, 220000, 350000, 500000, 0 };
+    public int[] legendGold = { 20000, 30000, 50000, 100000, 160000, 220000, 350000, 500000, 700000 };
     //판매가격은 업그레이드 가격의 15%
 
 
@@ -119,11 +119,10 @@ public class ShopManager : MonoBehaviour
         equip_def = 0.0f;
         equip_str = 0.0f;
         equip_luk = 0.0f;
-
         equip_nitroEarnSize = 0.0f;
         equip_bombSize = 0.0f;
         equip_nitroTime = 0.0f;
-
+        
         UpdateShopUI();
     }
 
@@ -269,10 +268,10 @@ public class ShopManager : MonoBehaviour
         }
         slot.SetActive(true);
         slot.GetComponent<Equip>().EquipIndex = currentEquip.EquipIndex;
-        slot.GetComponent<Equip>().EquipIndex = currentEquip.Level;
+        slot.GetComponent<Equip>().Level = currentEquip.Level;
         slot.GetComponentInChildren<Image>().sprite = currentEquip.gameObject.GetComponentInChildren<Image>().sprite;
-        //slot.GetComponent<Equip>().equippedCharacter = currentCharacter.MonsterIndex;
-        for(int i=0; i<totalItemSlot.Count; i++)
+        slot.transform.Find("Text").GetComponent<Text>().text = "+" + currentEquip.Level;
+        for (int i=0; i<totalItemSlot.Count; i++)
         {
             if(totalItemSlot[i].GetComponent<Equip>() == currentEquip)
             {
@@ -440,6 +439,17 @@ public class ShopManager : MonoBehaviour
     {
         Destroy(beforeEquipBtn);
         Destroy(beforeInfoBtn);
+
+        if (!currentEquip.isSlot)
+        {
+            upgradeBtn.SetActive(true);
+            sellBtn.SetActive(true);
+        }
+        else
+        {
+            upgradeBtn.SetActive(false);
+            sellBtn.SetActive(false);
+        }
 
         equipDisplay.UpdateUI(currentEquip.EquipIndex);
         UpdateInfoPanel();
@@ -634,8 +644,13 @@ public class ShopManager : MonoBehaviour
         UpdateInventoryText();
         for (int i = 0; i < currentCharacter.GetComponent<EquippedItem>().equippedItem.Count; i++)
         {
-            equippedLevel[i].text
-                = "+" + currentCharacter.GetComponent<EquippedItem>().equippedItem[i].Level.ToString();
+            if(currentCharacter.GetComponent<EquippedItem>().equippedItem[i] != null)
+            {
+                equippedLevel[i].GetComponentInParent<Equip>().Level
+                    = currentCharacter.GetComponent<EquippedItem>().equippedItem[i].Level;
+                equippedLevel[i].text
+                    = "+" + currentCharacter.GetComponent<EquippedItem>().equippedItem[i].Level.ToString();
+            }
         }
 
     }
@@ -643,8 +658,8 @@ public class ShopManager : MonoBehaviour
     public void UpdateInfoPanel()
     {
         int coin = PlayerPrefs.GetInt("Coin");
-        //돈 부족하거나 만렙이거나 장착중이면 upgrade버튼 비활성화
-        if (GetUpgradeGold() > coin || IsUpgradable() == false || currentEquip.isEquipped == true)
+        //돈 부족하거나 만렙이면 upgrade버튼 비활성화
+        if (GetUpgradeGold() > coin || IsUpgradable() == false)
         {
             if(IsUpgradable() == false)
             {
@@ -656,59 +671,48 @@ public class ShopManager : MonoBehaviour
                 upgradeText.text = "Upgrade";
                 upgradeCoin.text = GetUpgradeGold().ToString();
             }
-            upgradeBtn.interactable = false;
+            upgradeBtn.GetComponent<Button>().interactable = false;
         }
         else
         {
             upgradeText.text = "Upgrade";
             upgradeCoin.text = GetUpgradeGold().ToString();
-            upgradeBtn.interactable = true;
+            upgradeBtn.GetComponent<Button>().interactable = true;
+        }
+
+        if (currentEquip.isEquipped)
+        {
+            sellBtn.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            sellBtn.GetComponent<Button>().interactable = true;
         }
 
         equipLevelText.text = "+" + currentEquip.Level;
 
         UpdateStatUI();
-        
-        //Equip origin_equip = new Equip();
-        //origin_equip.EquipIndex = currentEquip.EquipIndex;
-        //origin_equip.Level = 1;
-        //origin_equip.SetStatus();
-
-        //Equip temp_equip = new Equip();
-        //temp_equip.EquipIndex = currentEquip.EquipIndex;
-        //temp_equip.Level = currentEquip.Level;
-        //currentEquip.SetStatus();
-
-        //stats[0] += temp_equip.HP - origin_equip.HP;
-        //stats[1] += temp_equip.SPD - origin_equip.SPD;
-        //stats[2] += temp_equip.DEF - origin_equip.DEF;
-        //stats[3] += temp_equip.STR - origin_equip.STR;
-        //stats[4] += temp_equip.LUK - origin_equip.LUK;
-        //stats[5] += temp_equip.nitroEarnSize - origin_equip.nitroEarnSize;
-        //stats[6] += temp_equip.bombSize - origin_equip.bombSize;
-        //stats[7] += temp_equip.nitroSpeed - origin_equip.nitroSpeed;
-
-        //currentEquip.SetStatus();
-        //int count = 0;
-        //for(int i=0; i<8; i++)
-        //{
-        //    //Debug.Log("Stat" + i + " " + stats[i]);
-        //    if (stats[i] != 0)
-        //    {
-        //        if(stats[i] > 0)
-        //        {
-        //            statText[count].text += "<color=#FF0000> +" + stats[i].ToString()+"</color>";
-        //            //statText[count].text = stats[i].ToString();
-        //        }
-        //        count++;
-        //    }
-        //}
-        ////Destroy(origin_equip);
-        ////Destroy(temp_equip);
     }
 
     public void UpdateStatUI()
     {
+        if (currentEquip.isSlot)
+        {
+            currentEquip.HP = 0;
+            currentEquip.SPD = 0;
+            currentEquip.DEF = 0;
+            currentEquip.STR = 0;
+            currentEquip.LUK = 0;
+            currentEquip.nitroEarnSize = 0;
+            currentEquip.bombSize = 0;
+            currentEquip.nitroSpeed = 0;
+        }
+
+        for(int i=0; i<4; i++)
+        {
+            statText[i].text = string.Empty;
+        }
+
         float[] stats = new float[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
         currentEquip.SetStatus();
         stats[0] += currentEquip.HP;
@@ -722,7 +726,7 @@ public class ShopManager : MonoBehaviour
         int count = 0;
         for (int i = 0; i < 8; i++)
         {
-            if (stats[i] != 0)
+            if (stats[i] != 0 && count < 4)
             {
                 switch (i)
                 {
@@ -933,9 +937,7 @@ public class ShopManager : MonoBehaviour
                 equip_nitroEarnSize += equip.nitroEarnSize;
                 equip_bombSize += equip.bombSize;
                 equip_nitroTime += equip.nitroSpeed;
-
-                //Debug.Log(i + ": " + equip_hp+", "+equip_spd + ", " +equip_def + ", " + equip_str + ", "
-                //    +equip_luk + ", " +equip_nitroEarnSize + ", " +equip_bombSize + ", " +equip_nitroTime);
+                
             }
         }
 

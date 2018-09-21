@@ -8,7 +8,7 @@ public class SpawnGrounds : MonoBehaviour
 {
     [Header("Ground Info")]
     public GameObject ground;
-    public static int mapLength = 4;
+    public static int mapLength = 5;
     private int maxGrounds = 3;
     public static float groundXSize = 5.0f;
     [HideInInspector]

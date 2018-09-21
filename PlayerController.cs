@@ -299,7 +299,15 @@ public class PlayerController : MonoBehaviour
         //-----------------nitro-----------------------
         if (useNitro)
         {
-            speed = preSpeed * nitroSpeed/100; //현재 속도와 맞는 비율로 높아지게 할 것.
+            //니트로 스피드가 + a% 되는 식으로 구성
+            if(speed < minSpeed)
+            {
+                speed = minSpeed * nitroSpeed / 100;
+            }
+            else
+            {
+                speed = preSpeed * nitroSpeed / 100; 
+            }
             nitroTime -= Time.deltaTime;
             nitro -= Time.deltaTime * 22;
 
@@ -441,11 +449,11 @@ public class PlayerController : MonoBehaviour
         {
             if (transform.position.x < 1000)
             { //나중에 아이템 값만큼 곱하기
-                curHP -= Time.deltaTime * (1 - curDEF / 100);
+                curHP -= Time.deltaTime * 0.5f;
             }
             else
             {
-                curHP -= (transform.position.x / 1000) * Time.deltaTime * (1 - curDEF / 100);
+                curHP -= (transform.position.x / 1000) * Time.deltaTime * 0.5f;
             }
             //-----------------Ray-----------------------
             SideRayCast();

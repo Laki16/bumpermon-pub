@@ -23,6 +23,7 @@ public class Equip : MonoBehaviour {
     public float bombSize;
     public float nitroSpeed;
     public bool isEquipped = false;
+    public bool isSlot = false;
 
     [Header("Button")]
     public GameObject infoBtn;
@@ -154,10 +155,10 @@ public class Equip : MonoBehaviour {
 
             ////////////////////////////////EPIC/////////////////////////////////////
             case 1200: //부적(E)
-                LUK = 5 + (Level-1) * 3;
+                LUK = 5 + (Level-1) * 1.7f;
                 break;
             case 1201: //드레스(E)
-                HP = 3 + (Level-1) * 2.5f;
+                HP = 3 + (Level-1) * 2.2f;
                 SPD = 6 + (Level-1) * 2;
                 DEF = -2;
                 break;
@@ -167,7 +168,7 @@ public class Equip : MonoBehaviour {
             //    bombSize = 2 + (Level-1) * 3;
             //    break;
             case 1202: //오리발(E)
-                SPD = 4 + (Level-1) * 2.5f;
+                SPD = 4 + (Level-1) * 1.9f;
                 nitroSpeed = 13 + (Level-1);
                 break;
             case 1203: //망치(E)
@@ -232,20 +233,20 @@ public class Equip : MonoBehaviour {
             //    bombSize = 7 + (Level-1) * 3;
             //    break;
             case 1300: //모래시계(L)
-                HP = 17 + (Level-1) * 3;
-                LUK = 13 + (Level-1) * 4;
-                DEF = 4 + (Level-1) * 3;
+                HP = 7 + (Level-1) * 2.5f;
+                LUK = 6 + (Level-1) * 3.3f;
+                DEF = 4 + (Level-1) * 2.6f;
                 nitroEarnSize = 6 + (Level-1) * 2.5f;
                 break;
             case 1301: //산삼(L)
-                HP = 20 + (Level-1) * 2;
-                STR = 9 + (Level-1);
-                DEF = 5 + (Level-1) * 2;
-                bombSize = 15 + (Level-1) * 3;
+                HP = 12 + (Level-1) * 2;
+                STR = 4 + (Level-1);
+                DEF = 3 + (Level-1) * 2.2f;
+                bombSize = 7 + (Level-1) * 2.3f;
                 break;
             case 1302: //왕관(L)
-                SPD = 9 + (Level-1) * 3;
-                LUK = 16 + (Level-1) * 2;
+                SPD = 9 + (Level-1) * 2.7f;
+                LUK = 3 + (Level-1) * 2;
                 STR = 5 + (Level-1) * 1.5f;
                 nitroEarnSize = 4 + (Level-1) * 2;
                 break;
