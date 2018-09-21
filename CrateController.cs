@@ -15,6 +15,7 @@ public class CrateController : MonoBehaviour {
     public Equipment equipment;
     public ShopManager shopManager;
     public PurchaseManager purchaseManager;
+    public GameObject errorPanel;
     [Space(10)]
     public GameObject crates;
     public GameObject currentCrate;
@@ -71,20 +72,42 @@ public class CrateController : MonoBehaviour {
 
     public void BtnOnCrate(int _index)
     {
-        //crate_empty = 0;
-        //crate_gold = 0;
-        //crate_gem = 0;
-        //crate_normal = 0;
-        //crate_rare = 0;
-        //crate_epic = 0;
-        //crate_legend = 0;
-
         crateNum = 0;
         chk = -1;
         index = _index;
         usedProb.Clear();
 
-        StartCoroutine("BoxOpening");
+        int crateEquipNumber = 0;
+        switch (index)
+        {
+            case 1:
+                crateEquipNumber = 1;
+                break;
+            case 2: //메탈 상자
+                crateEquipNumber = 3;
+                break;
+            case 3: //슈퍼 상자
+                crateEquipNumber = 5;
+                break;
+            case 4: //나무 상자
+                crateEquipNumber = 1;
+                break;
+            default:
+                break;
+        }
+        if(crateEquipNumber + shopManager.storage <= 100)
+        {
+            StartCoroutine("BoxOpening");
+        }
+        else
+        {
+            errorPanel.SetActive(true);
+        }
+    }
+
+    public void ChkErrorMsg()
+    {
+        errorPanel.SetActive(false);
     }
 
     public void BtnOnNo()
@@ -103,18 +126,18 @@ public class CrateController : MonoBehaviour {
     {
         switch (index)
         {
-            case 1:
+            case 1: //기본 박스
                 chk = 1;
                 break;
-            case 2:
+            case 2: //메탈 상자
                 chkPanel.SetActive(true);
                 chkText.text = "메탈 상자를 구매하시겠습니까?";
                 break;
-            case 3:
+            case 3: //슈퍼 상자
                 chkPanel.SetActive(true);
                 chkText.text = "슈퍼 상자를 구매하시겠습니까?";
                 break;
-            case 4:
+            case 4: //나무 상자
                 chk = 1;
                 break;
             default:

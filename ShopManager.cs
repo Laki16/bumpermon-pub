@@ -81,8 +81,8 @@ public class ShopManager : MonoBehaviour
     public GameObject beforeEquipBtn;
     public Text foundItemText;
     public Text storageText;
+    public int storage;
     //public int foundItem = 0;
-    //public int storage;
     public List<Text> equippedLevel = new List<Text>(3);
     [Space(10)]
     public GameObject chkPanel;
@@ -347,7 +347,8 @@ public class ShopManager : MonoBehaviour
 
     public void UpdateInventoryText()
     {
-        storageText.text = totalItemSlot.Count.ToString() + "/100";
+        storage = totalItemSlot.Count;
+        storageText.text = storage.ToString() + "/100";
 
         int[] indexArray = new int[totalItemSlot.Count];
         for (int i = 0; i < totalItemSlot.Count; i++)
