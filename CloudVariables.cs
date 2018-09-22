@@ -8,7 +8,7 @@ public class CloudVariables : MonoBehaviour {
 
     private void Awake()
     {
-        SystemValues = new int[120]; // 3 for system, 17 for characters, 100 for items
+        SystemValues = new int[130]; // 3 for system, 17 for characters, 100 for items
     }
 }
 

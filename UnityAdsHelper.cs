@@ -43,9 +43,8 @@ public class UnityAdsHelper : MonoBehaviour
         }
     }
 
-    public void ShowRewardedAd(int _index) //rewarded ads
+    public void ShowRewardedAd(int index) //rewarded ads
     {
-        index = _index;
         if (Advertisement.IsReady(rewarded_video_id))
         {
             var options = new ShowOptions { resultCallback = HandleShowResult };
@@ -81,7 +80,6 @@ public class UnityAdsHelper : MonoBehaviour
                             break;
                         case 2:
                             PlayerPrefs.SetString("Time2", DateTime.Now.ToString());
-
                             int gem = PlayerPrefs.GetInt("Gem");
                             gem += 10;
                             PlayerPrefs.SetInt("Gem", gem);
@@ -89,9 +87,11 @@ public class UnityAdsHelper : MonoBehaviour
                             CloudVariables.SystemValues[1] = gem;
                             PlayGamesScript.Instance.SaveData();
                             break;
-                        case 3:
+                        case 4:
                             PlayerPrefs.SetString("Time3", DateTime.Now.ToString());
                             crateController.BtnOnCrate(4);
+                            break;
+                        default:
                             break;
                     }
                     shopManager.UpdateShopUI();

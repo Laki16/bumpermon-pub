@@ -6,8 +6,6 @@ using System;
 
 public class TimeCalculate : MonoBehaviour {
 
-    public UnityAdsHelper unityAdsHelper;
-
     public GameObject btn1;
     public GameObject btn2;
     public GameObject btn3;
@@ -114,8 +112,4 @@ public class TimeCalculate : MonoBehaviour {
         }
     }
 
-    public void ResetTimer(int index)
-    {
-        unityAdsHelper.ShowRewardedAd(index);
-    }
 }

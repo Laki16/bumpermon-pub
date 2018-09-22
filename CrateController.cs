@@ -16,6 +16,8 @@ public class CrateController : MonoBehaviour {
     public ShopManager shopManager;
     public PurchaseManager purchaseManager;
     public GameObject errorPanel;
+    public UnityAdsHelper unityAdsHelper;
+    public TimeCalculate timeCalculate;
     [Space(10)]
     public GameObject crates;
     public GameObject currentCrate;
@@ -93,6 +95,10 @@ public class CrateController : MonoBehaviour {
         }
         if(crateEquipNumber + shopManager.storage <= 100)
         {
+            if(index == 1 || index == 4)
+            {
+                unityAdsHelper.ShowRewardedAd(index);
+            }
             StartCoroutine("BoxOpening");
         }
         else
