@@ -983,8 +983,8 @@ public class ShopManager : MonoBehaviour
         strDefault.text = currentCharacter.STR.ToString();
         lukDefault.text = currentCharacter.LUK.ToString();
         nSizeDefault.text = currentCharacter.nitroEarnSize.ToString();
-        bSizeDefault.text = currentCharacter.bombSize.ToString();
-        nTimeDefault.text = currentCharacter.nitroSpeed.ToString();
+        bSizeDefault.text = currentCharacter.bombSize.ToString() + "m";
+        nTimeDefault.text = currentCharacter.nitroSpeed.ToString() + "%";
 
         hpUpgraded.text = "+" + equip_hp.ToString();
         spdUpgraded.text = "+" + equip_spd.ToString();

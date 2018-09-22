@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour {
 
     public Sprite optionDown;
     public Sprite optionUp;
+    public Sprite musicOn;
+    public Sprite musicOff;
 
     bool isDown;
     bool isMusicOn;
@@ -285,7 +287,8 @@ public class GameManager : MonoBehaviour {
         {
             //sound off
             SoundManager.GetComponent<SoundManager>().Mute(true);
-            musicBtn.GetComponent<Image>().color = new Color32(200, 200, 200, 255);
+            musicBtn.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            musicBtn.GetComponent<Image>().sprite = musicOff;
             isMusicOn = false;
         }
         else
@@ -293,6 +296,7 @@ public class GameManager : MonoBehaviour {
             //sound on
             SoundManager.GetComponent<SoundManager>().Mute(false);
             musicBtn.GetComponent<Image>().color = new Color32(255, 255, 0, 255);
+            musicBtn.GetComponent<Image>().sprite = musicOn;
             isMusicOn = true;
         }
     }
