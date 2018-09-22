@@ -131,6 +131,8 @@ public class PlayerController : MonoBehaviour
         speed = minSpeed;
         minAutoSpeed = minSpeed;
         curHP = character.HP;
+        curDEF = character.DEF;
+        curSTR = character.STR;
         StartCoroutine(HPSetting());
         //Character Initial Nitro Settings
         nitroEarnSize = character.nitroEarnSize;
@@ -158,7 +160,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if(speed <= minAutoSpeed && !isStun){
-            speed = Mathf.Lerp(speed, minAutoSpeed, minAutoSpeed/100 * Time.deltaTime);
+            speed = Mathf.Lerp(speed, minAutoSpeed, minAutoSpeed/100.0f * Time.deltaTime);
         }
 
         if (!checkDead && curHP <= 0)
@@ -702,7 +704,7 @@ public class PlayerController : MonoBehaviour
         if (!checkDead)
         {
             damagedSpeed = 1.0f;
-            speed += minSpeed;
+            speed += minSpeed * curSTR/100.0f;
         }
         isStun = true;
     }

@@ -49,21 +49,21 @@ public class Equip : MonoBehaviour {
                 bombSize = 0.7f + (Level-1) * 0.7f;
                 break;
             case 1002: //아메리카노(N)
-                nitroEarnSize = 0.5f + (Level-1) * 0.9f;
+                nitroEarnSize = 0.5f + (Level-1) * 0.4f;
                 nitroSpeed = 3 + (Level-1);
                 break;
             case 1003: //항아리(N)
-                SPD = -2;
+                //SPD = -2;
                 DEF = 0.5f + (Level-1) * 0.3f;
                 STR = 1 + (Level-1) * 0.3f;
                 break;
             case 1004: //양말(N)
                 SPD = 1 + (Level-1)* 0.5f;
                 LUK = 2 + (Level-1)*0.5f;
-                nitroSpeed = -7;
+                //nitroSpeed = -7;
                 break;
             case 1005: //배낭(N)
-                HP = -2;
+                //HP = -2;
                 nitroEarnSize = 3 + (Level-1) * 0.4f;
                 nitroSpeed = 2 + (Level-1) * 0.8f;
                 break;
@@ -77,7 +77,7 @@ public class Equip : MonoBehaviour {
                 break;
             case 1008: //운동화(N)
                 SPD = 1.5f + (Level-1) * 0.3f;
-                nitroSpeed = 2 + (Level-1) * 0.8f;
+                nitroSpeed = 2 + (Level-1) * 0.7f;
                 break;
             case 1009: //하이힐(N)
                 SPD = 1 + (Level-1);
@@ -97,37 +97,38 @@ public class Equip : MonoBehaviour {
 
             ////////////////////////////////RARE/////////////////////////////////////
             case 1100: //덤벨(R)
-                SPD = -1;
+                //SPD = -1;
                 STR = 1 + (Level-1) * 0.9f;
                 DEF = 1.5f + (Level-1);
                 break;
             case 1101: //티셔츠(R)
-                HP = -2;
+                //HP = -2;
                 DEF = 1 + (Level-1) * 1.3f;
                 LUK = 4 + (Level-1) * 1.5f;
                 break;
             case 1102: //나뭇잎(R)
                 SPD = 1.5f + (Level-1) * 1.3f;
-                DEF = -1.5f;
-                nitroSpeed = 6 + (Level-1) * 2;
+                //DEF = -1.5f;
+                nitroSpeed = 4 + (Level-1) * 1.2f;
                 break;
             case 1103: //갑옷(R)
-                SPD = -2;
+                //SPD = -2;
                 DEF = 3 + (Level-1);
-                bombSize = 2 + (Level-1);
+                bombSize = 2 + (Level-1) * 0.8f;
                 break;
             case 1104: //축구공(R)
-                SPD = -1.5f;
+                //SPD = -1.5f;
                 STR = 2 + (Level-1);
-                bombSize = 1 + (Level-1) * 1.7f;
+                bombSize = 1 + (Level-1) * 1.3f;
                 break;
             case 1105: //까마귀(R)
                 SPD = 1.5f + (Level-1) * 1.4f;
                 LUK = 3.5f + (Level-1) * 0.5f;
                 break;
             case 1106: //안전모(R)
-                SPD = -1.5f;
+                //SPD = -1.5f;
                 DEF = 3.5f + (Level-1) * 1.3f;
+                nitroEarnSize = 2 + (Level - 1) * 1.3f;
                 break;
             case 1107: //검(R)
                 HP = 1 + (Level-1) * 1.5f;
@@ -146,19 +147,18 @@ public class Equip : MonoBehaviour {
             case 1201: //드레스(E)
                 HP = 3 + (Level-1) * 2.2f;
                 SPD = 6 + (Level-1) * 2;
-                DEF = -2;
+                //DEF = -2;
                 break;
             case 1202: //오리발(E)
                 SPD = 4 + (Level-1) * 1.9f;
-                nitroSpeed = 13 + (Level-1);
+                nitroSpeed = 8 + (Level-1);
                 break;
             case 1203: //망치(E)
                 nitroEarnSize = 2 + (Level-1);
-                nitroSpeed = 7 + (Level-1) * 2;
-                bombSize = 2 + (Level-1) * 1.5f;
+                nitroSpeed = 6 + (Level-1) * 1.7f;
+                bombSize = 2 + (Level-1) * 1.4f;
                 break;
             case 1204: //선물상자(E)
-
                 HP = 0;
                 SPD = 0;
                 DEF = 0;
@@ -172,7 +172,7 @@ public class Equip : MonoBehaviour {
                 switch (rand)
                 {
                     case 0:
-                        HP = 5 + (Level - 1) * 2;
+                        HP = 5 + (Level - 1) * 2f;
                         break;
                     case 1:
                         SPD = 5 + (Level - 1) * 2;
@@ -193,13 +193,13 @@ public class Equip : MonoBehaviour {
                 switch (rand)
                 {
                     case 0:
-                        nitroEarnSize = 10 + (Level - 1);
+                        nitroEarnSize = 5 + (Level - 1);
                         break;
                     case 1:
-                        bombSize = 10 + (Level - 1);
+                        bombSize = 5 + (Level - 1);
                         break;
                     case 2:
-                        nitroSpeed = 10 + (Level - 1);
+                        nitroSpeed = 5 + (Level - 1);
                         break;
                     default:
                         break;
@@ -209,21 +209,21 @@ public class Equip : MonoBehaviour {
             ////////////////////////////////LEGEND/////////////////////////////////////
             case 1300: //모래시계(L)
                 HP = 7 + (Level-1) * 2.5f;
-                LUK = 6 + (Level-1) * 3.3f;
-                DEF = 4 + (Level-1) * 2.6f;
-                nitroEarnSize = 6 + (Level-1) * 2.5f;
+                LUK = 6 + (Level-1) * 3.1f;
+                DEF = 4 + (Level-1) * 1.9f;
+                nitroEarnSize = 6 + (Level-1) * 2.2f;
                 break;
             case 1301: //산삼(L)
-                HP = 12 + (Level-1) * 2;
+                HP = 9 + (Level-1) * 2;
                 STR = 4 + (Level-1);
                 DEF = 3 + (Level-1) * 2.2f;
                 bombSize = 7 + (Level-1) * 2.3f;
                 break;
             case 1302: //왕관(L)
-                SPD = 9 + (Level-1) * 2.7f;
+                SPD = 9 + (Level-1) * 2.5f;
                 LUK = 3 + (Level-1) * 2;
                 STR = 5 + (Level-1) * 1.5f;
-                nitroEarnSize = 4 + (Level-1) * 2;
+                nitroEarnSize = 4 + (Level-1) * 1.9f;
                 break;
 
             ////////////////////////////////SPECIAL/////////////////////////////////////
