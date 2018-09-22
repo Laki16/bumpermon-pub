@@ -358,7 +358,7 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
         orb.GetComponent<OrbFill>().Fill = nitro / 100;
-        speedBar.fillAmount = speed / maxSpeed;
+        speedBar.fillAmount = speed / 500.0f;
         if (speed < 0)
         {
             tempSpeed = 0;
