@@ -292,33 +292,38 @@ public class ShopManager : MonoBehaviour
         slot2.SetActive(false);
         slot3.SetActive(false);
 
-        currentCharacter.GetComponent<EquippedItem>().equippedItem.Clear();
-
-        for(int i=0; i<totalItemSlot.Count; i++)
+        if(currentCharacter != null)
         {
-            if(currentCharacter.MonsterIndex == totalItemSlot[i].GetComponent<Equip>().equippedCharacter)
+            currentCharacter.GetComponent<EquippedItem>().equippedItem.Clear();
+
+            for (int i = 0; i < totalItemSlot.Count; i++)
             {
-                switch (count)
+                if (currentCharacter.MonsterIndex == totalItemSlot[i].GetComponent<Equip>().equippedCharacter)
                 {
-                    case 1: slot = slot1; break;
-                    case 2: slot = slot2; break;
-                    case 3: slot = slot3; break;
-                    default: slot = null; break;
+                    switch (count)
+                    {
+                        case 1: slot = slot1; break;
+                        case 2: slot = slot2; break;
+                        case 3: slot = slot3; break;
+                        default: slot = null; break;
+                    }
+                    if (slot != null)
+                    {
+                        slot.GetComponent<Equip>().equippedCharacter = i;
+                        count++;
+                    }
+                    totalItemSlot[i].GetComponent<Equip>().UpdateFrame(currentCharacter.MonsterIndex);
+                    currentEquip = totalItemSlot[i].GetComponent<Equip>();
+                    AddItem(count - 2, 0);
                 }
-                if(slot != null)
+                else
                 {
-                    slot.GetComponent<Equip>().equippedCharacter = i;
-                    count++;
+                    totalItemSlot[i].GetComponent<Equip>().ResetFrame();
                 }
-                totalItemSlot[i].GetComponent<Equip>().UpdateFrame(currentCharacter.MonsterIndex);
-                currentEquip = totalItemSlot[i].GetComponent<Equip>();
-                AddItem(count-2, 0);
-            }
-            else
-            {
-                totalItemSlot[i].GetComponent<Equip>().ResetFrame();
             }
         }
+
+        
 
         UpdateInventoryText();
     }
@@ -798,6 +803,7 @@ public class ShopManager : MonoBehaviour
 
             infoPanel.SetActive(false);
             UpdateInventoryText();
+            escPanel.SetActive(false);
         }
     }
 

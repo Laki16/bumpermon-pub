@@ -250,6 +250,10 @@ public class GameManager : MonoBehaviour {
         //DB
         coin = 0;
         gem = 0;
+
+        Destroy(characterPanel);
+        Destroy(shopPanel);
+        Destroy(storePanel);
     }
 
     public void BtnOnOption()
