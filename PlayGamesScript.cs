@@ -13,7 +13,7 @@ public class PlayGamesScript : MonoBehaviour
     public Character character;
     public Text startText;
 
-    private string leaderboardId = GPGSIds.leaderboard_global_score_ranking;
+    private string leaderboardId = GPGSIds.leaderboard_ranking;
     public static PlayGamesScript Instance { get; private set; }
 
     const string SAVE_NAME = "Tutorial3";

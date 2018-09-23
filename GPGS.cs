@@ -13,7 +13,7 @@ using GooglePlayGames.BasicApi.SavedGame;
 
 public class GPGS : MonoBehaviour
 {
-    private string leaderboardId = GPGSIds.leaderboard_global_score_ranking;
+    private string leaderboardId = GPGSIds.leaderboard_ranking;
     public Text stateText;                  // 상태 메세지
     private Action<bool> signInCallback;    // 로그인 성공 여부 확인을 위한 Callback 함수
 
@@ -149,7 +149,7 @@ public class GPGS : MonoBehaviour
             return;
         }
 
-        Social.ReportProgress(GPGSIds.achievement_1, 100.0, (bool success)=>{
+        Social.ReportProgress(GPGSIds.achievement, 100.0, (bool success)=>{
             if (!success) { Debug.Log("Report Fail!"); }
             else
             {

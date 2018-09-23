@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour {
         myShopAnimator = shopPanel.GetComponent<Animator>();
         myStoreAnimator = storePanel.GetComponent<Animator>();
 
-        LoadRecord();
+        //LoadRecord();
     }
 
     public void CloudLoadData()
