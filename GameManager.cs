@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour {
     bool isDev;
     bool isGameStart;
 
-
     [Header("GameOverUI")]
     public GameObject gameOverPanel;
     public GameObject highScore;
@@ -76,7 +75,7 @@ public class GameManager : MonoBehaviour {
     int timeLeft = 3;
     public EnemyArm leftEnemyArm;
     public EnemyArm rightEnemyArm;
-    public GameObject SoundManager;
+    public GameObject soundManager;
     public GameObject lArm;
     public GameObject rArm;
 
@@ -106,7 +105,7 @@ public class GameManager : MonoBehaviour {
         isMusicOn = true;
         isGameStart = false;
 
-        StartCoroutine(SoundManager.GetComponent<SoundManager>().BeginBGM());
+        StartCoroutine(soundManager.GetComponent<SoundManager>().BeginBGM());
 
         myCameraAnimator = camera.GetComponent<Animator>();
         myMenuAnimator = optionPanel.GetComponent<Animator>();
@@ -191,6 +190,7 @@ public class GameManager : MonoBehaviour {
         player.GetComponent<Character>().SetStatus();
         //item능력치 적용
         shopManager.ApplyEquipmentToCharacter();
+        soundManager.GetComponent<SoundManager>().PlayCountDown();
 
         spawnGrounds.playerController = player.GetComponent<PlayerController>();
         for (int i = 3; i > 0; i--){
@@ -246,7 +246,7 @@ public class GameManager : MonoBehaviour {
         //팔 로비 애니메이션으로 대체할것
         lArm.GetComponent<EnemyArm>().player = player;
         rArm.GetComponent<EnemyArm>().player = player;
-        SoundManager.GetComponent<SoundManager>().isLobbyEnd = true;
+        soundManager.GetComponent<SoundManager>().isLobbyEnd = true;
         //DB
         coin = 0;
         gem = 0;
@@ -290,7 +290,7 @@ public class GameManager : MonoBehaviour {
         if (isMusicOn)
         {
             //sound off
-            SoundManager.GetComponent<SoundManager>().Mute(true);
+            soundManager.GetComponent<SoundManager>().Mute(true);
             musicBtn.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
             musicBtn.GetComponent<Image>().sprite = musicOff;
             isMusicOn = false;
@@ -298,7 +298,7 @@ public class GameManager : MonoBehaviour {
         else
         {
             //sound on
-            SoundManager.GetComponent<SoundManager>().Mute(false);
+            soundManager.GetComponent<SoundManager>().Mute(false);
             musicBtn.GetComponent<Image>().color = new Color32(255, 255, 0, 255);
             musicBtn.GetComponent<Image>().sprite = musicOn;
             isMusicOn = true;
@@ -334,8 +334,8 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1;
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
-        SoundManager.GetComponent<SoundManager>().StopBGM();
-        StartCoroutine(SoundManager.GetComponent<SoundManager>().BeginBGM());
+        soundManager.GetComponent<SoundManager>().StopBGM();
+        StartCoroutine(soundManager.GetComponent<SoundManager>().BeginBGM());
     }
 
     public void BtnOnNo()
@@ -367,8 +367,8 @@ public class GameManager : MonoBehaviour {
     {
         isContinueAvailable = false;
         myGameOverAnimator.SetBool("GameOver", false);
-        SoundManager.GetComponent<SoundManager>().StopBGM();
-        StartCoroutine(SoundManager.GetComponent<SoundManager>().Continue());
+        soundManager.GetComponent<SoundManager>().StopBGM();
+        StartCoroutine(soundManager.GetComponent<SoundManager>().Continue());
         optionBtn.GetComponent<Button>().interactable = true;
         skullFX.SetActive(false);
 
@@ -460,8 +460,8 @@ public class GameManager : MonoBehaviour {
         }
 
         myGameOverAnimator.SetBool("GameOver", true);
-        SoundManager.GetComponent<SoundManager>().StopBGM();
-        StartCoroutine(SoundManager.GetComponent<SoundManager>().GameOver());
+        soundManager.GetComponent<SoundManager>().StopBGM();
+        StartCoroutine(soundManager.GetComponent<SoundManager>().GameOver());
         skullFX.SetActive(true);
     }
 

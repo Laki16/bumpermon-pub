@@ -6,6 +6,7 @@ public class CoinMoving : MonoBehaviour {
 
     public GameObject effect;
     public GameManager gameManager;
+    public SoundManager soundManager;
     public bool isRed;
 
 	private void OnTriggerEnter(Collider other)
@@ -14,8 +15,15 @@ public class CoinMoving : MonoBehaviour {
             effect.SetActive(true);
             effect.GetComponent<ParticleSystem>().Play();
             GetComponent<Renderer>().enabled = false;
-            if (isRed) gameManager.coin += 2;
-            else gameManager.coin++;
+            if (isRed) //뭔가 잘못되었지만 여튼 이것이 노란 일반코인
+            {
+                gameManager.coin ++;
+            }
+            else //그리고 이것이 빨간 코인임
+            {
+                gameManager.coin += 2;
+            }
+            soundManager.PlayNormalCoin();
         }
 	}
 }

@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
     public float curHP;
     private float curDEF;
     private float curSTR;
-    private float tm = 1; //give life per 1000m 
+    private float tm = 1; //give life per 900m 
     bool isStun = false;
 
     //Equip
@@ -219,7 +219,7 @@ public class PlayerController : MonoBehaviour
                             //밸런스를 위해 부스트를 사용할 때 항상 5만큼 속도를 늘려주는 대신 기본적으로 줄어드는 속도를 증가시켰음
                             if (!camMoving)
                             {
-                                endTime = Time.time + 0.5f;
+                                endTime = Time.time + 0.4f;
                             }
                             camMoving = true;
                             speed += 3.0f;
@@ -279,9 +279,10 @@ public class PlayerController : MonoBehaviour
         if (useNitro)
         { 
             //니트로 스피드가 + a% 되는 식으로 구성
-            speed = preSpeed * nitroSpeed / 100;
+            speed = preSpeed * nitroSpeed / 100.0f;
             nitroTime -= Time.deltaTime;
             nitro -= Time.deltaTime * 22;
+
         }
         //---------------------------------------------
         //--------------- touch control ---------------
@@ -357,7 +358,7 @@ public class PlayerController : MonoBehaviour
         //---------------------------------------------
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, lane), Time.deltaTime * swipeSpeed);
         //---------------------UI----------------------
-        orb.GetComponent<OrbFill>().Fill = nitro / 100;
+        orb.GetComponent<OrbFill>().Fill = nitro / 100.0f;
         speedBar.fillAmount = speed / 500.0f;
         if (speed < 0)
         {
@@ -375,26 +376,28 @@ public class PlayerController : MonoBehaviour
         curHP = Mathf.Clamp(curHP, 0, character.HP);
         if (!useNitro)
         {
-            if (transform.position.x < 1000)
+            if (transform.position.x < 1000.0f)
             { //나중에 아이템 값만큼 곱하기
                 curHP -= Time.deltaTime * 0.5f;
             }
             else
             {
-                curHP -= (transform.position.x / 1000) * Time.deltaTime * 0.5f;
+                curHP -= (transform.position.x / 1000.0f) * Time.deltaTime * 0.5f;
             }
             //-----------------Ray-----------------------
             SideRayCast();
             //-------------------------------------------
         }
-        if (transform.position.x > tm * 1000){
+        if (transform.position.x > tm * 1000 && transform.position.x < 4500)
+        {
+            //스테이지 하나 진행할때마다 체력 회복
             StartCoroutine(LifeUp(tm * 20));
             tm++;
         }
         //---------------------------------------------
 
         //-----------------Animations------------------
-        sprintMultiplier = 1.0f + speed / 240;
+        sprintMultiplier = 1.0f + speed / 240.0f;
         myAnimator.SetFloat("SprintMultiplier", sprintMultiplier);
         //---------------------------------------------
 
@@ -403,7 +406,7 @@ public class PlayerController : MonoBehaviour
         camera.transform.position = transform.position + offset;
         if (Time.time <= endTime)
         {
-            offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime * ((20 + speed) / 200);
+            offset -= new Vector3(1.0f, 0, 0) * Time.deltaTime * ((20 + speed) / 200.0f);
         }
         else
         {
@@ -433,7 +436,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator NitroShockwave(bool isRevival)
     {
         isNitroShockwave = true;
-        Collider[] cols = Physics.OverlapSphere(transform.position, bombSize + speed / 15, 1 << 12);
+        Collider[] cols = Physics.OverlapSphere(transform.position, bombSize + speed / 15.0f, 1 << 12);
         if (cols != null)
         {
             for (int i = 0; i < cols.Length; i++)
@@ -555,6 +558,13 @@ public class PlayerController : MonoBehaviour
 
             isBlockRight = false;
             isBlockLeft = false;
+
+            //카메라 무빙
+            if (!camMoving)
+            {
+                endTime = Time.time + 4.0f;
+            }
+            camMoving = true;
         }
     }
 
@@ -613,9 +623,15 @@ public class PlayerController : MonoBehaviour
                     speed = 0.0f;
                     nowCombo = 0;
                     float damage;
-                    if (transform.position.x < 100) damage = 5 * (1 - curDEF / 100);
-                    else damage = (int)(transform.position.x / 100) * (1 - curDEF / 100);
+                    if (transform.position.x < 100) damage = 5 * (1 - curDEF / 100.0f);
+                    else damage = (int)(transform.position.x / 100) * (1 - curDEF / 100.0f);
                     LifeDown(damage);
+
+                    if(character.MonsterIndex == 5)
+                    {
+                        soundManager.GetComponent<SoundManager>().PlayHit();
+                    }
+
                     isStun = true;
                     speedRecovery = StartCoroutine(SpeedRecovery());
                 }
@@ -704,7 +720,7 @@ public class PlayerController : MonoBehaviour
         if (!checkDead)
         {
             damagedSpeed = 1.0f;
-            speed += minSpeed * curSTR/100.0f;
+            speed += curSTR;
         }
         isStun = true;
     }

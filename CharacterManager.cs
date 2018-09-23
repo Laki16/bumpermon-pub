@@ -14,6 +14,7 @@ public class CharacterManager : MonoBehaviour {
     public ShopManager shopManager;
     public GameObject swapPanel;
     private bool isStatus;
+    public SoundManager soundManager;
 
     [Header("UI")]
     public Button golemBtn;
@@ -164,6 +165,8 @@ public class CharacterManager : MonoBehaviour {
             isBuy = true;
             //Lv Up Animation Play!
             UpdateUI();
+
+            soundManager.PlayLvUp(1);
         }else Debug.Log("Need more golds!");
 
     }

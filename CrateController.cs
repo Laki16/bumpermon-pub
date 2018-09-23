@@ -68,6 +68,9 @@ public class CrateController : MonoBehaviour {
     public Sprite gold_sprite;
     public Sprite gem_sprite;
 
+    [Header("Sound")]
+    public SoundManager soundManager;
+
     public void BtnOnCrate(int _index)
     {
         crateNum = 0;
@@ -160,6 +163,8 @@ public class CrateController : MonoBehaviour {
         }
         else
         {
+            soundManager.isCrate = true;
+
             switch (index)
             {
                 case 1:
@@ -182,6 +187,7 @@ public class CrateController : MonoBehaviour {
 
         currentCrate.SetActive(true);
         crates.GetComponent<Animator>().Play("Drop", -1, 0f);
+        soundManager.PlayCrateDrop(index);
 
         float time = 0.0f;
         float interval = 1.0f;
@@ -212,6 +218,7 @@ public class CrateController : MonoBehaviour {
 
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         mainCam.SetActive(false);
+        crateCam.GetComponent<AudioListener>().enabled = true;
 
         IdleFXEvent();
 
@@ -242,8 +249,10 @@ public class CrateController : MonoBehaviour {
 
         mainPanel.SetActive(false);
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        mainCam.SetActive(true);
 
+        crateCam.GetComponent<AudioListener>().enabled = false;
+        mainCam.SetActive(true);
+        soundManager.isCrate = false;
     }
 
     public void ResetFX()
@@ -404,6 +413,8 @@ public class CrateController : MonoBehaviour {
             DisplayItem(1);
             crateOpenNum = 2;
             open = false;
+            yield return new WaitForSeconds(.6f);
+            soundManager.PlayCardOpen(1);
         }
         else
         {
@@ -412,6 +423,11 @@ public class CrateController : MonoBehaviour {
                 DisplayItem(crateOpenNum);
                 crateOpenNum++;
                 open = false;
+                if (crateOpenNum == 2)
+                {
+                    yield return new WaitForSeconds(.6f);
+                    soundManager.PlayCardOpen(2);
+                }
             }
             else if (crateOpenNum > crateNum)
             {
@@ -469,6 +485,8 @@ public class CrateController : MonoBehaviour {
                 PlayerPrefs.Save();
                 CloudVariables.SystemValues[1] = gem;
                 PlayGamesScript.Instance.SaveData();
+
+                soundManager.PlayCardOpen(2);
                 break;
             case 3: 
                 if (index == 1) //Normal(98.89%)
@@ -506,7 +524,7 @@ public class CrateController : MonoBehaviour {
                 break;
             case 7: //Epic(33%) & Legend(66%)
                 prob = Random.Range(0, 3);
-                if (prob == 0) RandomEpicItem();
+                if (prob == 0) RandomRareItem();
                 else RandomLegendItem();
                 break;
             //super crate
@@ -539,6 +557,7 @@ public class CrateController : MonoBehaviour {
         normalCardFX.SetActive(true);
 
         shopManager.NewItem(randItem, 0);
+        soundManager.PlayCardOpen(3);
     }
 
     public void RandomRareItem()
@@ -552,6 +571,7 @@ public class CrateController : MonoBehaviour {
         rareCardFX.SetActive(true);
 
         shopManager.NewItem(randItem, 1);
+        soundManager.PlayCardOpen(4);
     }
 
     public void RandomEpicItem()
@@ -565,6 +585,7 @@ public class CrateController : MonoBehaviour {
         epicCardFX.SetActive(true);
 
         shopManager.NewItem(randItem, 2);
+        soundManager.PlayCardOpen(5);
     }
 
     public void RandomLegendItem()
@@ -578,6 +599,7 @@ public class CrateController : MonoBehaviour {
         legendCardFX.SetActive(true);
 
         shopManager.NewItem(randItem, 3);
+        soundManager.PlayCardOpen(6);
     }
 
     public void FXClear()

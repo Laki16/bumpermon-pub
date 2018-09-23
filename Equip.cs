@@ -55,7 +55,7 @@ public class Equip : MonoBehaviour {
             case 1003: //항아리(N)
                 //SPD = -2;
                 DEF = 0.5f + (Level-1) * 0.3f;
-                STR = 1 + (Level-1) * 0.3f;
+                STR = 1 + (Level-1) * 0.1f;
                 break;
             case 1004: //양말(N)
                 SPD = 1 + (Level-1)* 0.5f;
@@ -92,13 +92,13 @@ public class Equip : MonoBehaviour {
                 break;
             case 1012: //소화기(N)
                 DEF = 0.5f + (Level-1) * 0.5f;
-                STR = 1 + (Level-1) * 1.5f;
+                STR = 0.3f + (Level-1) * 0.2f;
                 break;
 
             ////////////////////////////////RARE/////////////////////////////////////
             case 1100: //덤벨(R)
                 //SPD = -1;
-                STR = 1 + (Level-1) * 0.9f;
+                STR = 1 + (Level-1) * 0.7f;
                 DEF = 1.5f + (Level-1);
                 break;
             case 1101: //티셔츠(R)
@@ -118,7 +118,7 @@ public class Equip : MonoBehaviour {
                 break;
             case 1104: //축구공(R)
                 //SPD = -1.5f;
-                STR = 2 + (Level-1);
+                STR = 0.5f + (Level-1)*0.3f;
                 bombSize = 1 + (Level-1) * 1.3f;
                 break;
             case 1105: //까마귀(R)
@@ -132,7 +132,7 @@ public class Equip : MonoBehaviour {
                 break;
             case 1107: //검(R)
                 HP = 1 + (Level-1) * 1.5f;
-                STR = 4 + (Level-1);
+                STR = 2 + (Level-1)*0.5f;
                 break;
             case 1108: //틀니(R)
                 SPD = 3 + (Level-1);
@@ -172,19 +172,19 @@ public class Equip : MonoBehaviour {
                 switch (rand)
                 {
                     case 0:
-                        HP = 5 + (Level - 1) * 2f;
+                        HP = 4 + (Level - 1);
                         break;
                     case 1:
-                        SPD = 5 + (Level - 1) * 2;
+                        SPD = 4 + (Level - 1);
                         break;
                     case 2:
-                        DEF = 5 + (Level - 1) * 2;
+                        DEF = 4 + (Level - 1);
                         break;
                     case 3:
-                        STR = 5 + (Level - 1) * 2;
+                        STR = 4 + (Level - 1);
                         break;
                     case 4:
-                        LUK = 5 + (Level - 1) * 2;
+                        LUK = 4 + (Level - 1);
                         break;
                     default:
                         break;
@@ -215,14 +215,14 @@ public class Equip : MonoBehaviour {
                 break;
             case 1301: //산삼(L)
                 HP = 9 + (Level-1) * 2;
-                STR = 4 + (Level-1);
+                STR = 3 + (Level-1)*0.3f;
                 DEF = 3 + (Level-1) * 2.2f;
                 bombSize = 7 + (Level-1) * 2.3f;
                 break;
             case 1302: //왕관(L)
                 SPD = 9 + (Level-1) * 2.5f;
                 LUK = 3 + (Level-1) * 2;
-                STR = 5 + (Level-1) * 1.5f;
+                STR = 5 + (Level-1) * 0.5f;
                 nitroEarnSize = 4 + (Level-1) * 1.9f;
                 break;
 

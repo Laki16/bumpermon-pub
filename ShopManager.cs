@@ -7,8 +7,10 @@ using UnityEngine.UI;
 public class ShopManager : MonoBehaviour
 {
     //[HideInInspector]
+    [Header("System")]
     public Character currentCharacter;
     public Equipment equipment;
+    public SoundManager soundManager;
 
     [Header("Equipment")]
     public List<GameObject> totalItemSlot = new List<GameObject>();
@@ -596,6 +598,8 @@ public class ShopManager : MonoBehaviour
             CloudSaveItem();
             UpdateInfoPanel();
             UpdateShopUI();
+
+            soundManager.PlayLvUp(2);
         }
     }
 
@@ -790,7 +794,7 @@ public class ShopManager : MonoBehaviour
                 {
                     inventory += (_inventory[i] + ",");
                 }
-                Debug.Log(inventory);
+                //Debug.Log(inventory);
             }
             PlayerPrefs.SetString("Inventory", inventory);
             PlayerPrefs.SetInt("Coin", coin);
@@ -804,6 +808,8 @@ public class ShopManager : MonoBehaviour
             infoPanel.SetActive(false);
             UpdateInventoryText();
             escPanel.SetActive(false);
+
+            soundManager.PlayEquip();
         }
     }
 

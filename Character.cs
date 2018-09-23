@@ -72,7 +72,7 @@ public class Character : MonoBehaviour{
                 HP = 50 + Level * 2.5f;
                 SPD = 15 + Level * 1.5f;
                 DEF = 20 + Level * 1;
-                STR = 20 + Level * 5;
+                STR = 5 + Level * 2.5f;
                 LUK = 2 + Level * .3f;
                 nitroEarnSize = 8 + Level * 0.5f;
                 bombSize = 15 + Level * 0.3f;
@@ -127,7 +127,7 @@ public class Character : MonoBehaviour{
                 HP = 50 + Level * 5.5f;
                 SPD = 20 + Level * 2.5f;
                 DEF = 10 + Level * 2;
-                STR = 7 + Level * 2;
+                STR = 7 + Level * 0.8f;
                 LUK = 5 + Level * 1.5f;
                 nitroEarnSize = 12 + Level * 0.4f;
                 bombSize = 8 + Level * 1.3f;
