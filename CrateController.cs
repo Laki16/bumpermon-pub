@@ -110,6 +110,11 @@ public class CrateController : MonoBehaviour {
         }
     }
 
+    public void BtnOnFreeItem(int index)
+    {
+        unityAdsHelper.ShowRewardedAd(index);
+    }
+
     public void ChkErrorMsg()
     {
         errorPanel.SetActive(false);

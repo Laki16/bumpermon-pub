@@ -43,8 +43,9 @@ public class UnityAdsHelper : MonoBehaviour
         }
     }
 
-    public void ShowRewardedAd(int index) //rewarded ads
+    public void ShowRewardedAd(int _index) //rewarded ads
     {
+        index = _index;
         if (Advertisement.IsReady(rewarded_video_id))
         {
             var options = new ShowOptions { resultCallback = HandleShowResult };
@@ -76,7 +77,6 @@ public class UnityAdsHelper : MonoBehaviour
                         case 0: Time.timeScale = 1; break;
                         case 1:
                             PlayerPrefs.SetString("Time1", DateTime.Now.ToString());
-                            crateController.BtnOnCrate(1);
                             break;
                         case 2:
                             PlayerPrefs.SetString("Time2", DateTime.Now.ToString());
@@ -89,7 +89,6 @@ public class UnityAdsHelper : MonoBehaviour
                             break;
                         case 4:
                             PlayerPrefs.SetString("Time3", DateTime.Now.ToString());
-                            crateController.BtnOnCrate(4);
                             break;
                         default:
                             break;
