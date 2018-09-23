@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour {
     public GameObject soundManager;
     public GameObject lArm;
     public GameObject rArm;
+    public TutorialManager tutorialManager;
 
     [Header("Animation")]
     Animator myCameraAnimator;
@@ -206,6 +207,14 @@ public class GameManager : MonoBehaviour {
         countdownText.text = "";
         meterBetBlock = player.transform.position.x;
         myCameraAnimator.enabled = false;
+
+        if (!PlayerPrefs.HasKey("IsTutorial"))
+        {
+            Time.timeScale = 0;
+            tutorialManager.BtnOnTutorial();
+            PlayerPrefs.SetInt("IsTutorial", 1);
+            PlayerPrefs.Save();
+        }
     }
 
     IEnumerator GameContinue()
