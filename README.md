@@ -5,7 +5,7 @@ Enjoy endless running game with various characters and items!
 
 We originally devleoped this project using Unity3D by github private repo, but we decided to open our source for good reasons.
 
-Bumpermon is currently not available in mobile application store :)
+Bumpermon is currently not available in mobile application store :(
 
 ## Game Introduce
 
