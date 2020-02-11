@@ -3,7 +3,7 @@ Save the toy from the melting furnace!
 
 Enjoy endless running game with various characters and items!
 
-We originally devleoped this project using Unity3D by private repository, but we decided to open our sources for good reasons.
+We originally devleoped this project using Unity3D by github private repo, but recently decided to open our source for good reasons.
 
 Bumpermon is currently not available in mobile application store :)
 
